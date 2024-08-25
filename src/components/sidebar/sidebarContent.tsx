@@ -9,11 +9,12 @@ import {
   Avatar,
   Typography,
   Box,
+  Modal,
 } from "@mui/material";
 import { LogoutOutlined as LogoutOutlinedIcon } from "@mui/icons-material";
 import { useState } from "react";
 import Link from "next/link";
-import { UserButton, useUser, useAuth } from "@clerk/nextjs";
+import { UserProfile, useUser, useAuth } from "@clerk/nextjs";
 
 export interface SidebarContentProps {
   path: string;
@@ -29,6 +30,7 @@ export default function SidebarContent({
   const [selectedIndex, setSelectedIndex] = useState(1);
   const { user } = useUser(); // Fetch user data from Clerk
   const { signOut } = useAuth(); // Fetch signOut function from Clerk
+  const [open, setOpen] = useState(false); // State to control the modal
 
   const handleListItemClick = (
     event:
@@ -50,6 +52,17 @@ export default function SidebarContent({
         alignItems="center"
         p={2}
         mb={2}
+        onClick={() => setOpen(true)}
+        sx={{
+          cursor: "pointer",
+          backgroundColor: "#212425",
+          borderBottom: 1,
+          borderBottomRightRadius: 14,
+          borderBottomLeftRadius: 14,
+          "&:hover": {
+            bgcolor: "#313232",
+          },
+        }}
       >
         <Avatar
           sx={{
@@ -106,13 +119,17 @@ export default function SidebarContent({
 
         <ListItem className="px-8">
           <ListItemButton
-            onClick={() => signOut()}
+            selected={selectedIndex === 4}
+            onClick={(event) => {
+              handleListItemClick(event, 4);
+              signOut();
+            }}
             sx={{
               bgcolor: selectedIndex === 4 ? "#02494D" : "inherit",
               "&.Mui-selected": {
-                bgcolor: "#02494D",
+                bgcolor: "#910F2E",
                 "&:hover": {
-                  bgcolor: "#00585e",
+                  bgcolor: "#8C3F52",
                 },
               },
               borderRadius: "14px",
@@ -134,6 +151,19 @@ export default function SidebarContent({
           </ListItemButton>
         </ListItem>
       </List>
+
+      <Modal open={open} onClose={() => setOpen(false)}>
+        <Box
+          sx={{
+            position: "absolute" as "absolute",
+            top: "50%",
+            left: "50%",
+            transform: "translate(-50%, -50%)",
+          }}
+        >
+          <UserProfile />
+        </Box>
+      </Modal>
     </div>
   );
 }

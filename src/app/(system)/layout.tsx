@@ -10,6 +10,7 @@ import {
   People as PeopleIcon,
   Analytics as AnalyticsIcon,
 } from "@mui/icons-material";
+import { ptBR } from "@clerk/localizations";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,7 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <ClerkProvider>
+      <ClerkProvider localization={ptBR}>
         <Toaster richColors></Toaster>
         <body className={inter.className}>
           <div className="flex min-h-screen">

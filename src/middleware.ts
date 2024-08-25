@@ -14,7 +14,7 @@ const isPublicRoute = createRouteMatcher([
 
 export default clerkMiddleware((auth, req) => {
   if (auth().userId && createRouteMatcher(["/login(.*)"])(req)) {
-    console.log("User is logged in");
+    console.log("User is logged in", { req });
     redirect("/");
   }
 
