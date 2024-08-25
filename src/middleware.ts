@@ -13,11 +13,6 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  if (auth().userId && createRouteMatcher(["/login(.*)"])(req)) {
-    console.log("User is logged in", { req });
-    redirect("/");
-  }
-
   if (!isPublicRoute(req)) {
     const origin = req.nextUrl.origin;
 

@@ -1,6 +1,6 @@
 "use client";
 
-import { useSignIn } from "@clerk/nextjs";
+import { useSignIn, useAuth } from "@clerk/nextjs";
 import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
 import { useRouter } from "next/navigation";
 import { FormEvent, useState } from "react";
@@ -16,9 +16,12 @@ export default function LoginForms() {
   const [password, setPassword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
-
+  const { userId } = useAuth();
   const { isLoaded, signIn, setActive } = useSignIn();
 
+  if (userId) {
+    router.push("/products");
+  }
   if (!isLoaded) return null;
 
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
