@@ -10,7 +10,9 @@ import {
   Typography,
   Box,
   Modal,
+  IconButton,
 } from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 import { LogoutOutlined as LogoutOutlinedIcon } from "@mui/icons-material";
 import { useState } from "react";
 import Link from "next/link";
@@ -28,9 +30,8 @@ export default function SidebarContent({
   data: SidebarContentProps[];
 }) {
   const [selectedIndex, setSelectedIndex] = useState(1);
-  const { user } = useUser(); // Fetch user data from Clerk
-  const { signOut } = useAuth(); // Fetch signOut function from Clerk
-  const [open, setOpen] = useState(false); // State to control the modal
+  const { user } = useUser();
+  const { signOut } = useAuth();
 
   const handleListItemClick = (
     event:
@@ -52,7 +53,6 @@ export default function SidebarContent({
         alignItems="center"
         p={2}
         mb={2}
-        onClick={() => setOpen(true)}
         sx={{
           cursor: "pointer",
           backgroundColor: "#212425",
@@ -151,19 +151,6 @@ export default function SidebarContent({
           </ListItemButton>
         </ListItem>
       </List>
-
-      <Modal open={open} onClose={() => setOpen(false)}>
-        <Box
-          sx={{
-            position: "absolute" as "absolute",
-            top: "50%",
-            left: "50%",
-            transform: "translate(-50%, -50%)",
-          }}
-        >
-          <UserProfile />
-        </Box>
-      </Modal>
     </div>
   );
 }
