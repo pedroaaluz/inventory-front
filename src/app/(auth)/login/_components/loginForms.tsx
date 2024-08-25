@@ -14,7 +14,7 @@ import {
 export default function LoginForms() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   const { isLoaded, signIn, setActive } = useSignIn();
@@ -25,6 +25,7 @@ export default function LoginForms() {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       const result = await signIn.create({ identifier: email, password });
 
       if (result.status === "complete") {
@@ -50,6 +51,8 @@ export default function LoginForms() {
       toast.error("Something went wrong");
 
       return;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -61,6 +64,7 @@ export default function LoginForms() {
           text: "Ainda não tem conta?",
           link: "Clique aqui",
         }}
+        submitButtonProps={{ isLoading }}
         handleSubmit={handleSubmit}
         header="Entre com sua conta"
         inputs={[

@@ -1,20 +1,19 @@
-import { FormEvent } from "react";
+import { DOMAttributes, FormEvent } from "react";
 import InputFormsCustom, { CustomFormsInputProps } from "./formsInput";
 import FormsBody from "./formsBody";
 import FormsContainer from "./formsContainer";
 import FormsHeader from "./formsHeader";
 import SubmitFormsButton from "./submitFormsButton";
-import FormsFooterLink from "./formsFooterLink";
+import FormsFooterLink, { FormsFooterLinkProps } from "./formsFooterLink";
 
 interface FormsProps {
   header: string;
   handleSubmit: (e: FormEvent<HTMLFormElement>) => void;
   inputs: CustomFormsInputProps[];
   submitButtonText: string;
-  formsFooterLink: {
-    href: string;
-    link: string;
-    text: string;
+  formsFooterLink: Omit<FormsFooterLinkProps, "children"> & { text: string };
+  submitButtonProps?: {
+    isLoading?: boolean;
   };
 }
 
@@ -24,6 +23,7 @@ export default function Forms({
   inputs,
   submitButtonText,
   formsFooterLink,
+  submitButtonProps,
 }: FormsProps) {
   return (
     <>
@@ -33,11 +33,15 @@ export default function Forms({
           {inputs.map((input) => (
             <InputFormsCustom {...input} key={input.id} />
           ))}
-          <SubmitFormsButton text={submitButtonText} />
+          <SubmitFormsButton
+            isLoading={submitButtonProps?.isLoading}
+            text={submitButtonText}
+          />
 
           <FormsFooterLink
             link={formsFooterLink.link}
             href={formsFooterLink.href}
+            onClick={formsFooterLink.onClick}
           >
             {formsFooterLink.text}
           </FormsFooterLink>

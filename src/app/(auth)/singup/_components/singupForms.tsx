@@ -12,6 +12,7 @@ export default function SingUpForms() {
   const [password, setPassword] = useState("");
   const [username, setUsername] = useState("");
   const [emailVerify, setEmailVerifyCode] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   // clerk singin states
   const { isLoaded, signUp } = useSignUp();
@@ -22,6 +23,7 @@ export default function SingUpForms() {
     e.preventDefault();
 
     try {
+      setIsLoading(true);
       await signUp.create({ emailAddress: email, password, username });
 
       // enviar codigo de email
@@ -39,6 +41,8 @@ export default function SingUpForms() {
       toast.error("Something went wrong");
 
       return;
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -80,6 +84,7 @@ export default function SingUpForms() {
             label: "Senha",
           },
         ]}
+        submitButtonProps={{ isLoading }}
         submitButtonText="Criar conta"
         formsFooterLink={{
           href: "/login",
