@@ -9,14 +9,11 @@ import {
   Avatar,
   Typography,
   Box,
-  Modal,
-  IconButton,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
 import { LogoutOutlined as LogoutOutlinedIcon } from "@mui/icons-material";
 import { useState } from "react";
 import Link from "next/link";
-import { UserProfile, useUser, useAuth } from "@clerk/nextjs";
+import { useUser, useAuth } from "@clerk/nextjs";
 
 export interface SidebarContentProps {
   path: string;
@@ -29,7 +26,7 @@ export default function SidebarContent({
 }: {
   data: SidebarContentProps[];
 }) {
-  const [selectedIndex, setSelectedIndex] = useState(1);
+  const [selectedIndex, setSelectedIndex] = useState(0);
   const { user } = useUser();
   const { signOut } = useAuth();
 

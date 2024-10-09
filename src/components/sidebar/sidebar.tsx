@@ -5,6 +5,8 @@ import { Drawer, IconButton, Box } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import SidebarContent, { SidebarContentProps } from "./sidebarContent";
 
+const drawerWidth = 340;
+
 const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
   const [isOpen, setIsOpen] = useState(false);
 
@@ -12,31 +14,23 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
     setIsOpen(!isOpen);
   };
 
-  const drawerWidth = 340;
-
   return (
-    <Box
-      sx={{
-        width: { sm: drawerWidth },
-        flexShrink: 0,
-      }}
-    >
+    <Box sx={{ display: "flex" }}>
       {/* SidebarMobile */}
-      {!isOpen && (
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={toggleDrawer}
-          sx={{
-            display: { sm: "none" },
-            paddingLeft: 4,
-            position: "fixed",
-          }}
-        >
-          <MenuIcon />
-        </IconButton>
-      )}
+      <IconButton
+        edge="start"
+        color="inherit"
+        aria-label="menu"
+        onClick={toggleDrawer}
+        sx={{
+          display: { sm: "none" },
+          paddingLeft: 4,
+          position: "fixed",
+        }}
+      >
+        <MenuIcon />
+      </IconButton>
+
       <Drawer
         variant="temporary"
         open={isOpen}
@@ -53,7 +47,6 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
         <SidebarContent data={data} />
       </Drawer>
 
-      {/* SidebarDesktop */}
       <Drawer
         variant="permanent"
         sx={{
@@ -68,6 +61,17 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
       >
         <SidebarContent data={data} />
       </Drawer>
+
+      {/* Conteúdo Principal */}
+      <Box
+        component="main"
+        sx={{
+          flexGrow: 1,
+          p: 3,
+          marginLeft: { xs: 0, sm: `260px` }, // Corrigido para dar espaço à Sidebar no desktop
+          transition: "margin-left 0.3s ease", // Adiciona uma transição suave
+        }}
+      ></Box>
     </Box>
   );
 };
