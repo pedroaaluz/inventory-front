@@ -34,9 +34,9 @@ export default function RootLayout({
             <Box
               sx={{
                 display: "flex",
-                flexDirection: isMobile ? "column" : "row", // Alinha em coluna no mobile e em linha no desktop
-                height: "100vh", // Preenche toda a altura da tela
-                overflow: "hidden", // Evita overflow da tela
+                flexDirection: isMobile ? "column" : "row",
+                height: "100vh",
+                overflow: "hidden",
               }}
             >
               <Sidebar
@@ -65,10 +65,10 @@ export default function RootLayout({
               />
               <Box
                 sx={{
-                  flex: 1, // O conteúdo ocupa o espaço restante
+                  flex: 1,
                   display: "flex",
                   flexDirection: "column",
-                  overflowY: "auto", // Rolagem caso o conteúdo exceda a altura
+                  overflowY: "auto",
                   padding: theme.spacing(2),
                   backgroundColor: theme.palette.background.paper,
                 }}

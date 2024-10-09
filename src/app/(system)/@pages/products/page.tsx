@@ -37,33 +37,33 @@ export default function ProductsPage() {
   const [endDate, setEndDate] = useState("");
 
   const { user } = useUser();
+  console.log(user);
 
   const { isLoading, data, isFetching } = useQuery({
     queryKey: ["products", page, filterName, startDate, endDate],
     queryFn: async (): Promise<IListProductsOutput> => {
+      console.log("Dentro da função queryFn");
       const paramsParsed = new URLSearchParams(
         removeNulls({
           userId: user?.id,
           page: page.toString(),
-          pageSize: "9",
+          pageSize: "10",
           name: filterName,
           startDate: startDate || undefined,
           endDate: endDate || undefined,
         })
       );
 
-      const url = new URL("/api/products");
-
-      url.search = paramsParsed.toString();
-
-      const response = await fetch(url, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+      const response = await fetch(
+        "/api/products?userId=user_2l7nMeIFShEssxzQGFljhWd5X97",
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
+      );
 
       console.log({
-        url,
         response,
       });
 
