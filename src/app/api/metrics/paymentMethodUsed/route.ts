@@ -1,23 +1,18 @@
 import removeNulls from "@/utils/removeNulls";
-import type { TListProductsParams } from "@/types/products";
+import type { IPaymentMethodUsedParams } from "@/types/metrics";
 import { getQueryParams } from "@/utils/getQueryParams";
 import { NextResponse } from "next/server";
 
-async function fetchListProductData(params: TListProductsParams) {
+async function fetchPaymentMethodUsed(params: IPaymentMethodUsedParams) {
   const paramsParsed = new URLSearchParams(
     removeNulls({
-      userId: params.userId,
-      name: params.name,
       startDate: params.startDate,
       endDate: params.endDate,
-      page: params.page,
-      pageSize: params.pageSize,
-      orderBy: params.orderBy,
     })
   );
 
   const url = new URL(
-    "https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/product"
+    `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/metrics/${params.userId}/payment-method-used?${paramsParsed}`
   );
 
   url.search = paramsParsed.toString();
@@ -34,7 +29,7 @@ async function fetchListProductData(params: TListProductsParams) {
 export async function GET(request: Request) {
   try {
     const params = getQueryParams(
-      ["userId", "name", "startDate", "endDate", "page", "pageSize", "orderBy"],
+      ["userId", "startDate", "endDate"],
       request.url
     );
 
@@ -42,14 +37,11 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "userId is required", status: 400 });
     }
 
-    console.log({ params });
-    const res = await fetchListProductData({
+    console.log("paymentMethod", { params });
+    const res = await fetchPaymentMethodUsed({
       userId: params.userId,
-      name: params.name,
       startDate: params.startDate,
       endDate: params.endDate,
-      page: params.page,
-      pageSize: params.pageSize,
     });
 
     return NextResponse.json({ ...res, status: 200 });

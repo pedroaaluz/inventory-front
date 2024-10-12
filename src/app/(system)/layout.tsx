@@ -11,7 +11,7 @@ import {
   Analytics as AnalyticsIcon,
 } from "@mui/icons-material";
 import { ptBR } from "@clerk/localizations";
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { Box, TextField, useMediaQuery, useTheme } from "@mui/material";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/services/queryClient";
 

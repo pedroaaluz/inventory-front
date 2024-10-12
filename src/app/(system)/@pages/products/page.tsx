@@ -1,5 +1,4 @@
 "use client";
-
 import {
   Grid,
   Table,
@@ -24,48 +23,65 @@ import { useTheme } from "@mui/material/styles";
 import { useMediaQuery } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
 import type { IListProductsOutput } from "../../../../types/products";
-import removeNulls from "@/utils/removeNulls";
 import { useUser } from "@clerk/nextjs";
+import PaymentMethodPierCharts from "@/components/paymentMethodPierCharts/paymentMethodPierCharts";
+import { handleQueryParams } from "@/utils/handleQueryParams";
 
 export default function ProductsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [page, setPage] = useState(1);
   const [filterName, setFilterName] = useState("");
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
 
-  const { user } = useUser();
-  console.log(user);
+  const [appliedFilters, setAppliedFilters] = useState({
+    filterName: "",
+    startDate: "",
+    endDate: "",
+  });
+
+  const [page, setPage] = useState(1);
+
+  const { user, isLoaded } = useUser();
+
+  const handleSubmit = () => {
+    setAppliedFilters({
+      filterName,
+      startDate,
+      endDate,
+    });
+  };
 
   const { isLoading, data, isFetching } = useQuery({
-    queryKey: ["products", page, filterName, startDate, endDate],
+    queryKey: [
+      "products",
+      page,
+      isLoaded,
+      appliedFilters.filterName,
+      appliedFilters.startDate,
+      appliedFilters.endDate,
+    ],
     queryFn: async (): Promise<IListProductsOutput> => {
-      console.log("Dentro da função queryFn");
-      const paramsParsed = new URLSearchParams(
-        removeNulls({
-          userId: user?.id,
-          page: page.toString(),
-          pageSize: "10",
-          name: filterName,
-          startDate: startDate || undefined,
-          endDate: endDate || undefined,
-        })
-      );
+      const params = {
+        userId: user?.id,
+        page: page.toString(),
+        pageSize: "10",
+        name: appliedFilters.filterName,
+        startDate: appliedFilters.startDate || undefined,
+        endDate: appliedFilters.endDate || undefined,
+      };
+
+      const paramsParsed = handleQueryParams(params);
 
       const response = await fetch(
-        "/api/products?userId=user_2l7nMeIFShEssxzQGFljhWd5X97",
+        `/api/products?${paramsParsed}&pageSize=10`,
         {
           headers: {
             "Content-Type": "application/json",
           },
         }
       );
-
-      console.log({
-        response,
-      });
 
       const responseParsed = (await response.json()) as IListProductsOutput;
 
@@ -131,8 +147,13 @@ export default function ProductsPage() {
               value={endDate}
               onChange={(e) => setEndDate(e.target.value)}
             />
-            <Button variant="contained" color="primary" startIcon={<Add />}>
-              Criar Produto
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={handleSubmit} // Aplica os filtros ao clicar
+              startIcon={<Search />}
+            >
+              Aplicar Filtros
             </Button>
           </Box>
         </Box>
@@ -170,7 +191,7 @@ export default function ProductsPage() {
                       </TableHead>
                     )}
                     <TableBody>
-                      {data?.products.map((product) => (
+                      {(data?.products || []).map((product) => (
                         <TableRow key={product.id}>
                           <TableCell>
                             <Box display="flex" alignItems="center">
@@ -243,12 +264,15 @@ export default function ProductsPage() {
                   alignItems: "center",
                   border: "1px solid #ddd",
                   padding: 16,
-                  height: "50%",
+                  height: 500,
                 }}
               >
-                <Typography variant="h4" align="center">
-                  R$ 10.000,00
-                </Typography>
+                <PaymentMethodPierCharts
+                  endDate={appliedFilters.endDate}
+                  startDate={appliedFilters.startDate}
+                  userId={user?.id!}
+                  isMobile={isMobile}
+                />
               </Box>
             </Grid>
             <Grid item xs={12}>

@@ -1,9 +1,4 @@
-import {
-  auth,
-  clerkMiddleware,
-  createRouteMatcher,
-} from "@clerk/nextjs/server";
-import { redirect } from "next/navigation";
+import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
 // clerkMiddleware is a function that accepts a function that returns a middleware function.
 const isPublicRoute = createRouteMatcher([
@@ -13,9 +8,9 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  if (!isPublicRoute(req)) {
-    const origin = req.nextUrl.origin;
+  const origin = req.nextUrl.origin;
 
+  if (!isPublicRoute(req)) {
     auth().protect({
       unauthenticatedUrl: `${origin}/login`,
       unauthorizedUrl: `${origin}`,
