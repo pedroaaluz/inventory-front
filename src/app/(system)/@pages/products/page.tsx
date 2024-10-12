@@ -31,14 +31,19 @@ export default function ProductsPage() {
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
+  const today = new Date();
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 7);
+  const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split("T")[0];
+
   const [filterName, setFilterName] = useState("");
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
+  const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
+  const [endDate, setEndDate] = useState(today.toISOString().split("T")[0]);
 
   const [appliedFilters, setAppliedFilters] = useState({
     filterName: "",
-    startDate: "",
-    endDate: "",
+    startDate: formattedSevenDaysAgo,
+    endDate,
   });
 
   const [page, setPage] = useState(1);
@@ -90,7 +95,7 @@ export default function ProductsPage() {
   });
 
   const handlePageChange = (
-    event: React.ChangeEvent<unknown>,
+    _event: React.ChangeEvent<unknown>,
     value: number
   ) => {
     setPage(value);
