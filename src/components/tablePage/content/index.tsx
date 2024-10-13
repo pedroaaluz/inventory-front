@@ -93,7 +93,7 @@ export default function PageContent({
                   alignItems: "center",
                   border: "1px solid #ddd",
                   padding: 16,
-                  height: 350,
+                  height: isMobile ? 500 : 350,
                 }}
               >
                 {dashboardUp}
@@ -105,7 +105,7 @@ export default function PageContent({
                   display: "flex",
                   border: "1px solid #ddd",
                   padding: 16,
-                  height: 350,
+                  height: isMobile ? 500 : 350,
                 }}
                 flexDirection={"column"}
               >

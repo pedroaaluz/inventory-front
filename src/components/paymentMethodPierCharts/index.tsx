@@ -105,7 +105,7 @@ export default function PaymentMethodPieCharts({
                 isAnimationActive={false}
                 cx="50%"
                 cy="50%"
-                outerRadius={isMobile ? 50 : 70}
+                outerRadius={isMobile ? 100 : 70}
                 label
                 data={pieData}
               >
