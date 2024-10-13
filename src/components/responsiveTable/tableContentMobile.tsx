@@ -32,7 +32,7 @@ export default function TableContentMobile({
   const { mainColumn, secondaryColumn } = columnsShowInResponsive;
 
   return (
-    <TableContainer style={{ height: 900 }}>
+    <TableContainer style={{ height: 500 }}>
       <Table stickyHeader>
         <TableBody>
           {data.map((row, rowIndex) => (

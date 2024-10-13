@@ -67,10 +67,8 @@ export default function PaymentMethodPieCharts({
   return (
     <>
       <Stack width="100%" height="100%" spacing={1} alignItems={"center"}>
-        <Typography variant="h6" align="center">
-          Métodos de pagamento utilizados no período de:
-        </Typography>
-        <Typography variant="h5" align="center">
+        <Typography fontSize={18} align="center">
+          Métodos de pagamento utilizados no período de:{" "}
           {new Date(startDate).toLocaleDateString("pt-BR", {
             day: "2-digit",
             month: "2-digit",
@@ -95,7 +93,7 @@ export default function PaymentMethodPieCharts({
             alignItems="center"
             height="100%"
           >
-            <Typography variant="h6" align="center">
+            <Typography fontSize={18} align="center">
               Nenhum dado encontrado, tente alterar os filtros!
             </Typography>
           </Box>
@@ -107,7 +105,7 @@ export default function PaymentMethodPieCharts({
                 isAnimationActive={false}
                 cx="50%"
                 cy="50%"
-                outerRadius={isMobile ? 100 : 100}
+                outerRadius={isMobile ? 50 : 70}
                 label
                 data={pieData}
               >

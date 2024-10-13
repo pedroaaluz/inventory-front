@@ -67,12 +67,7 @@ export default function PageContent({
           icon={headerActionButton.icon}
         />
       </Grid>
-      <Grid
-        container
-        alignItems="center"
-        spacing={2}
-        paddingLeft={isMobile ? 2 : 0}
-      >
+      <Grid container spacing={2} paddingLeft={isMobile ? 2 : 0}>
         <Grid item xs={12} md={9}>
           <ResponsiveTable
             isLoading={tableConfig.isLoading}
@@ -98,21 +93,24 @@ export default function PageContent({
                   alignItems: "center",
                   border: "1px solid #ddd",
                   padding: 16,
-                  height: 500,
+                  height: 350,
                 }}
               >
-                {/*    <PaymentMethodPierCharts
-                  endDate={appliedFilters.endDate}
-                  startDate={appliedFilters.startDate}
-                  userId={user?.id!}
-                  isMobile={isMobile}
-                />*/}
                 {dashboardUp}
               </Box>
             </Grid>
             <Grid item xs={12}>
-              {dashboardDown}
-              {/*  <TotalStockCostDisplay userId={user?.id!} /> */}
+              <Box
+                style={{
+                  display: "flex",
+                  border: "1px solid #ddd",
+                  padding: 16,
+                  height: 350,
+                }}
+                flexDirection={"column"}
+              >
+                {dashboardDown}
+              </Box>
             </Grid>
           </Grid>
         </Grid>

@@ -6,9 +6,9 @@ export default function TableLoadingMessage({
   loadingMessage: string;
 }) {
   return (
-    <Box style={{ height: 960 }}>
+    <Box style={{ height: 700 }}>
       <Box width="100%">
-        {Array.from({ length: 20 }).map((_, index) => (
+        {Array.from({ length: 10 }).map((_, index) => (
           <Box
             key={index}
             display="flex"

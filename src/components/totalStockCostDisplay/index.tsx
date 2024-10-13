@@ -24,15 +24,7 @@ export default function TotalStockCostDisplay({ userId }: { userId: string }) {
   });
 
   return (
-    <Box
-      style={{
-        display: "flex",
-        border: "1px solid #ddd",
-        padding: 16,
-        height: 500,
-      }}
-      flexDirection={"column"}
-    >
+    <>
       {isLoading ? (
         <Skeleton variant="rounded" width="100%" height="100%" />
       ) : (
@@ -115,6 +107,6 @@ export default function TotalStockCostDisplay({ userId }: { userId: string }) {
           </ResponsiveContainer>
         </>
       )}
-    </Box>
+    </>
   );
 }

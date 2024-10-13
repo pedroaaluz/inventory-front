@@ -20,13 +20,13 @@ export default function TableContentDesktop({
   columns,
 }: ITableContentProps) {
   return (
-    <TableContainer style={{ height: 900 }}>
+    <TableContainer style={{ height: 600 }}>
       <Table stickyHeader>
         <TableHead>
           <TableRow>
             {columns.map((column) => (
               <TableCell key={column.name}>
-                <Typography fontWeight={800} fontSize={18}>
+                <Typography fontWeight={800} fontSize={14}>
                   {column.name}
                 </Typography>
               </TableCell>
@@ -46,13 +46,13 @@ export default function TableContentDesktop({
                         src={row["image"]}
                         style={{ marginRight: 8 }}
                       />
-                      <Typography fontSize={18}>
+                      <Typography fontSize={14}>
                         {row[column.objectKey]}
                       </Typography>
                     </Box>
                   ) : (
                     <>
-                      <Typography fontSize={18}>
+                      <Typography fontSize={14}>
                         {row[column.objectKey]}
                       </Typography>
                     </>
