@@ -16,7 +16,6 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
 
   return (
     <Box sx={{ display: "flex" }}>
-      {/* SidebarMobile */}
       <IconButton
         edge="start"
         color="inherit"
@@ -62,14 +61,13 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
         <SidebarContent data={data} />
       </Drawer>
 
-      {/* Conteúdo Principal */}
       <Box
         component="main"
         sx={{
           flexGrow: 1,
           p: 3,
-          marginLeft: { xs: 0, sm: `260px` }, // Corrigido para dar espaço à Sidebar no desktop
-          transition: "margin-left 0.3s ease", // Adiciona uma transição suave
+          marginLeft: { xs: 0, sm: `260px` },
+          transition: "margin-left 0.3s ease",
         }}
       ></Box>
     </Box>

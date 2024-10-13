@@ -70,10 +70,10 @@ export default function SidebarContent({
           alt={user?.username!}
         />
         <Box ml={4}>
-          <Typography fontSize={20} variant="body1" color="#FFFFFF">
+          <Typography fontSize={24} variant="body1" color="#FFFFFF">
             {user?.username}
           </Typography>
-          <Typography variant="body2" color="#4E4D48">
+          <Typography fontSize={20} variant="body2" color="#4E4D48">
             {user?.emailAddresses[0]?.emailAddress}
           </Typography>
         </Box>
@@ -107,6 +107,7 @@ export default function SidebarContent({
               <ListItemText
                 sx={{
                   color: colorSelector(index),
+                  fontSize: 24,
                 }}
                 primary={item.text}
               />

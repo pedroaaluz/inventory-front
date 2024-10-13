@@ -11,6 +11,7 @@ import { Add } from "@mui/icons-material";
 import PaymentMethodPierCharts from "@/components/paymentMethodPierCharts";
 import TotalStockCostDisplay from "@/components/totalStockCostDisplay";
 import { useMediaQuery, useTheme } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function ProductsPage() {
   const theme = useTheme();
@@ -20,6 +21,7 @@ export default function ProductsPage() {
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 7);
   const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split("T")[0];
+  const router = useRouter();
 
   const [filterName, setFilterName] = useState("");
   const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
@@ -113,14 +115,22 @@ export default function ProductsPage() {
             return {
               ...product,
               category: product.categories[0]?.name,
-              createdAt: new Date(product.createdAt).toLocaleDateString(
-                "pt-BR"
-              ),
+              createdAt: new Date(product.createdAt)
+                .toLocaleDateString("pt-BR", {
+                  day: "2-digit",
+                  month: "2-digit",
+                  year: "numeric",
+                  hour: "2-digit",
+                  minute: "2-digit",
+                  second: "2-digit",
+                })
+                .replace(",", ""),
+              rowAction: () => router.push(`/products/${product.id}`),
             };
           }) || [],
         columns: [
           { name: "Nome", objectKey: "name", hasImage: true },
-          { name: "Preço", objectKey: "unitPrice" },
+          { name: "Preço (R$)", objectKey: "unitPrice" },
           { name: "Quantidade", objectKey: "stockQuantity" },
           { name: "Categoria", objectKey: "category" },
           { name: "Posição", objectKey: "positionInStock" },

@@ -10,7 +10,7 @@ import {
 } from "@mui/material";
 
 interface ITableContentMobileProps {
-  data: { [key: string]: any }[];
+  data: { [key: string]: any; rowAction?: (params?: unknown) => void }[];
   columnsShowInResponsive: {
     mainColumn: {
       name: string;
@@ -36,7 +36,7 @@ export default function TableContentMobile({
       <Table stickyHeader>
         <TableBody>
           {data.map((row, rowIndex) => (
-            <TableRow key={rowIndex}>
+            <TableRow onClick={row.rowAction} key={rowIndex}>
               <TableCell>
                 <Box display="flex" alignItems="center">
                   <Avatar
