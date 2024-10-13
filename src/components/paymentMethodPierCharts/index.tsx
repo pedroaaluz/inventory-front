@@ -9,7 +9,7 @@ import {
 import { useQuery } from "@tanstack/react-query";
 import { handleQueryParams } from "@/utils/handleQueryParams";
 import { IPaymentMethodUsedOutput } from "@/types/metrics";
-import { Skeleton, Stack, Typography } from "@mui/material";
+import { Box, Skeleton, Stack, Typography } from "@mui/material";
 
 export default function PaymentMethodPieCharts({
   isMobile,
@@ -79,7 +79,16 @@ export default function PaymentMethodPieCharts({
             <Skeleton variant="rectangular" width={210} height={20} />
           </Stack>
         ) : pieDataSum === 0 ? (
-          <div>Nenhum dado encontrado, tente alterar os filtros!</div>
+          <Box
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            height="100%"
+          >
+            <Typography variant="h6" align="center">
+              Nenhum dado encontrado, tente alterar os filtros!
+            </Typography>
+          </Box>
         ) : (
           <ResponsiveContainer width="100%" height="100%">
             <PieChart>
