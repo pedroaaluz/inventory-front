@@ -102,7 +102,9 @@ export default function ProductsPage() {
         },
         headerTittle: "Produtos",
         headerActionButton: {
-          onClick: () => {},
+          onClick: () => {
+            router.push("/products/create");
+          },
           text: "Adicionar Produto",
           icon: <Add />,
         },

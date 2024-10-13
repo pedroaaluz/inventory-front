@@ -62,7 +62,7 @@ export default function PageContent({
         />
         <HeaderActionButton
           isMobile={isMobile}
-          onClick={() => {}}
+          onClick={headerActionButton.onClick}
           text={headerActionButton.text}
           icon={headerActionButton.icon}
         />
