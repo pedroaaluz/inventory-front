@@ -38,3 +38,30 @@ export interface IListProductsOutput {
     }[];
   }[];
 }
+
+export interface IGetProductOutput {
+  product: {
+    id: string;
+    name: string;
+    categories: {
+      name: string;
+      id: string;
+    }[];
+    suppliers: {
+      name: string;
+      nameNormalized: string;
+      id: string;
+    }[];
+    image: string | null;
+    description: string | null;
+    stockQuantity: number;
+    unitPrice: number;
+    positionInStock: string | null;
+    expirationDate: string | null;
+    createdAt: string;
+    deletedAt: string | null;
+    updatedAt: string;
+    productionCost: number;
+    minimumIdealStock: number | null;
+  };
+}
