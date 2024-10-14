@@ -42,38 +42,38 @@ export default function ProductPage() {
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
   const listItems = [
     {
-      name: "Categoria",
+      name: "Categoria:",
       value: data?.product.categories
         ?.map((category) => category.name)
         .join(", "),
       icon: <AccessTime />,
     },
     {
-      name: "Fornecedor",
+      name: "Fornecedor:",
       value: data?.product.suppliers
         ?.map((supplier) => supplier.name)
         .join(", "),
       icon: <AccessTime />,
     },
     {
-      name: "Quantidade em Estoque",
+      name: "Quantidade em Estoque:",
       value: data?.product.stockQuantity,
       icon: <AccessTime />,
     },
     {
-      name: "Preço Unitário",
+      name: "Preço Unitário:",
       value: `$${data?.product.unitPrice}`,
       icon: <AccessTime />,
     },
     {
-      name: "Custo de Compra",
+      name: "Custo de Compra:",
       value: `$${data?.product.productionCost}`,
       icon: <AccessTime />,
     },
     ...(data?.product.positionInStock
       ? [
           {
-            name: "Posição no Estoque",
+            name: "Posição no Estoque:",
             value: data.product.positionInStock,
             icon: <AccessTime />,
           },
@@ -82,21 +82,21 @@ export default function ProductPage() {
     ...(data?.product.minimumIdealStock
       ? [
           {
-            name: "Estoque Minimo Ideal",
+            name: "Estoque Minimo Ideal:",
             value: data.product.minimumIdealStock,
             icon: <AccessTime />,
           },
         ]
       : []),
     {
-      name: "Criado em",
+      name: "Criado em:",
       value: new Date(data?.product.createdAt!).toLocaleDateString(),
       icon: <AccessTime />,
     },
     ...(data?.product.updatedAt
       ? [
           {
-            name: "Atualizado em",
+            name: "Atualizado em:",
             value: new Date(data.product.updatedAt).toLocaleDateString(),
             icon: <AccessTime />,
           },
@@ -132,20 +132,17 @@ export default function ProductPage() {
               alt="Product image"
             />
           )}
-          <CardContent sx={{ flex: "1 0 auto" }}>
+          <CardContent>
             {isLoading ? (
               <Skeleton width="20%" height={32} />
             ) : (
-              <Typography component="div" variant="h5">
-                {data?.product.name}
-              </Typography>
+              <Typography variant="h5">{data?.product.name}</Typography>
             )}
             {isLoading ? (
               <Skeleton width="20%" height={24} sx={{ mt: 1 }} />
             ) : (
               <Typography
                 variant="subtitle1"
-                component="div"
                 width={isMobile ? "100%" : "60%"}
                 sx={{ color: "text.secondary" }}
               >

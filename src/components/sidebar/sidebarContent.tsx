@@ -8,12 +8,16 @@ import {
   ListItemButton,
   Avatar,
   Typography,
+  useMediaQuery,
   Box,
+  IconButton,
 } from "@mui/material";
 import { LogoutOutlined as LogoutOutlinedIcon } from "@mui/icons-material";
 import { useState } from "react";
 import Link from "next/link";
 import { useUser, useAuth } from "@clerk/nextjs";
+import { Close } from "@mui/icons-material";
+import { useTheme } from "@mui/material/styles";
 
 export interface SidebarContentProps {
   path: string;
@@ -23,12 +27,16 @@ export interface SidebarContentProps {
 
 export default function SidebarContent({
   data,
+  toggleDrawer,
 }: {
   data: SidebarContentProps[];
+  toggleDrawer: () => void;
 }) {
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { user } = useUser();
   const { signOut } = useAuth();
+  const theme = useTheme();
+  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleListItemClick = (
     event:
@@ -77,6 +85,11 @@ export default function SidebarContent({
             {user?.emailAddresses[0]?.emailAddress}
           </Typography>
         </Box>
+        {isMobile && (
+          <IconButton onClick={toggleDrawer} style={{ color: "#FFF" }}>
+            <Close />
+          </IconButton>
+        )}
       </Box>
       <List>
         {data.map((item, index) => (

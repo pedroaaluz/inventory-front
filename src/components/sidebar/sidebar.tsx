@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import { Drawer, IconButton, Box } from "@mui/material";
-import { Menu as MenuIcon } from "@mui/icons-material";
+import { Menu as MenuIcon, Close } from "@mui/icons-material";
 import SidebarContent, { SidebarContentProps } from "./sidebarContent";
 
 const drawerWidth = 340;
@@ -15,7 +15,7 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
   };
 
   return (
-    <Box sx={{ display: "flex" }}>
+    <Box sx={{ display: "flex", backgroundColor: "#181A1B" }}>
       <IconButton
         edge="start"
         color="inherit"
@@ -25,6 +25,7 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
           display: { sm: "none" },
           paddingLeft: 4,
           position: "fixed",
+          color: "#fff",
         }}
       >
         <MenuIcon />
@@ -43,7 +44,7 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
           },
         }}
       >
-        <SidebarContent data={data} />
+        <SidebarContent toggleDrawer={toggleDrawer} data={data} />
       </Drawer>
 
       <Drawer
@@ -58,7 +59,7 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
         }}
         open
       >
-        <SidebarContent data={data} />
+        <SidebarContent toggleDrawer={toggleDrawer} data={data} />
       </Drawer>
 
       <Box
