@@ -83,7 +83,7 @@ export default function PaymentMethodPieCharts({
         </Typography>
         {isLoading ? (
           <Stack spacing={5} alignItems={"center"}>
-            <Skeleton variant="circular" width={220} height={220} />
+            <Skeleton variant="circular" width={160} height={160} />
             <Skeleton variant="rectangular" width={210} height={20} />
           </Stack>
         ) : pieDataSum === 0 ? (

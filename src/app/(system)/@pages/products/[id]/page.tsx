@@ -14,6 +14,7 @@ import {
   ListItemText,
   Skeleton,
   SelectChangeEvent,
+  Box,
 } from "@mui/material";
 import {
   LocalOffer as LocalOfferIcon,
@@ -185,7 +186,13 @@ export default function ProductPage() {
       value: getProductData?.product.categories
         ?.map((category) => category.name)
         .join(", "),
-      icon: <LocalOfferIcon />,
+      icon: (
+        <LocalOfferIcon
+          sx={{
+            color: "#fff",
+          }}
+        />
+      ),
     },
     {
       name: "Fornecedor:",
@@ -278,7 +285,7 @@ export default function ProductPage() {
             {getProductIsLoading ? (
               <Skeleton width={100} height={32} />
             ) : (
-              <Typography variant="h5">
+              <Typography color={"#4E4D48"} variant="h5">
                 {getProductData?.product.name}
               </Typography>
             )}
@@ -312,9 +319,33 @@ export default function ProductPage() {
                 {listItems.map((item, index) => (
                   <ListItem key={index}>
                     <ListItemAvatar>
-                      <Avatar>{item.icon}</Avatar>
+                      <Avatar>
+                        {" "}
+                        <Box
+                          sx={{
+                            display: "inline-flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            backgroundColor: "#4E4D48",
+                            borderRadius: "50%",
+                            padding: "8px",
+                          }}
+                        >
+                          {item.icon}
+                        </Box>
+                      </Avatar>
                     </ListItemAvatar>
-                    <ListItemText primary={item.name} secondary={item.value} />
+                    <ListItemText
+                      primaryTypographyProps={{
+                        color: "#4E4D48",
+                      }}
+                      primary={item.name}
+                      secondaryTypographyProps={{
+                        color: "#000",
+                        fontWeight: "400",
+                      }}
+                      secondary={item.value}
+                    />
                   </ListItem>
                 ))}
               </>
