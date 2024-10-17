@@ -5,10 +5,10 @@ import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import Sidebar from "@/components/sidebar/sidebar";
 import {
-  Home as HomeIcon,
   ImportExport as ImportExportIcon,
   People as PeopleIcon,
   Analytics as AnalyticsIcon,
+  Inventory as InventoryIcon,
 } from "@mui/icons-material";
 import { ptBR } from "@clerk/localizations";
 import { Box, TextField, useMediaQuery, useTheme } from "@mui/material";
@@ -43,7 +43,7 @@ export default function RootLayout({
                 data={[
                   {
                     text: "Produtos",
-                    icon: <HomeIcon />,
+                    icon: <InventoryIcon />,
                     path: "/products",
                   },
                   {

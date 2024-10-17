@@ -36,14 +36,16 @@ export default function TableContentMobile({
       <Table stickyHeader>
         <TableBody>
           {data.map((row, rowIndex) => (
-            <TableRow onClick={row.rowAction} key={rowIndex}>
+            <TableRow hover onClick={row.rowAction} key={rowIndex}>
               <TableCell>
                 <Box display="flex" alignItems="center">
-                  <Avatar
-                    alt={row[mainColumn.objectKey]}
-                    src={row["image"]}
-                    style={{ marginRight: 8 }}
-                  />
+                  {mainColumn.hasImage && (
+                    <Avatar
+                      alt={row[mainColumn.objectKey]}
+                      src={row["image"]}
+                      style={{ marginRight: 8 }}
+                    />
+                  )}
                   <Typography>{row[mainColumn.objectKey]}</Typography>
                 </Box>
               </TableCell>

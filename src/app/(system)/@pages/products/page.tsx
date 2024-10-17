@@ -92,12 +92,26 @@ export default function ProductsPage() {
     <PageContent
       headerContent={{
         headerSearchBar: {
-          filterName,
-          setFilterName,
-          startDate,
-          setStartDate,
-          endDate,
-          setEndDate,
+          inputs: [
+            {
+              value: filterName,
+              setValue: setFilterName,
+              label: "Nome",
+              type: "text",
+            },
+            {
+              value: startDate,
+              setValue: setStartDate,
+              label: "Data de início",
+              type: "date",
+            },
+            {
+              value: endDate,
+              setValue: setEndDate,
+              label: "Data de fim",
+              type: "date",
+            },
+          ],
           handleSubmit,
         },
         headerTittle: "Produtos",

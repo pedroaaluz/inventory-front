@@ -1,4 +1,4 @@
-import { Box, Button, Grid } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import { ReactElement } from "react";
 
 export default function HeaderActionButton({
@@ -13,31 +13,29 @@ export default function HeaderActionButton({
   icon: ReactElement;
 }) {
   return (
-    <Grid item xs={isMobile ? false : 12} md={isMobile ? false : 3}>
-      <Box
-        display="flex"
-        gap={2}
+    <Box
+      display="flex"
+      gap={2}
+      style={{
+        padding: 16,
+        marginBottom: 16,
+        borderColor: "none",
+        width: "100%",
+      }}
+    >
+      <Button
+        variant="contained"
+        color="primary"
+        onClick={onClick}
+        startIcon={icon}
         style={{
-          padding: 16,
-          marginBottom: 16,
-          borderColor: "none",
+          backgroundColor: "#00585e",
+          height: 56,
           width: "100%",
         }}
       >
-        <Button
-          variant="contained"
-          color="primary"
-          onClick={onClick}
-          startIcon={icon}
-          style={{
-            backgroundColor: "#00585e",
-            height: 56,
-            width: "100%",
-          }}
-        >
-          {text}
-        </Button>
-      </Box>
-    </Grid>
+        {text}
+      </Button>
+    </Box>
   );
 }

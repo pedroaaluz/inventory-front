@@ -1,25 +1,23 @@
-import { TextField } from "@mui/material";
-import { Dispatch, SetStateAction } from "react";
+import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
-export default function HeaderInput({
+export default function HeaderSelectInput({
   isMobile,
   value,
   setValue,
-  type,
   label,
+  options,
+  index,
 }: {
-  text: string;
   isMobile: boolean;
   value: string;
-  setValue: Dispatch<SetStateAction<string>>;
-  type: "text" | "date";
+  setValue: (event: any) => void;
   label: string;
+  options: string[];
+  index: number;
 }) {
   return (
-    <TextField
-      label={label}
-      value={value}
-      type={type}
+    <FormControl
+      key={index}
       style={{
         width: isMobile ? "100%" : "300px",
       }}
@@ -43,7 +41,22 @@ export default function HeaderInput({
           },
         },
       }}
-      onChange={(e) => setValue(e.target.value)}
-    />
+    >
+      <InputLabel id="demo-select-small-label">{label}</InputLabel>
+      <Select
+        labelId="demo-select-small-label"
+        value={value}
+        label={label}
+        onChange={setValue}
+        displayEmpty
+        inputProps={{ "aria-label": "Without label" }}
+      >
+        {options.map((option, index) => (
+          <MenuItem key={index} value={option}>
+            {option}
+          </MenuItem>
+        ))}
+      </Select>
+    </FormControl>
   );
 }
