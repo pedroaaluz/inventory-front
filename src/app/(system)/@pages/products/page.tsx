@@ -96,7 +96,7 @@ export default function ProductsPage() {
             {
               value: filterName,
               setValue: setFilterName,
-              label: "Nome",
+              label: "Nome do produto",
               type: "text",
             },
             {
@@ -165,7 +165,6 @@ export default function ProductsPage() {
         },
         page,
         totalPages: data?.totalPages || 0,
-        loadingMessage: "Carregando produtos...",
         handlePageChange,
         isMobile: false,
       }}
