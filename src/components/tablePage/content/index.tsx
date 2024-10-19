@@ -84,7 +84,7 @@ export default function PageContent({
             handlePageChange={tableConfig.handlePageChange}
             columns={tableConfig.columns}
             columnsShowInResponsive={tableConfig.columnsShowInResponsive}
-            loadingMessage={tableConfig.loadingMessage}
+            height={tableConfig.height || 600}
             totalPages={tableConfig.totalPages || 1}
           />
         </Grid>

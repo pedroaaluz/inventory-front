@@ -19,5 +19,5 @@ export interface IResponsiveTableProps {
   page: number;
   handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
   isMobile: boolean;
-  loadingMessage: string;
+  height?: number;
 }

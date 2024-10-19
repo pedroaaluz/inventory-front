@@ -13,14 +13,16 @@ import {
 interface ITableContentProps {
   data: { [key: string]: any; rowAction?: (params?: unknown) => void }[];
   columns: { name: string; objectKey: string; hasImage?: boolean }[];
+  height: number;
 }
 
 export default function TableContentDesktop({
   data,
   columns,
+  height,
 }: ITableContentProps) {
   return (
-    <TableContainer style={{ height: 600 }}>
+    <TableContainer style={{ height }}>
       <Table stickyHeader>
         <TableHead>
           <TableRow>

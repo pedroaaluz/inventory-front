@@ -12,9 +12,9 @@ export default function ResponsiveTable({
   columnsShowInResponsive,
   page,
   totalPages,
-  loadingMessage,
   handlePageChange,
   isMobile,
+  height = 600,
 }: IResponsiveTableProps) {
   return (
     <Box
@@ -26,7 +26,7 @@ export default function ResponsiveTable({
       }}
     >
       {isLoading || isFetching ? (
-        <TableLoadingMessage loadingMessage={loadingMessage} />
+        <TableLoadingMessage height={height} />
       ) : (
         <>
           {isMobile ? (
@@ -35,7 +35,11 @@ export default function ResponsiveTable({
               columnsShowInResponsive={columnsShowInResponsive}
             />
           ) : (
-            <TableContentDesktop data={data} columns={columns} />
+            <TableContentDesktop
+              data={data}
+              columns={columns}
+              height={height}
+            />
           )}
           <Grid item xs={12}>
             <Box display="flex" justifyContent="center" padding={2}>

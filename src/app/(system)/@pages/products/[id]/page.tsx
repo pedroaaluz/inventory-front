@@ -1,20 +1,9 @@
 "use client";
 import {
-  Card,
-  CardContent,
-  Grid,
   Typography,
   useMediaQuery,
   useTheme,
-  CardMedia,
-  ListItem,
-  List,
-  ListItemAvatar,
-  Avatar,
-  ListItemText,
-  Skeleton,
   SelectChangeEvent,
-  Box,
 } from "@mui/material";
 import {
   LocalOffer as LocalOfferIcon,
@@ -24,8 +13,9 @@ import {
   LocationOn as LocationOnIcon,
   Campaign as CampaignIcon,
   AccessTime as AccessTimeIcon,
+  Edit as EditIcon,
 } from "@mui/icons-material";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
 import type { IGetProductOutput } from "../../../../../types/products";
 import type { IListMovementOutput } from "../../../../../types/movements";
@@ -34,6 +24,7 @@ import HeaderSearchBar from "@/components/tablePage/header/headerSearchBar";
 import { useState } from "react";
 import { useUser } from "@clerk/nextjs";
 import { handleQueryParams } from "@/utils/handleQueryParams";
+import DetailsPage from "@/components/detailsPage";
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -77,6 +68,7 @@ export default function ProductPage() {
       }
     }
   };
+  const router = useRouter();
 
   const translateMovementType = (
     movementType: string,
@@ -162,7 +154,6 @@ export default function ProductPage() {
         movementType: appliedFilters.movementTypeFilter,
         paymentMethod: appliedFilters.paymentMethodFilter,
       };
-      console.log({ params });
 
       const paramsParsed = handleQueryParams(params);
 
@@ -253,106 +244,14 @@ export default function ProductPage() {
   ];
 
   return (
-    <Grid container spacing={1} paddingLeft={isMobile ? 0 : 5}>
-      <Grid item xs={12} direction={"row"}>
-        <Card
-          variant="outlined"
-          sx={{ display: "flex", alignItems: "center", border: "none" }}
-        >
-          {getProductIsLoading ? (
-            <Skeleton
-              variant="circular"
-              width={120}
-              height={120}
-              sx={{ borderRadius: "50%" }}
-            />
-          ) : (
-            <CardMedia
-              component="img"
-              sx={{
-                width: 120,
-                height: 120,
-                borderRadius: "50%",
-              }}
-              image={
-                getProductData?.product.image ||
-                "https://dummyimage.com/600x400/000/fff"
-              }
-              alt="Product image"
-            />
-          )}
-          <CardContent>
-            {getProductIsLoading ? (
-              <Skeleton width={100} height={32} />
-            ) : (
-              <Typography color={"#4E4D48"} variant="h5">
-                {getProductData?.product.name}
-              </Typography>
-            )}
-            {getProductIsLoading ? (
-              <Skeleton width={100} height={24} sx={{ mt: 1 }} />
-            ) : (
-              <Typography
-                variant="subtitle1"
-                width={isMobile ? "100%" : "60%"}
-                sx={{ color: "text.secondary" }}
-              >
-                {getProductData?.product.description}
-              </Typography>
-            )}
-          </CardContent>
-        </Card>
-      </Grid>
-      <Grid container xs={12}>
-        <Grid item xs={12} md={3}>
-          <List
-            sx={{ width: "100%", maxWidth: 360, bgcolor: "background.paper" }}
-          >
-            {getProductIsLoading ? (
-              <>
-                <Skeleton variant="rectangular" width="100%" height={56} />
-                <Skeleton variant="rectangular" width="100%" height={56} />
-                <Skeleton variant="rectangular" width="100%" height={56} />
-              </>
-            ) : (
-              <>
-                {listItems.map((item, index) => (
-                  <ListItem key={index}>
-                    <ListItemAvatar>
-                      <Avatar>
-                        {" "}
-                        <Box
-                          sx={{
-                            display: "inline-flex",
-                            alignItems: "center",
-                            justifyContent: "center",
-                            backgroundColor: "#4E4D48",
-                            borderRadius: "50%",
-                            padding: "8px",
-                          }}
-                        >
-                          {item.icon}
-                        </Box>
-                      </Avatar>
-                    </ListItemAvatar>
-                    <ListItemText
-                      primaryTypographyProps={{
-                        color: "#4E4D48",
-                      }}
-                      primary={item.name}
-                      secondaryTypographyProps={{
-                        color: "#000",
-                        fontWeight: "400",
-                      }}
-                      secondary={item.value}
-                    />
-                  </ListItem>
-                ))}
-              </>
-            )}
-          </List>
-        </Grid>
-        <Grid item xs={12} md={9}>
+    <DetailsPage
+      button={{
+        text: "Editar",
+        icon: <EditIcon />,
+        onClick: () => router.push(`/products/${id}/edit`),
+      }}
+      dashBoardUp={
+        <>
           <HeaderSearchBar
             inputs={[
               {
@@ -411,7 +310,7 @@ export default function ProductPage() {
           />
           <Typography
             marginBottom={2}
-            color={"#4E4D48"}
+            color={"#00585e"}
             variant="h5"
             sx={{ mt: 2 }}
             textAlign={"center"}
@@ -471,10 +370,18 @@ export default function ProductPage() {
               value: number
             ) => setPage(value)}
             isMobile={isMobile}
-            loadingMessage="Carregando movimentações"
+            height={400}
           />
-        </Grid>
-      </Grid>
-    </Grid>
+        </>
+      }
+      entity={{
+        name: getProductData?.product.name,
+        description: getProductData?.product.description,
+        image: getProductData?.product.image,
+        details: listItems,
+      }}
+      isMobile={isMobile}
+      isLoading={getProductIsLoading}
+    />
   );
 }

@@ -1,12 +1,8 @@
 import { Box, CircularProgress, Skeleton, Typography } from "@mui/material";
 
-export default function TableLoadingMessage({
-  loadingMessage,
-}: {
-  loadingMessage: string;
-}) {
+export default function TableLoadingMessage({ height }: { height: number }) {
   return (
-    <Box style={{ height: 662 }}>
+    <Box style={{ height }}>
       <Box width="100%">
         {Array.from({ length: 10 }).map((_, index) => (
           <Box
