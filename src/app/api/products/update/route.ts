@@ -3,12 +3,32 @@ import type { Product } from "@/types/products";
 import { NextResponse } from "next/server";
 import { convertImageToBase64 } from "@/utils/convertImageToBase64";
 
-async function updateProduct(params: Product) {
+async function updateProduct(params: Omit<Product, "createdAt" | "updatedAt">) {
   const url = new URL(
     `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/product/${params.id}`
   );
 
-  console.log(params);
+  console.log("parwwwams", {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(
+      removeNulls({
+        userId: params.userId,
+        name: params.name,
+        stockQuantity: params.stockQuantity,
+        description: params.description,
+        image: params.image ? "wwww" : "n tem imagem",
+        minimumIdealStock: params.minimumIdealStock,
+        positionInStock: params.positionInStock,
+        productionCost: params.productionCost,
+        unitPrice: params.unitPrice,
+        suppliersIds: params.suppliersIds,
+        categoriesIds: params.categoriesIds,
+      })
+    ),
+  });
 
   const response = await fetch(url, {
     method: "PUT",
@@ -31,11 +51,10 @@ async function updateProduct(params: Product) {
       })
     ),
   });
-  console.log(response);
+
   return response.json();
 }
 
-// Adiciona a função PUT para manipular a requisição e conversão de imagem
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
@@ -55,7 +74,7 @@ export async function PUT(request: Request) {
       name: body.name,
       stockQuantity: body.stockQuantity,
       description: body.description,
-      image: body.image && (await convertImageToBase64(body.image)),
+      image: body.image,
       minimumIdealStock: body.minimumIdealStock,
       positionInStock: body.positionInStock,
       productionCost: body.productionCost,

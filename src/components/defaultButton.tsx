@@ -1,4 +1,5 @@
 import { Box, Button } from "@mui/material";
+import Spinner from "./spinner";
 
 export default function DefaultButton({
   isMobile,
@@ -6,12 +7,14 @@ export default function DefaultButton({
   onClick,
   icon,
   disable,
+  disableText,
 }: {
   isMobile: boolean;
   text: string;
   onClick: () => void;
   icon?: JSX.Element;
   disable?: boolean;
+  disableText?: string;
 }) {
   return (
     <Box
@@ -27,15 +30,22 @@ export default function DefaultButton({
       <Button
         variant="contained"
         startIcon={icon}
-        style={{
+        sx={{
           backgroundColor: "#00585e",
           height: isMobile ? 56 : 40,
           width: isMobile ? "100%" : "80%",
+          color: disable ? "#fff" : undefined,
+          "&.Mui-disabled": {
+            color: "#fff",
+          },
+          "&:hover": {
+            backgroundColor: "#007b80",
+          },
         }}
         onClick={onClick}
         disabled={disable}
       >
-        {disable ? "Carregando..." : text}
+        {disable ? disableText || <Spinner /> : text}
       </Button>
     </Box>
   );

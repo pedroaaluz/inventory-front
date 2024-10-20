@@ -24,13 +24,14 @@ export default function ProductsPage() {
   const router = useRouter();
 
   const [filterName, setFilterName] = useState("");
-  const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
-  const [endDate, setEndDate] = useState(today.toISOString().split("T")[0]);
-
+  const [startDate, setStartDate] = useState<string>(formattedSevenDaysAgo);
+  const [endDate, setEndDate] = useState<string>(
+    today.toISOString().split("T")[0]
+  );
   const [appliedFilters, setAppliedFilters] = useState({
     filterName: "",
-    startDate: formattedSevenDaysAgo,
-    endDate,
+    startDate: "",
+    endDate: "",
   });
 
   const [page, setPage] = useState(1);
@@ -130,7 +131,9 @@ export default function ProductsPage() {
           data?.products?.map((product) => {
             return {
               ...product,
-              category: product.categories[0]?.name,
+              category: product.categories
+                .map((category) => category.name)
+                .join(", "),
               createdAt: new Date(product.createdAt)
                 .toLocaleDateString("pt-BR", {
                   day: "2-digit",
@@ -170,8 +173,8 @@ export default function ProductsPage() {
       }}
       dashboardUp={
         <PaymentMethodPierCharts
-          endDate={appliedFilters.endDate}
-          startDate={appliedFilters.startDate}
+          endDate={appliedFilters.endDate || today.toString()}
+          startDate={appliedFilters.startDate || sevenDaysAgo.toString()}
           userId={user?.id!}
           isMobile={isMobile}
         />

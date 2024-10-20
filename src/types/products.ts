@@ -21,6 +21,9 @@ export interface Product {
   productionCost?: number;
   categoriesIds?: string[];
   suppliersIds?: string[];
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt?: Date;
 }
 
 export interface IUpdateProductResponse {
@@ -34,19 +37,18 @@ export interface IListProductsOutput {
   pageSize: number;
   totalProducts: number;
   totalPages: number;
-  products: Omit<Product, "categoriesIds" | "suppliersIds"> &
-    {
-      nameNormalized: string;
-      categories: {
-        name: string;
-        id: string;
-      }[];
-      suppliers: {
-        name: string;
-        nameNormalized: string;
-        id: string;
-      }[];
+  products: (Omit<Product, "categoriesIds" | "suppliersIds"> & {
+    nameNormalized: string;
+    categories: {
+      name: string;
+      id: string;
     }[];
+    suppliers: {
+      name: string;
+      nameNormalized: string;
+      id: string;
+    }[];
+  })[];
 }
 
 export interface IGetProductOutput {

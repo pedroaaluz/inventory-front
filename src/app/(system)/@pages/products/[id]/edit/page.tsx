@@ -88,14 +88,46 @@ export default function ProductPage() {
     }
   );
 
+  const [activeUpdate, setActiveUpdate] = useState(false);
+
+  const [productData, setProductData] = useState({
+    name: "",
+    description: "",
+    avatarImage: "",
+    stockQuantity: undefined as number | undefined,
+    unitPrice: undefined as number | undefined,
+    positionInStock: "",
+    minimumIdealStock: undefined as number | undefined,
+    productionCost: undefined as number | undefined,
+    categories: [] as { name: string; id: string }[],
+    categoriesOptions: [] as { name: string; id: string }[],
+    suppliers: [] as { name: string; id: string }[],
+    suppliersOptions: [] as { name: string; id: string }[],
+  });
+
   const {
     isLoading: updateProductLoading,
     refetch,
-    isFetching,
     isError,
+    isRefetching,
   } = useQuery({
     queryKey: ["updateProduct"],
     queryFn: async (): Promise<IUpdateProductResponse> => {
+      console.log("ahahahah", {
+        id,
+        userId: user?.id,
+        name: productData.name,
+        description: productData.description,
+        image: productData.avatarImage,
+        stockQuantity: productData.stockQuantity,
+        unitPrice: productData.unitPrice,
+        positionInStock: productData.positionInStock,
+        minimumIdealStock: productData.minimumIdealStock,
+        productionCost: productData.productionCost,
+        categoriesIds: productData.categories.map((category) => category.id),
+        suppliersIds: productData.suppliers.map((supplier) => supplier.id),
+      });
+
       const response = await fetch(`/api/products/update`, {
         method: "put",
         headers: {
@@ -105,16 +137,18 @@ export default function ProductPage() {
           removeNulls({
             id,
             userId: user?.id,
-            name,
-            description,
-            image: avatarImage,
-            stockQuantity,
-            unitPrice,
-            positionInStock,
-            minimumIdealStock,
-            productionCost,
-            categoriesIds: categories.map((category) => category.id),
-            supplierIds: suppliers.map((supplier) => supplier.id),
+            name: productData.name,
+            description: productData.description,
+            image: productData.avatarImage,
+            stockQuantity: productData.stockQuantity,
+            unitPrice: productData.unitPrice,
+            positionInStock: productData.positionInStock,
+            minimumIdealStock: productData.minimumIdealStock,
+            productionCost: productData.productionCost,
+            categoriesIds: productData.categories.map(
+              (category) => category.id
+            ),
+            suppliersIds: productData.suppliers.map((supplier) => supplier.id),
           })
         ),
       });
@@ -128,136 +162,150 @@ export default function ProductPage() {
     },
   });
 
-  const defaultValue = [
-    {
-      name: "",
-      id: "",
-    },
-  ];
-  const [name, setName] = useState("");
-  const [description, setDescription] = useState("");
-  const [avatarImage, setAvatarImage] = useState("");
-  const [stockQuantity, setStockQuantity] = useState<number>();
-  const [unitPrice, setUnitPrice] = useState<number>();
-  const [positionInStock, setPositionInStock] = useState("");
-  const [minimumIdealStock, setMinimumIdealStock] = useState<number>();
-  const [productionCost, setProductionCost] = useState<number>();
-  const [categories, setCategories] = useState<
-    {
-      name: string;
-      id: string;
-    }[]
-  >(defaultValue);
+  const handleProductChange = (key: string, value: any) => {
+    setProductData((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
 
-  const [categoriesOptions, setCategoriesOptions] = useState<
-    {
-      id: string;
-      name: string;
-    }[]
-  >(defaultValue);
-
-  const [suppliers, setSuppliers] = useState<{ name: string; id: string }[]>(
-    []
-  );
-  const [suppliersOptions, setSuppliersOptions] = useState<
-    { name: string; id: string }[]
-  >([]);
+  const handleMessageDisable = (
+    isLoading: boolean,
+    isActive: boolean,
+    message: string
+  ) => {
+    if (isLoading) {
+      return undefined;
+    } else if (!isActive) {
+      return message;
+    }
+  };
 
   useEffect(() => {
     if (getProductData) {
-      setCategories(
-        getProductData.product.categories.map((category) => {
-          return {
-            name: category.name,
-            id: category.id,
-          };
+      const mappedCategories = getProductData.product.categories.map(
+        (category) => ({
+          name: category.name,
+          id: category.id,
         })
       );
-      setSuppliers(
-        getProductData.product.suppliers.map((supplier) => {
-          return {
-            name: supplier.name,
-            id: supplier.id,
-          };
+
+      const mappedSuppliers = getProductData.product.suppliers.map(
+        (supplier) => ({
+          name: supplier.name,
+          id: supplier.id,
         })
       );
+
+      handleProductChange("suppliers", mappedSuppliers);
+      handleProductChange("categories", mappedCategories);
     }
 
     if (listCategoriesData) {
-      setCategoriesOptions(
-        listCategoriesData.categories?.map((category) => {
-          return {
-            name: category.name,
-            id: category.id,
-          };
+      const mappedCategoriesOptions = listCategoriesData.categories?.map(
+        (category) => ({
+          name: category.name,
+          id: category.id,
         })
       );
+
+      handleProductChange("categoriesOptions", mappedCategoriesOptions || []);
     }
 
     if (listSuppliersData) {
-      setSuppliersOptions(
-        listSuppliersData.suppliers?.map((supplier) => {
-          return {
-            name: supplier.name,
-            id: supplier.id,
-          };
+      const mappedSuppliersOptions = listSuppliersData.suppliers?.map(
+        (supplier) => ({
+          name: supplier.name,
+          id: supplier.id,
         })
       );
+
+      handleProductChange("suppliersOptions", mappedSuppliersOptions || []);
     }
   }, [getProductData, listCategoriesData, listSuppliersData]);
 
   const listInputs: InputField[] = [
     {
       label: "Quantidade em Estoque",
-      value: stockQuantity ?? (getProductData?.product.stockQuantity || 0),
-      onChangeValue: setStockQuantity,
+      value:
+        productData.stockQuantity ??
+        (getProductData?.product.stockQuantity || 0),
+      onChangeValue: (value: number | undefined) => {
+        setActiveUpdate(true);
+        handleProductChange("stockQuantity", value);
+      },
       icon: <InventoryIcon />,
       type: "number-integer",
     },
     {
       label: "Preço Unitário (R$)",
-      value: unitPrice ?? (getProductData?.product.unitPrice || 0.0),
-      onChangeValue: setUnitPrice,
+      value:
+        productData.unitPrice ?? (getProductData?.product.unitPrice || 0.0),
+      onChangeValue: (value: number | undefined) => {
+        setActiveUpdate(true);
+        handleProductChange("unitPrice", value);
+      },
       icon: <AttachMoneyIcon />,
       type: "number",
     },
     {
       label: "Posição no Estoque",
-      value: positionInStock || getProductData?.product.positionInStock || "",
-      onChangeValue: setPositionInStock,
+      value:
+        productData.positionInStock ||
+        getProductData?.product.positionInStock ||
+        "",
+      onChangeValue: (value: string) => {
+        setActiveUpdate(true);
+        handleProductChange("positionInStock", value);
+      },
       icon: <LocationOnIcon />,
       type: "text",
     },
     {
       label: "Estoque Ideal Mínimo",
       value:
-        minimumIdealStock ?? (getProductData?.product.minimumIdealStock || 0),
-      onChangeValue: setMinimumIdealStock,
+        productData.minimumIdealStock ??
+        (getProductData?.product.minimumIdealStock || 0),
+      onChangeValue: (value: number | undefined) => {
+        setActiveUpdate(true);
+        handleProductChange("minimumIdealStock", value);
+      },
       icon: <CampaignIcon />,
       type: "number-integer",
     },
     {
       label: "Custo de Produção (R$)",
-      value: productionCost ?? (getProductData?.product.productionCost || 0.0),
-      onChangeValue: setProductionCost,
+      value:
+        productData.productionCost ??
+        (getProductData?.product.productionCost || 0.0),
+      onChangeValue: (value: number | undefined) => {
+        setActiveUpdate(true);
+        handleProductChange("productionCost", value);
+      },
       icon: <AttachMoneyIcon />,
       type: "number",
     },
     {
       label: "Categorias",
-      value: categories,
-      onChangeValue: setCategories,
+      value: productData.categories,
+      onChangeValue: (value: { name: string; id: string }[]) => {
+        setActiveUpdate(true);
+        handleProductChange("categories", value);
+      },
       icon: <LocalOfferIcon />,
       type: "select",
-      options: categoriesOptions,
+      options: productData.categoriesOptions,
     },
     {
       label: "Fornecedores",
-      value: suppliers,
-      onChangeValue: setSuppliers,
+      value: productData.suppliers,
+      onChangeValue: (value: { name: string; id: string }[]) => {
+        setActiveUpdate(true);
+        handleProductChange("suppliers", value);
+      },
       icon: <PersonIcon />,
       type: "select",
-      options: suppliersOptions,
+      options: productData.suppliersOptions,
     },
   ];
 
@@ -265,38 +313,49 @@ export default function ProductPage() {
     <>
       <PutPage
         descriptionCardProps={{
-          name: getProductData?.product.name || "",
-          description: getProductData?.product.description || "",
-          avatarImage: getProductData?.product.image || "",
+          name: productData.name || getProductData?.product.name || "",
+          description:
+            productData.description ||
+            getProductData?.product.description ||
+            "",
+          avatarImage:
+            productData.avatarImage || getProductData?.product.image || "",
           onNameChange: (newName) => {
-            setName(newName);
+            setActiveUpdate(true);
+            handleProductChange("name", newName);
           },
           onDescriptionChange: (newDescription) => {
-            setDescription(newDescription);
+            setActiveUpdate(true);
+            handleProductChange("description", newDescription);
           },
           onAvatarImageChange: (newImage) => {
-            setAvatarImage(newImage);
+            setActiveUpdate(true);
+            handleProductChange("avatarImage", newImage);
           },
         }}
         isMobile={isMobile}
         listInputs={listInputs}
         isLoading={
-          isLoaded &&
-          getProductIsLoading &&
-          listCategoriesLoading &&
-          listSuppliersLoading &&
-          updateProductLoading &&
-          isFetching
+          getProductIsLoading ||
+          listCategoriesLoading ||
+          listSuppliersLoading ||
+          updateProductLoading
         }
         putButton={
           <DefaultButton
-            disable={isFetching}
+            disable={updateProductLoading || isRefetching || !activeUpdate}
+            disableText={handleMessageDisable(
+              isRefetching,
+              activeUpdate,
+              "Nenhuma alteração realizada"
+            )}
             onClick={async () => {
+              setActiveUpdate(false);
               await refetch();
 
               if (isError) {
                 toast.error("Erro ao atualizar o produto");
-              } else if (!isFetching) {
+              } else if (!updateProductLoading) {
                 toast.success("Produto atualizado com sucesso");
                 router.push(`/products/${id}`);
               }

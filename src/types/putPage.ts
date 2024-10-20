@@ -1,9 +1,7 @@
-import { Dispatch, SetStateAction } from "react";
-
 interface IInputBase<T> {
   label: string;
   value: T;
-  onChangeValue: Dispatch<SetStateAction<T>>;
+  onChangeValue: (value: T) => void;
   icon: JSX.Element;
   type: string;
 }
@@ -28,5 +26,5 @@ interface ISelectInput extends IInputBase<{ id: string; name: string }[]> {
 export type InputField =
   | ITextInput
   | INumberInput
-  | ISelectInput
-  | INumberIntegerInput;
+  | INumberIntegerInput
+  | ISelectInput;
