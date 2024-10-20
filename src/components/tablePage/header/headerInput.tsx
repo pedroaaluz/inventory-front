@@ -10,8 +10,8 @@ export default function HeaderInput({
 }: {
   text: string;
   isMobile: boolean;
-  value: string;
-  setValue: Dispatch<SetStateAction<string>>;
+  value: string | undefined;
+  setValue: Dispatch<SetStateAction<string | undefined>>;
   type: "text" | "date";
   label: string;
 }) {
@@ -44,6 +44,7 @@ export default function HeaderInput({
         },
       }}
       onChange={(e) => setValue(e.target.value)}
+      focused
     />
   );
 }

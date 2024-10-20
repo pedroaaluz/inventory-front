@@ -8,7 +8,6 @@ import {
   ListItemButton,
   Avatar,
   Typography,
-  useMediaQuery,
   Box,
   IconButton,
 } from "@mui/material";
@@ -17,7 +16,7 @@ import { useState } from "react";
 import Link from "next/link";
 import { useUser, useAuth } from "@clerk/nextjs";
 import { Close } from "@mui/icons-material";
-import { useTheme } from "@mui/material/styles";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export interface SidebarContentProps {
   path: string;
@@ -35,8 +34,6 @@ export default function SidebarContent({
   const [selectedIndex, setSelectedIndex] = useState(0);
   const { user } = useUser();
   const { signOut } = useAuth();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   const handleListItemClick = (
     event:
@@ -67,6 +64,7 @@ export default function SidebarContent({
           "&:hover": {
             bgcolor: "#313232",
           },
+          width: "100%",
         }}
       >
         <Avatar
@@ -78,22 +76,22 @@ export default function SidebarContent({
           alt={user?.username!}
         />
         <Box ml={4}>
-          <Typography fontSize={24} variant="body1" color="#FFFFFF">
+          <Typography fontSize={20} variant="body1" color="#FFFFFF">
             {user?.username}
           </Typography>
-          <Typography fontSize={20} variant="body2" color="#4E4D48">
+          <Typography fontSize={16} variant="body2" color="#4E4D48">
             {user?.emailAddresses[0]?.emailAddress}
           </Typography>
         </Box>
-        {isMobile && (
+        {useIsSmallScreen() && (
           <IconButton onClick={toggleDrawer} style={{ color: "#FFF" }}>
             <Close />
           </IconButton>
         )}
       </Box>
-      <List>
+      <List sx={{ width: "100%" }}>
         {data.map((item, index) => (
-          <ListItem className="px-8" key={index}>
+          <ListItem className="px-8" key={index} sx={{ width: "100%" }}>
             <ListItemButton
               component={Link}
               href={item.path}
@@ -108,6 +106,7 @@ export default function SidebarContent({
                   },
                 },
                 borderRadius: "14px",
+                width: "100%",
               }}
             >
               <ListItemIcon
@@ -127,8 +126,7 @@ export default function SidebarContent({
             </ListItemButton>
           </ListItem>
         ))}
-
-        <ListItem className="px-8">
+        <ListItem className="px-8" sx={{ width: "100%" }}>
           <ListItemButton
             selected={selectedIndex === 4}
             onClick={(event) => {
@@ -144,6 +142,7 @@ export default function SidebarContent({
                 },
               },
               borderRadius: "14px",
+              width: "100%",
             }}
           >
             <ListItemIcon

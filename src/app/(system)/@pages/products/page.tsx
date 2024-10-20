@@ -12,26 +12,25 @@ import PaymentMethodPierCharts from "@/components/paymentMethodPierCharts";
 import TotalStockCostDisplay from "@/components/totalStockCostDisplay";
 import { useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function ProductsPage() {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
-
   const today = new Date();
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 7);
   const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split("T")[0];
   const router = useRouter();
 
-  const [filterName, setFilterName] = useState("");
-  const [startDate, setStartDate] = useState<string>(formattedSevenDaysAgo);
-  const [endDate, setEndDate] = useState<string>(
-    today.toISOString().split("T")[0]
-  );
-  const [appliedFilters, setAppliedFilters] = useState({
-    filterName: "",
-    startDate: "",
-    endDate: "",
+  const [filterName, setFilterName] = useState<string>();
+  const [startDate, setStartDate] = useState<string>();
+  const [endDate, setEndDate] = useState<string>();
+
+  const [appliedFilters, setAppliedFilters] = useState<
+    Record<string, string | undefined>
+  >({
+    filterName: undefined,
+    startDate: undefined,
+    endDate: undefined,
   });
 
   const [page, setPage] = useState(1);
@@ -91,6 +90,7 @@ export default function ProductsPage() {
 
   return (
     <PageContent
+      isSmallScreen={useIsSmallScreen()}
       headerContent={{
         headerSearchBar: {
           inputs: [
@@ -176,7 +176,7 @@ export default function ProductsPage() {
           endDate={appliedFilters.endDate || today.toString()}
           startDate={appliedFilters.startDate || sevenDaysAgo.toString()}
           userId={user?.id!}
-          isMobile={isMobile}
+          isMobile={useIsSmallScreen()}
         />
       }
       dashboardDown={<TotalStockCostDisplay userId={user?.id!} />}

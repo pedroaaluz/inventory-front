@@ -11,8 +11,8 @@ export default function HeaderSearchBar({
 }: {
   inputs: (
     | {
-        value: string;
-        setValue: Dispatch<SetStateAction<string>>;
+        value: string | undefined;
+        setValue: Dispatch<SetStateAction<string | undefined>>;
         label: string;
         type: "text" | "date";
       }
