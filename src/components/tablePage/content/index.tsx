@@ -46,7 +46,7 @@ export default function PageContent({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Grid container spacing={2} paddingLeft={isMobile ? 2 : 5}>
+    <Grid container spacing={2} paddingLeft={isMobile ? 0 : 5}>
       {isMobile && (
         <Grid item xs={12}>
           <HeaderText text={headerTittle} />
@@ -57,21 +57,17 @@ export default function PageContent({
         direction={isMobile ? "column-reverse" : "row"}
         spacing={2}
       >
-        <Grid item xs={isMobile ? false : 12} md={isMobile ? false : 9}>
-          <HeaderSearchBar
-            inputs={headerSearchBar.inputs}
-            handleSubmit={headerSearchBar.handleSubmit}
-            isMobile={isMobile}
-          />
-        </Grid>
-        <Grid item xs={isMobile ? false : 12} md={isMobile ? false : 3}>
-          <HeaderActionButton
-            isMobile={isMobile}
-            onClick={headerActionButton.onClick}
-            text={headerActionButton.text}
-            icon={headerActionButton.icon}
-          />
-        </Grid>
+        <HeaderSearchBar
+          inputs={headerSearchBar.inputs}
+          handleSubmit={headerSearchBar.handleSubmit}
+          isMobile={isMobile}
+        />
+        <HeaderActionButton
+          isMobile={isMobile}
+          onClick={headerActionButton.onClick}
+          text={headerActionButton.text}
+          icon={headerActionButton.icon}
+        />
       </Grid>
       <Grid container spacing={2} paddingLeft={isMobile ? 2 : 0}>
         <Grid item xs={12} md={9}>
@@ -84,7 +80,6 @@ export default function PageContent({
             handlePageChange={tableConfig.handlePageChange}
             columns={tableConfig.columns}
             columnsShowInResponsive={tableConfig.columnsShowInResponsive}
-            height={tableConfig.height || 600}
             totalPages={tableConfig.totalPages || 1}
           />
         </Grid>
