@@ -1,35 +1,23 @@
 import removeNulls from "@/utils/removeNulls";
-import type {
-  TListMovementParams,
-  EnumMovementsType,
-  EnumPaymentMethodType,
-} from "@/types/movements";
+import type { TListSuppliersParams } from "@/types/suppliers";
 import { getQueryParams } from "@/utils/getQueryParams";
 import { NextResponse } from "next/server";
 
-async function fetchListProductData(params: TListMovementParams) {
+async function fetchListSuppliersData(params: TListSuppliersParams) {
   const paramsParsed = new URLSearchParams(
     removeNulls({
       userId: params.userId,
+      name: params.name,
       startDate: params.startDate,
       endDate: params.endDate,
       page: params.page,
       pageSize: params.pageSize,
       orderBy: params.orderBy,
-      productName: params.productName,
-      movementType: params.movementType,
-      paymentMethod: params.paymentMethod,
     })
   );
 
-  if (params.productsIds) {
-    params.productsIds.map((productId) =>
-      paramsParsed.append("productsIds", productId)
-    );
-  }
-  console.log({ paramsParsed });
   const url = new URL(
-    `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/movement/${params.userId}`
+    "https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/supplier"
   );
 
   url.search = paramsParsed.toString();
@@ -46,18 +34,7 @@ async function fetchListProductData(params: TListMovementParams) {
 export async function GET(request: Request) {
   try {
     const params = getQueryParams(
-      [
-        "userId",
-        "startDate",
-        "endDate",
-        "page",
-        "pageSize",
-        "orderBy",
-        "movementType",
-        "paymentMethod",
-        "productsIds",
-        "productName",
-      ],
+      ["userId", "name", "startDate", "endDate", "page", "pageSize", "orderBy"],
       request.url
     );
 
@@ -65,18 +42,14 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "userId is required", status: 400 });
     }
 
-    const res = await fetchListProductData({
+    console.log({ params });
+    const res = await fetchListSuppliersData({
       userId: params.userId,
+      name: params.name,
       startDate: params.startDate,
       endDate: params.endDate,
       page: params.page,
       pageSize: params.pageSize,
-      orderBy: params.orderBy as "asc" | "desc",
-      productsIds: [params.productsIds],
-      movementType: params.movementType as EnumMovementsType,
-      paymentMethod: params.paymentMethod as EnumPaymentMethodType,
-
-      productName: params.productName,
     });
 
     return NextResponse.json({ ...res, status: 200 });

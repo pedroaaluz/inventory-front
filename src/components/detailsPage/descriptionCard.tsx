@@ -54,8 +54,8 @@ export default function DescriptionCard({
                   marginRight: 2,
                 }
           }
-          image={avatarImage || "https://dummyimage.com/600x400/000/fff"}
-          alt="Product image"
+          image={avatarImage}
+          alt="entity image"
         />
       )}
       <CardContent sx={{ textAlign: isMobile ? "center" : "left" }}>

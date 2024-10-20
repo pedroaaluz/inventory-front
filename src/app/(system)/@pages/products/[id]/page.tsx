@@ -21,20 +21,36 @@ import type { IGetProductOutput } from "../../../../../types/products";
 import type { IListMovementOutput } from "../../../../../types/movements";
 import ResponsiveTable from "@/components/responsiveTable";
 import HeaderSearchBar from "@/components/tablePage/header/headerSearchBar";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { handleQueryParams } from "@/utils/handleQueryParams";
 import DetailsPage from "@/components/detailsPage";
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
-
   const { user, isLoaded } = useUser();
+  const router = useRouter();
 
   const today = new Date();
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 7);
   const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split("T")[0];
+
+  const [product, setProduct] = useState<IGetProductOutput["product"] | null>(
+    null
+  );
+  const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
+  const [movementTypeFilter, setMovementTypeFilter] = useState("Todos");
+  const [paymentMethodFilter, setPaymentMethodFilter] = useState("Todos");
+  const [endDate, setEndDate] = useState(today.toISOString().split("T")[0]);
+  const [page, setPage] = useState(1);
+
+  const [appliedFilters, setAppliedFilters] = useState({
+    startDate: formattedSevenDaysAgo,
+    endDate,
+    movementTypeFilter: "",
+    paymentMethodFilter: "",
+  });
 
   const translatePaymentMethod = (
     paymentMethod: string | null,
@@ -68,7 +84,6 @@ export default function ProductPage() {
       }
     }
   };
-  const router = useRouter();
 
   const translateMovementType = (
     movementType: string,
@@ -83,7 +98,7 @@ export default function ProductPage() {
         case "REMOVE_FROM_STOCK":
           return "Remoção do Estoque";
         default:
-          return "Não informado";
+          return undefined;
       }
     } else {
       switch (movementType) {
@@ -99,20 +114,6 @@ export default function ProductPage() {
     }
   };
 
-  const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
-  const [movementTypeFilter, setMovementTypeFilter] = useState("Todos");
-  const [paymentMethodFilter, setPaymentMethodFilter] = useState("Todos");
-  const [endDate, setEndDate] = useState(today.toISOString().split("T")[0]);
-
-  const [appliedFilters, setAppliedFilters] = useState({
-    startDate: formattedSevenDaysAgo,
-    endDate,
-    movementTypeFilter: translateMovementType(movementTypeFilter, "en"),
-    paymentMethodFilter: translatePaymentMethod(paymentMethodFilter, "en"),
-  });
-
-  const [page, setPage] = useState(1);
-
   const { isLoading: getProductIsLoading, data: getProductData } = useQuery({
     queryKey: ["product", id],
     queryFn: async (): Promise<IGetProductOutput> => {
@@ -120,13 +121,21 @@ export default function ProductPage() {
         headers: {
           "Content-Type": "application/json",
         },
+        cache: "no-cache",
       });
-
       const responseParsed = (await response.json()) as IGetProductOutput;
-
       return responseParsed;
     },
+    refetchOnWindowFocus: true,
   });
+
+  useEffect(() => {
+    if (getProductData) {
+      console.log("Product data received:", getProductData.product);
+
+      setProduct(getProductData.product);
+    }
+  }, [getProductData]);
 
   const {
     isLoading: listMovementsIsLoading,
@@ -151,8 +160,14 @@ export default function ProductPage() {
         startDate: appliedFilters.startDate || undefined,
         endDate: appliedFilters.endDate || undefined,
         productsIds: [id],
-        movementType: appliedFilters.movementTypeFilter,
-        paymentMethod: appliedFilters.paymentMethodFilter,
+        movementType: translateMovementType(
+          appliedFilters.movementTypeFilter,
+          "pt-br"
+        ),
+        paymentMethod: translatePaymentMethod(
+          appliedFilters.paymentMethodFilter,
+          "en"
+        ),
       };
 
       const paramsParsed = handleQueryParams(params);
@@ -171,72 +186,61 @@ export default function ProductPage() {
 
   const theme = useTheme();
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+
   const listItems = [
     {
       name: "Categoria:",
-      value: getProductData?.product.categories
-        ?.map((category) => category.name)
-        .join(", "),
-      icon: (
-        <LocalOfferIcon
-          sx={{
-            color: "#fff",
-          }}
-        />
-      ),
+      value: product?.categories?.map((category) => category.name).join(", "),
+      icon: <LocalOfferIcon sx={{ color: "#fff" }} />,
     },
     {
       name: "Fornecedor:",
-      value: getProductData?.product.suppliers
-        ?.map((supplier) => supplier.name)
-        .join(", "),
+      value: product?.suppliers?.map((supplier) => supplier.name).join(", "),
       icon: <PersonIcon />,
     },
     {
       name: "Quantidade em Estoque:",
-      value: getProductData?.product.stockQuantity,
+      value: product?.stockQuantity,
       icon: <InventoryIcon />,
     },
     {
       name: "Preço Unitário:",
-      value: `$${getProductData?.product.unitPrice}`,
+      value: `$${product?.unitPrice}`,
       icon: <AttachMoneyIcon />,
     },
     {
       name: "Custo de Compra:",
-      value: `$${getProductData?.product.productionCost}`,
+      value: `$${product?.productionCost}`,
       icon: <AttachMoneyIcon />,
     },
-    ...(getProductData?.product.positionInStock
+    ...(product?.positionInStock
       ? [
           {
             name: "Posição no Estoque:",
-            value: getProductData.product.positionInStock,
+            value: product.positionInStock,
             icon: <LocationOnIcon />,
           },
         ]
       : []),
-    ...(getProductData?.product.minimumIdealStock
+    ...(product?.minimumIdealStock
       ? [
           {
             name: "Estoque Minimo Ideal:",
-            value: getProductData.product.minimumIdealStock,
+            value: product.minimumIdealStock,
             icon: <CampaignIcon />,
           },
         ]
       : []),
     {
       name: "Criado em:",
-      value: new Date(getProductData?.product.createdAt!).toLocaleDateString(),
+      value: new Date(product?.createdAt!).toLocaleDateString(),
       icon: <AccessTimeIcon />,
     },
-    ...(getProductData?.product.updatedAt
+    ...(product?.updatedAt
       ? [
           {
             name: "Atualizado em:",
-            value: new Date(
-              getProductData.product.updatedAt
-            ).toLocaleDateString(),
+            value: new Date(product.updatedAt).toLocaleDateString(),
             icon: <AccessTimeIcon />,
           },
         ]
@@ -294,14 +298,8 @@ export default function ProductPage() {
               setAppliedFilters({
                 startDate,
                 endDate,
-                movementTypeFilter: translateMovementType(
-                  movementTypeFilter,
-                  "en"
-                ),
-                paymentMethodFilter: translatePaymentMethod(
-                  paymentMethodFilter,
-                  "en"
-                ),
+                movementTypeFilter: movementTypeFilter,
+                paymentMethodFilter: paymentMethodFilter,
               });
 
               listMovementsRefetch();
@@ -322,10 +320,7 @@ export default function ProductPage() {
             isFetching={listMovementsIsFetching}
             data={(listMovementsData?.movements || []).map((movement) => {
               return {
-                movementType: translateMovementType(
-                  movement.movementType,
-                  "pt-br"
-                ),
+                movementType: movement.movementType,
                 quantity: movement.quantity,
                 createdAt: new Date(movement.createdAt)
                   .toLocaleDateString("pt-BR", {
@@ -340,10 +335,7 @@ export default function ProductPage() {
                 movementValue: movement.movementValue
                   ? `R$ ${movement.movementValue}`
                   : "R$ 0",
-                paymentMethod: translatePaymentMethod(
-                  movement.paymentMethod,
-                  "pt-br"
-                ),
+                paymentMethod: movement.paymentMethod,
               };
             })}
             columns={[
@@ -375,9 +367,9 @@ export default function ProductPage() {
         </>
       }
       entity={{
-        name: getProductData?.product.name,
-        description: getProductData?.product.description,
-        image: getProductData?.product.image,
+        name: product?.name,
+        description: product?.description,
+        image: product?.image,
         details: listItems,
       }}
       isMobile={isMobile}

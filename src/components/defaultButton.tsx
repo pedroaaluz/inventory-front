@@ -5,11 +5,13 @@ export default function DefaultButton({
   text,
   onClick,
   icon,
+  disable,
 }: {
   isMobile: boolean;
   text: string;
   onClick: () => void;
   icon?: JSX.Element;
+  disable?: boolean;
 }) {
   return (
     <Box
@@ -24,7 +26,6 @@ export default function DefaultButton({
     >
       <Button
         variant="contained"
-        color="primary"
         startIcon={icon}
         style={{
           backgroundColor: "#00585e",
@@ -32,8 +33,9 @@ export default function DefaultButton({
           width: isMobile ? "100%" : "80%",
         }}
         onClick={onClick}
+        disabled={disable}
       >
-        {text}
+        {disable ? "Carregando..." : text}
       </Button>
     </Box>
   );

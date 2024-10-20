@@ -9,13 +9,14 @@ async function fetchGetProductData(productId: string) {
     headers: {
       "Content-Type": "application/json",
     },
+    cache: "no-cache",
   });
 
   return response.json();
 }
 
 export async function GET(
-  request: Request,
+  _request: Request,
   { params }: { params: { id: string } }
 ) {
   try {

@@ -44,7 +44,7 @@ export default function DetailsPage({
               text={text}
               isMobile={isMobile}
               icon={icon}
-              onClick={onClick /* () => router.push(`/products/${id}/edit`) */}
+              onClick={onClick}
             />
           )}
         </Grid>
