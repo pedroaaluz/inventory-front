@@ -46,7 +46,7 @@ export default function PageContent({
   const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
   return (
-    <Grid container spacing={2} paddingLeft={isMobile ? 0 : 5}>
+    <Grid container spacing={2} paddingLeft={isMobile ? 2 : 5}>
       {isMobile && (
         <Grid item xs={12}>
           <HeaderText text={headerTittle} />
@@ -74,7 +74,7 @@ export default function PageContent({
         </Grid>
       </Grid>
       <Grid container xs={12} spacing={2} paddingLeft={isMobile ? 2 : 0}>
-        <Grid item xs={9} md={9}>
+        <Grid item xs={12} md={9}>
           <ResponsiveTable
             isLoading={tableConfig.isLoading}
             isFetching={tableConfig.isFetching}
@@ -89,7 +89,7 @@ export default function PageContent({
           />
         </Grid>
 
-        <Grid item xs={3} md={3}>
+        <Grid item xs={12} md={3}>
           <Grid container spacing={2} direction="column">
             <Grid item xs={12}>
               <Box
