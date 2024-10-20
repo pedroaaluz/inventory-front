@@ -73,7 +73,7 @@ export default function PageContent({
           />
         </Grid>
       </Grid>
-      <Grid container xs={12} spacing={2} paddingLeft={isMobile ? 2 : 0}>
+      <Grid container spacing={2} paddingLeft={isMobile ? 2 : 0}>
         <Grid item xs={12} md={9}>
           <ResponsiveTable
             isLoading={tableConfig.isLoading}
