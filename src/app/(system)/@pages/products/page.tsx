@@ -10,20 +10,22 @@ import PageContent from "@/components/tablePage/content";
 import { Add } from "@mui/icons-material";
 import PaymentMethodPierCharts from "@/components/paymentMethodPierCharts";
 import TotalStockCostDisplay from "@/components/totalStockCostDisplay";
-import { useMediaQuery, useTheme } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import { formatDateToLocal } from "@/utils/formatDateToLoca";
 
 export default function ProductsPage() {
   const today = new Date();
   const sevenDaysAgo = new Date(today);
   sevenDaysAgo.setDate(today.getDate() - 7);
-  const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split("T")[0];
-  const router = useRouter();
 
-  const [filterName, setFilterName] = useState<string>();
-  const [startDate, setStartDate] = useState<string>();
-  const [endDate, setEndDate] = useState<string>();
+  const formattedSevenDaysAgo = formatDateToLocal(sevenDaysAgo);
+  const formattedToday = formatDateToLocal(today);
+
+  const router = useRouter();
+  const [filterName, setFilterName] = useState("");
+  const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
+  const [endDate, setEndDate] = useState(formattedToday);
 
   const [appliedFilters, setAppliedFilters] = useState<
     Record<string, string | undefined>
@@ -60,8 +62,6 @@ export default function ProductsPage() {
         page: page.toString(),
         pageSize: "10",
         name: appliedFilters.filterName,
-        startDate: appliedFilters.startDate || undefined,
-        endDate: appliedFilters.endDate || undefined,
       };
 
       const paramsParsed = handleQueryParams(params);
@@ -173,8 +173,8 @@ export default function ProductsPage() {
       }}
       dashboardUp={
         <PaymentMethodPierCharts
-          endDate={appliedFilters.endDate || today.toString()}
-          startDate={appliedFilters.startDate || sevenDaysAgo.toString()}
+          endDate={appliedFilters.endDate || formattedToday}
+          startDate={appliedFilters.startDate || formattedSevenDaysAgo}
           userId={user?.id!}
           isMobile={useIsSmallScreen()}
         />

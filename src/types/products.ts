@@ -26,6 +26,12 @@ export interface Product {
   deletedAt?: Date;
 }
 
+export interface ICreateProductResponse {
+  message: string;
+  product: Omit<Product, "categoriesIds" | "suppliersIds">;
+  status: number;
+}
+
 export interface IUpdateProductResponse {
   message: string;
   product: Product;

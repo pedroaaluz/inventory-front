@@ -68,18 +68,7 @@ export default function PaymentMethodPieCharts({
     <>
       <Stack width="100%" height="100%" spacing={1} alignItems={"center"}>
         <Typography fontSize={18} align="center">
-          Métodos de pagamento utilizados no período de:{" "}
-          {new Date(startDate).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })}{" "}
-          a{" "}
-          {new Date(endDate).toLocaleDateString("pt-BR", {
-            day: "2-digit",
-            month: "2-digit",
-            year: "numeric",
-          })}
+          Métodos de pagamento utilizados no período de: {startDate} a {endDate}
         </Typography>
         {isLoading ? (
           <Stack spacing={5} alignItems={"center"}>

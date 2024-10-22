@@ -67,7 +67,6 @@ export default function ProductPage() {
         const params = {
           userId: user?.id,
         };
-        console.log({ params });
         const paramsParsed = handleQueryParams(params);
 
         const response = await fetch(
@@ -113,21 +112,6 @@ export default function ProductPage() {
   } = useQuery({
     queryKey: ["updateProduct"],
     queryFn: async (): Promise<IUpdateProductResponse> => {
-      console.log("ahahahah", {
-        id,
-        userId: user?.id,
-        name: productData.name,
-        description: productData.description,
-        image: productData.avatarImage,
-        stockQuantity: productData.stockQuantity,
-        unitPrice: productData.unitPrice,
-        positionInStock: productData.positionInStock,
-        minimumIdealStock: productData.minimumIdealStock,
-        productionCost: productData.productionCost,
-        categoriesIds: productData.categories.map((category) => category.id),
-        suppliersIds: productData.suppliers.map((supplier) => supplier.id),
-      });
-
       const response = await fetch(`/api/products/update`, {
         method: "put",
         headers: {

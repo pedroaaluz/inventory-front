@@ -320,7 +320,10 @@ export default function ProductPage() {
             isFetching={listMovementsIsFetching}
             data={(listMovementsData?.movements || []).map((movement) => {
               return {
-                movementType: movement.movementType,
+                movementType: translateMovementType(
+                  movement.movementType,
+                  "pt-br"
+                ),
                 quantity: movement.quantity,
                 createdAt: new Date(movement.createdAt)
                   .toLocaleDateString("pt-BR", {
@@ -335,7 +338,10 @@ export default function ProductPage() {
                 movementValue: movement.movementValue
                   ? `R$ ${movement.movementValue}`
                   : "R$ 0",
-                paymentMethod: movement.paymentMethod,
+                paymentMethod: translatePaymentMethod(
+                  movement.paymentMethod,
+                  "pt-br"
+                ),
               };
             })}
             columns={[

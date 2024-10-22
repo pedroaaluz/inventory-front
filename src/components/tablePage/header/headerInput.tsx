@@ -10,8 +10,8 @@ export default function HeaderInput({
 }: {
   text: string;
   isMobile: boolean;
-  value: string | undefined;
-  setValue: Dispatch<SetStateAction<string | undefined>>;
+  value: string;
+  setValue: Dispatch<SetStateAction<string>>;
   type: "text" | "date";
   label: string;
 }) {

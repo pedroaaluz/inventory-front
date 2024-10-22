@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import { Drawer, IconButton, Box } from "@mui/material";
+import { Drawer, IconButton, Box, AppBar, Toolbar } from "@mui/material";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import SidebarContent, { SidebarContentProps } from "./sidebarContent";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
@@ -19,19 +19,25 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
   return (
     <Box sx={{ display: "flex", backgroundColor: "#181A1B" }}>
       {isSmallScreen && (
-        <IconButton
-          edge="start"
-          color="inherit"
-          aria-label="menu"
-          onClick={toggleDrawer}
+        <AppBar
+          position="fixed"
           sx={{
-            paddingLeft: 4,
-            position: "fixed",
-            color: "#fff",
+            backgroundColor: "#181A1B",
+            boxShadow: "none",
           }}
         >
-          <MenuIcon />
-        </IconButton>
+          <Toolbar>
+            <IconButton
+              edge="start"
+              color="inherit"
+              aria-label="menu"
+              onClick={toggleDrawer}
+              sx={{ paddingLeft: 4, color: "#fff" }}
+            >
+              <MenuIcon />
+            </IconButton>
+          </Toolbar>
+        </AppBar>
       )}
 
       <Drawer

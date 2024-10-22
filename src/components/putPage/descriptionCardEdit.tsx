@@ -1,5 +1,6 @@
 import { Card, CardContent, CardMedia, TextField } from "@mui/material";
 import { toast } from "sonner";
+import addPhoto from "@/assets/addPhoto.png";
 
 export default function DescriptionCard({
   isMobile,
@@ -62,14 +63,14 @@ export default function DescriptionCard({
                 height: 250,
               }
             : {
-                width: 120,
-                height: 120,
+                width: 180,
+                height: 180,
                 borderRadius: "50%",
                 marginRight: 2,
                 cursor: "pointer",
               }
         }
-        image={avatarImage || "/_next/static/media/addPhoto.7fcca41c.png"}
+        src={avatarImage || addPhoto.src}
         alt="entity edit image"
         onClick={handleAvatarClick}
       />

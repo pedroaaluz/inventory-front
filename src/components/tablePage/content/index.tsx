@@ -16,8 +16,8 @@ export default function PageContent({
   headerContent: {
     headerSearchBar: {
       inputs: {
-        value: string | undefined;
-        setValue: Dispatch<SetStateAction<string | undefined>>;
+        value: string;
+        setValue: Dispatch<SetStateAction<string>>;
         label: string;
         type: "text" | "date";
       }[];

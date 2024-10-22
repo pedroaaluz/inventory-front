@@ -29,7 +29,12 @@ export default function RootLayout({
     <html lang="en">
       <QueryClientProvider client={queryClient}>
         <ClerkProvider localization={ptBR}>
-          <Toaster richColors />
+          <Toaster
+            expand={true}
+            richColors
+            closeButton
+            position={isMobile ? "top-center" : "bottom-right"}
+          />
           <body style={{ margin: 0, padding: 0 }}>
             <Box
               sx={{
