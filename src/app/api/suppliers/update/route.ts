@@ -1,11 +1,12 @@
 import removeNulls from "@/utils/removeNulls";
-import type { Product } from "@/types/products";
+import type { Supplier } from "@/types/suppliers";
 import { NextResponse } from "next/server";
-import { convertImageToBase64 } from "@/utils/convertImageToBase64";
 
-async function updateProduct(params: Omit<Product, "createdAt" | "updatedAt">) {
+async function updateSupplier(
+  params: Omit<Supplier, "createdAt" | "updatedAt" | "nameNormalized">
+) {
   const url = new URL(
-    `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/product/${params.id}`
+    `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/supplier/${params.id}`
   );
 
   const response = await fetch(url, {
@@ -17,15 +18,11 @@ async function updateProduct(params: Omit<Product, "createdAt" | "updatedAt">) {
       removeNulls({
         userId: params.userId,
         name: params.name,
-        stockQuantity: params.stockQuantity,
-        description: params.description,
         image: params.image,
-        minimumIdealStock: params.minimumIdealStock,
-        positionInStock: params.positionInStock,
-        productionCost: params.productionCost,
-        unitPrice: params.unitPrice,
-        suppliersIds: params.suppliersIds,
-        categoriesIds: params.categoriesIds,
+        cnpj: params.cnpj,
+        address: params.address,
+        phone: params.phone,
+        email: params.email,
       })
     ),
   });
@@ -46,19 +43,16 @@ export async function PUT(request: Request) {
       return NextResponse.json({ message: "id is required", status: 400 });
     }
 
-    const res = await updateProduct({
+    const res = await updateSupplier({
       id: body.id,
       userId: body.userId,
       name: body.name,
-      stockQuantity: body.stockQuantity,
-      description: body.description,
       image: body.image,
-      minimumIdealStock: body.minimumIdealStock,
-      positionInStock: body.positionInStock,
-      productionCost: body.productionCost,
-      unitPrice: body.unitPrice,
-      suppliersIds: body.suppliersIds,
-      categoriesIds: body.categoriesIds,
+      cnpj: body.cnpj,
+      address: body.address,
+      phone: body.phone,
+      email: body.email,
+      deletedAt: body.deletedAt || null,
     });
 
     return NextResponse.json({ ...res, status: 200 });

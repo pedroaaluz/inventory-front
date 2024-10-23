@@ -138,7 +138,7 @@ export default function ProductPage() {
       const responseParsed = (await response.json()) as ICreateProductResponse;
       console.log({ responseParsed });
       if (responseParsed.status !== 200) {
-        throw new Error("Erro ao atualizar o produto");
+        throw new Error("Erro ao criar o produto");
       }
 
       return responseParsed;

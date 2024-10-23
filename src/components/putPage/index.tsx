@@ -16,7 +16,7 @@ export default function PutPage({
     name: string;
     description?: string;
     onNameChange: (newName: string) => void;
-    onDescriptionChange: (newDescription: string) => void;
+    onDescriptionChange?: (newDescription: string) => void;
     onAvatarImageChange: (newImage: string) => void;
   };
   listInputs: InputField[];

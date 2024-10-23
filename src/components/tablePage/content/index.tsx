@@ -31,8 +31,8 @@ export default function PageContent({
     };
   };
   tableConfig: IResponsiveTableProps;
-  dashboardUp: ReactElement;
-  dashboardDown: ReactElement;
+  dashboardUp?: ReactElement;
+  dashboardDown?: ReactElement;
   isSmallScreen: boolean;
 }) {
   return (
@@ -76,7 +76,7 @@ export default function PageContent({
         spacing={2}
         justifyContent={isSmallScreen ? "center" : "flex-start"}
       >
-        <Grid item xs={12} md={9}>
+        <Grid item xs={12} md={dashboardDown || dashboardUp ? 9 : 12}>
           <Box
             style={{
               maxWidth: "100%",
@@ -97,39 +97,45 @@ export default function PageContent({
           </Box>
         </Grid>
 
-        <Grid item xs={12} md={3}>
-          <Grid container spacing={2} direction="column">
-            <Grid item xs={12}>
-              <Box
-                display="flex"
-                justifyContent="center"
-                alignItems="center"
-                border="1px solid #ddd"
-                padding={2}
-                height={isSmallScreen ? 400 : 350}
-                maxWidth="100%"
-                overflow="hidden"
-              >
-                {dashboardUp}
-              </Box>
-            </Grid>
-            <Grid item xs={12}>
-              <Box
-                display="flex"
-                border="1px solid #ddd"
-                padding={2}
-                height={isSmallScreen ? 400 : 350}
-                maxWidth="100%"
-                overflow="auto"
-                flexDirection="column"
-                justifyContent="center"
-                alignItems={isSmallScreen ? "center" : "flex-start"} // Centralize verticalmente quando for tela pequena
-              >
-                {dashboardDown}
-              </Box>
+        {(dashboardDown || dashboardUp) && (
+          <Grid item xs={12} md={3}>
+            <Grid container spacing={2} direction="column">
+              {dashboardUp && (
+                <Grid item xs={12}>
+                  <Box
+                    display="flex"
+                    justifyContent="center"
+                    alignItems="center"
+                    border="1px solid #ddd"
+                    padding={2}
+                    height={isSmallScreen ? 400 : 350}
+                    maxWidth="100%"
+                    overflow="hidden"
+                  >
+                    {dashboardUp}
+                  </Box>
+                </Grid>
+              )}
+              {dashboardDown && (
+                <Grid item xs={12}>
+                  <Box
+                    display="flex"
+                    border="1px solid #ddd"
+                    padding={2}
+                    height={isSmallScreen ? 400 : 350}
+                    maxWidth="100%"
+                    overflow="auto"
+                    flexDirection="column"
+                    justifyContent="center"
+                    alignItems={isSmallScreen ? "center" : "flex-start"} // Centralize verticalmente quando for tela pequena
+                  >
+                    {dashboardDown}
+                  </Box>
+                </Grid>
+              )}
             </Grid>
           </Grid>
-        </Grid>
+        )}
       </Grid>
     </Grid>
   );

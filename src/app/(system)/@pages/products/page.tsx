@@ -131,8 +131,11 @@ export default function ProductsPage() {
           data?.products?.map((product) => {
             return {
               ...product,
-              category: product.categories
+              categories: product.categories
                 .map((category) => category.name)
+                .join(", "),
+              suppliers: product.suppliers
+                .map((supplier) => supplier.name)
                 .join(", "),
               createdAt: new Date(product.createdAt)
                 .toLocaleDateString("pt-BR", {
@@ -151,7 +154,8 @@ export default function ProductsPage() {
           { name: "Nome", objectKey: "name", hasImage: true },
           { name: "Preço (R$)", objectKey: "unitPrice" },
           { name: "Quantidade", objectKey: "stockQuantity" },
-          { name: "Categoria", objectKey: "category" },
+          { name: "Categorias", objectKey: "categories" },
+          { name: "Fornecedores", objectKey: "suppliers" },
           { name: "Posição", objectKey: "positionInStock" },
           { name: "Data de criação", objectKey: "createdAt" },
         ],
@@ -169,7 +173,7 @@ export default function ProductsPage() {
         page,
         totalPages: data?.totalPages || 0,
         handlePageChange,
-        isMobile: false,
+        isMobile: useIsSmallScreen(),
       }}
       dashboardUp={
         <PaymentMethodPierCharts

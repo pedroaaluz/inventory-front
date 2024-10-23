@@ -39,24 +39,26 @@ export default function DescriptionCard({
           }
         />
       ) : (
-        <CardMedia
-          component="img"
-          sx={
-            isMobile
-              ? {
-                  width: "100%",
-                  height: 250,
-                }
-              : {
-                  width: 120,
-                  height: 120,
-                  borderRadius: "50%",
-                  marginRight: 2,
-                }
-          }
-          image={avatarImage}
-          alt="entity image"
-        />
+        avatarImage && (
+          <CardMedia
+            component="img"
+            sx={
+              isMobile
+                ? {
+                    width: "100%",
+                    height: 250,
+                  }
+                : {
+                    width: 120,
+                    height: 120,
+                    borderRadius: "50%",
+                    marginRight: 2,
+                  }
+            }
+            image={avatarImage}
+            alt="entity image"
+          />
+        )
       )}
       <CardContent sx={{ textAlign: isMobile ? "center" : "left" }}>
         {isLoading ? (

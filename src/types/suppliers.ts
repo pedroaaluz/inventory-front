@@ -8,7 +8,7 @@ export type TListSuppliersParams = {
   orderBy?: "asc" | "desc";
 };
 
-interface Supplier {
+export interface Supplier {
   id: string;
   name: string;
   nameNormalized: string;
@@ -31,3 +31,17 @@ export type TListSuppliersResponse = {
   totalPages: number;
   suppliers: Supplier[];
 };
+
+export interface IGetSupplierResponse {
+  supplier: Supplier;
+  message: string;
+  status: number;
+}
+
+export interface IUpdateSupplierResponse {
+  message: string;
+  status: number;
+  supplier: Supplier;
+}
+
+export type TCreateSupplierResponse = IUpdateSupplierResponse;

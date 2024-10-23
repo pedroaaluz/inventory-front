@@ -5,6 +5,7 @@ export type TListProductsParams = {
   endDate?: string;
   page?: string;
   pageSize?: string;
+  suppliersIds?: string[];
   orderBy?: "asc" | "desc";
 };
 export interface Product {

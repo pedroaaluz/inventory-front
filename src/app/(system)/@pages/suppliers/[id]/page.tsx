@@ -1,12 +1,270 @@
 "use client";
-import { useParams } from "next/navigation";
+import { Typography } from "@mui/material";
+import {
+  Person as PersonIcon,
+  LocationOn as LocationOnIcon,
+  AccessTime as AccessTimeIcon,
+  Edit as EditIcon,
+  Phone as PhoneIcon,
+  Email as EmailIcon,
+} from "@mui/icons-material";
+import { useParams, useRouter } from "next/navigation";
+import { useQuery } from "@tanstack/react-query";
+import ResponsiveTable from "@/components/responsiveTable";
+import HeaderSearchBar from "@/components/tablePage/header/headerSearchBar";
+import { useState, useEffect } from "react";
+import { useUser } from "@clerk/nextjs";
+import { handleQueryParams } from "@/utils/handleQueryParams";
+import DetailsPage from "@/components/detailsPage";
+import { IGetSupplierResponse } from "@/types/suppliers";
+import { IListProductsOutput } from "@/types/products";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function SupplierPage() {
-  const params = useParams<{ id: string }>();
+  const { id } = useParams<{ id: string }>();
+  const { user, isLoaded } = useUser();
+  const router = useRouter();
+
+  const today = new Date();
+  const sevenDaysAgo = new Date(today);
+  sevenDaysAgo.setDate(today.getDate() - 7);
+  const formattedSevenDaysAgo = sevenDaysAgo.toISOString().split("T")[0];
+
+  const [supplier, setSupplier] = useState<
+    IGetSupplierResponse["supplier"] | null
+  >(null);
+  const [startDate, setStartDate] = useState(formattedSevenDaysAgo);
+  const [endDate, setEndDate] = useState(today.toISOString().split("T")[0]);
+  const [name, setName] = useState("");
+  const [page, setPage] = useState(1);
+
+  const [appliedFilters, setAppliedFilters] = useState<{
+    startDate: string;
+    endDate: string;
+    name: string | undefined;
+  }>({
+    startDate: formattedSevenDaysAgo,
+    endDate,
+    name: undefined,
+  });
+
+  const { isLoading: getSupplierIsLoading, data: getSupplierData } = useQuery({
+    queryKey: ["supplier", id],
+    queryFn: async (): Promise<IGetSupplierResponse> => {
+      const response = await fetch(`/api/suppliers/${id}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+        cache: "no-cache",
+      });
+      const responseParsed = (await response.json()) as IGetSupplierResponse;
+      return responseParsed;
+    },
+    refetchOnWindowFocus: true,
+  });
+
+  useEffect(() => {
+    if (getSupplierData) {
+      console.log("supplier data received:", getSupplierData.supplier);
+
+      setSupplier(getSupplierData.supplier);
+    }
+  }, [getSupplierData]);
+
+  const {
+    isLoading: listProductsIsLoading,
+    data: listProductsData,
+    isFetching: listProductsIsFetching,
+    refetch: listProductRefetch,
+  } = useQuery({
+    queryKey: [
+      "products",
+      page,
+      isLoaded,
+      appliedFilters.startDate,
+      appliedFilters.endDate,
+      appliedFilters.name,
+    ],
+    queryFn: async (): Promise<IListProductsOutput> => {
+      const params = {
+        userId: user?.id,
+        page: page.toString(),
+        pageSize: "10",
+        startDate: appliedFilters.startDate || undefined,
+        endDate: appliedFilters.endDate || undefined,
+        suppliersIds: [id],
+      };
+
+      const paramsParsed = handleQueryParams(params);
+
+      const response = await fetch(`/api/products?${paramsParsed}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      const responseParsed = (await response.json()) as IListProductsOutput;
+
+      return responseParsed;
+    },
+  });
+
+  const isMobile = useIsSmallScreen();
+
+  const listItems = [
+    {
+      name: "CNPJ:",
+      value: supplier?.cnpj || undefined,
+      icon: <PersonIcon />,
+    },
+    {
+      name: "Email:",
+      value: supplier?.email || undefined,
+      icon: <EmailIcon />,
+    },
+    {
+      name: "Endereço:",
+      value: supplier?.address || undefined,
+      icon: <LocationOnIcon />,
+    },
+    {
+      name: "Telefone:",
+      value: supplier?.phone || undefined,
+      icon: <PhoneIcon />,
+    },
+    {
+      name: "Criado em:",
+      value: supplier?.createdAt
+        ? new Date(supplier.createdAt).toLocaleDateString()
+        : undefined,
+      icon: <AccessTimeIcon />,
+    },
+    ...(supplier?.updatedAt
+      ? [
+          {
+            name: "Atualizado em:",
+            value: new Date(supplier.updatedAt).toLocaleDateString(),
+            icon: <AccessTimeIcon />,
+          },
+        ]
+      : []),
+  ].filter((item) => item.value !== undefined);
 
   return (
-    <div>
-      <h1>fornecedor de id: {params.id}</h1>
-    </div>
+    <DetailsPage
+      button={{
+        text: "Editar",
+        icon: <EditIcon />,
+        onClick: () => router.push(`/suppliers/${id}/edit`),
+      }}
+      dashBoardUp={
+        <>
+          <HeaderSearchBar
+            inputs={[
+              {
+                value: name,
+                setValue: setName,
+                label: "Nome do Produto",
+                type: "text",
+              },
+              {
+                value: startDate,
+                setValue: setStartDate,
+                label: "Data Inicial",
+                type: "date",
+              },
+              {
+                value: endDate,
+                setValue: setEndDate,
+                label: "Data Final",
+                type: "date",
+              },
+            ]}
+            handleSubmit={() => {
+              setAppliedFilters({
+                startDate,
+                endDate,
+                name,
+              });
+
+              listProductRefetch();
+            }}
+            isMobile={isMobile}
+          />
+          <Typography
+            marginBottom={2}
+            color={"#00585e"}
+            variant="h5"
+            sx={{ mt: 2 }}
+            textAlign={"center"}
+          >
+            Produtos desse fornecedor
+          </Typography>
+          <ResponsiveTable
+            isLoading={listProductsIsLoading}
+            isFetching={listProductsIsFetching}
+            data={
+              listProductsData?.products?.map((product) => {
+                return {
+                  ...product,
+                  categories: product.categories
+                    .map((category) => category.name)
+                    .join(", "),
+                  suppliers: product.suppliers
+                    .map((supplier) => supplier.name)
+                    .join(", "),
+                  createdAt: new Date(product.createdAt)
+                    .toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    })
+                    .replace(",", ""),
+                  rowAction: () => router.push(`/products/${product.id}`),
+                };
+              }) || []
+            }
+            columns={[
+              { name: "Nome", objectKey: "name", hasImage: true },
+              { name: "Preço (R$)", objectKey: "unitPrice" },
+              { name: "Quantidade", objectKey: "stockQuantity" },
+              { name: "Categorias", objectKey: "categories" },
+              { name: "Fornecedores", objectKey: "suppliers" },
+              { name: "Posição", objectKey: "positionInStock" },
+              { name: "Data de criação", objectKey: "createdAt" },
+            ]}
+            columnsShowInResponsive={{
+              mainColumn: {
+                name: "Nome",
+                objectKey: "name",
+                hasImage: true,
+              },
+              secondaryColumn: [
+                { name: "Preço (R$)", objectKey: "unitPrice" },
+                { name: "Quantidade", objectKey: "stockQuantity" },
+              ],
+            }}
+            totalPages={listProductsData?.totalPages || 0}
+            page={listProductsData?.page || 0}
+            handlePageChange={(
+              _event: React.ChangeEvent<unknown>,
+              value: number
+            ) => setPage(value)}
+            isMobile={isMobile}
+            height={400}
+          />
+        </>
+      }
+      entity={{
+        name: supplier?.name,
+        details: listItems,
+        image: supplier?.image || undefined,
+      }}
+      isMobile={isMobile}
+      isLoading={getSupplierIsLoading}
+    />
   );
 }

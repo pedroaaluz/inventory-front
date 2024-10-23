@@ -16,7 +16,7 @@ export default function EntityDetailsList({
   listItems: { name: string; value?: string | number; icon: JSX.Element }[];
 }) {
   return (
-    <List sx={{ width: "100%", maxWidth: 360 }}>
+    <List sx={{ maxWidth: 360 }}>
       {isLoading ? (
         <>
           <Skeleton variant="rectangular" width="100%" height={56} />
@@ -50,7 +50,7 @@ export default function EntityDetailsList({
                 primary={item.name}
                 secondaryTypographyProps={{
                   color: "#000",
-                  fontWeight: "400",
+                  maxWidth: 100,
                 }}
                 secondary={item.value}
               />

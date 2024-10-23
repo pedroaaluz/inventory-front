@@ -4,6 +4,8 @@ import { getQueryParams } from "@/utils/getQueryParams";
 import { NextResponse } from "next/server";
 
 async function fetchListProductData(params: TListProductsParams) {
+  console.log({ params });
+
   const paramsParsed = new URLSearchParams(
     removeNulls({
       userId: params.userId,
@@ -13,6 +15,7 @@ async function fetchListProductData(params: TListProductsParams) {
       page: params.page,
       pageSize: params.pageSize,
       orderBy: params.orderBy,
+      suppliersIds: params.suppliersIds,
     })
   );
 
@@ -35,23 +38,38 @@ async function fetchListProductData(params: TListProductsParams) {
 export async function GET(request: Request) {
   try {
     const params = getQueryParams(
-      ["userId", "name", "startDate", "endDate", "page", "pageSize", "orderBy"],
+      [
+        "userId",
+        "name",
+        "startDate",
+        "endDate",
+        "page",
+        "pageSize",
+        "orderBy",
+        "suppliersIds",
+      ],
       request.url
     );
 
     if (!params.userId) {
       return NextResponse.json({ message: "userId is required", status: 400 });
     }
-
-    console.log({ params });
-    const res = await fetchListProductData({
+    const queryParams: TListProductsParams = {
       userId: params.userId,
       name: params.name,
       startDate: params.startDate,
       endDate: params.endDate,
       page: params.page,
       pageSize: params.pageSize,
-    });
+    };
+
+    if (params.suppliersIds) {
+      queryParams.suppliersIds = Array.isArray(params.suppliersIds)
+        ? params.suppliersIds
+        : [params.suppliersIds];
+    }
+
+    const res = await fetchListProductData(queryParams);
 
     return NextResponse.json({ ...res, status: 200 });
   } catch (error) {
