@@ -40,7 +40,7 @@ export default function TotalStockCostDisplay({ userId }: { userId: string }) {
               height: "100%",
             }}
           >
-            <Typography variant="h3" align="center">
+            <Typography variant="h4" align="center">
               {data?.totalStockCost
                 ? data?.totalStockCost.toLocaleString("pt-BR", {
                     style: "currency",

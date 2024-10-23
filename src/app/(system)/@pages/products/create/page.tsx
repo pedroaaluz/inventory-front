@@ -79,7 +79,7 @@ export default function ProductPage() {
     avatarImage: undefined,
     stockQuantity: undefined as number | undefined,
     unitPrice: undefined as number | undefined,
-    positionInStock: undefined,
+    positionInStock: "",
     minimumIdealStock: undefined as number | undefined,
     productionCost: undefined as number | undefined,
     categories: [] as { name: string; id: string }[],
@@ -136,10 +136,12 @@ export default function ProductPage() {
       });
 
       const responseParsed = (await response.json()) as ICreateProductResponse;
-      console.log({ responseParsed });
+
       if (responseParsed.status !== 200) {
         throw new Error("Erro ao criar o produto");
       }
+
+      router.push(`/products/${responseParsed.product.id}`);
 
       return responseParsed;
     },
@@ -156,7 +158,7 @@ export default function ProductPage() {
   const listInputs: InputField[] = [
     {
       label: "Quantidade em Estoque",
-      value: productData.stockQuantity || 0,
+      value: productData.stockQuantity,
       onChangeValue: (value: number | undefined) => {
         handleProductChange("stockQuantity", value);
       },
@@ -165,7 +167,7 @@ export default function ProductPage() {
     },
     {
       label: "Preço Unitário (R$)",
-      value: productData.unitPrice || 0.0,
+      value: productData.unitPrice,
       onChangeValue: (value: number | undefined) => {
         handleProductChange("unitPrice", value);
       },
@@ -174,7 +176,7 @@ export default function ProductPage() {
     },
     {
       label: "Posição no Estoque",
-      value: productData.positionInStock || "",
+      value: productData.positionInStock,
       onChangeValue: (value: string) => {
         handleProductChange("positionInStock", value);
       },
@@ -183,7 +185,7 @@ export default function ProductPage() {
     },
     {
       label: "Estoque Ideal Mínimo",
-      value: productData.minimumIdealStock || 0,
+      value: productData.minimumIdealStock,
       onChangeValue: (value: number | undefined) => {
         handleProductChange("minimumIdealStock", value);
       },
@@ -192,7 +194,7 @@ export default function ProductPage() {
     },
     {
       label: "Custo de Produção (R$)",
-      value: productData.productionCost || 0.0,
+      value: productData.productionCost,
       onChangeValue: (value: number | undefined) => {
         handleProductChange("productionCost", value);
       },
@@ -225,8 +227,8 @@ export default function ProductPage() {
     <>
       <PutPage
         descriptionCardProps={{
-          name: productData.name || "Coloque o nome de seu produto",
-          description: productData.description || "Uma descrição criativa",
+          name: productData.name,
+          description: productData.description,
           avatarImage: productData.avatarImage,
           onNameChange: (newName) => {
             handleProductChange("name", newName);
@@ -256,8 +258,6 @@ export default function ProductPage() {
               } else if (!createProductLoading) {
                 toast.success("Produto criado com sucesso");
                 queryClient.invalidateQueries({ queryKey: ["products"] });
-
-                router.push(`/products/${createProductData?.product.id}`);
               }
 
               setActiveCreateApi(false);

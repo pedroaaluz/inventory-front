@@ -13,7 +13,7 @@ export default function PutPage({
   isMobile: boolean;
   descriptionCardProps: {
     avatarImage?: string;
-    name: string;
+    name?: string;
     description?: string;
     onNameChange: (newName: string) => void;
     onDescriptionChange?: (newDescription: string) => void;

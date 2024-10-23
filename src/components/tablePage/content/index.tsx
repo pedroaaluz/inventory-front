@@ -40,8 +40,13 @@ export default function PageContent({
       container
       spacing={3}
       padding={isSmallScreen ? 3 : 2}
+      paddingLeft={isSmallScreen ? 10 : 5}
       alignItems="center"
+      xs={12}
       justifyContent={isSmallScreen ? "center" : "flex-start"}
+      style={{
+        maxWidth: "100%",
+      }}
     >
       {isSmallScreen && (
         <Grid item xs={12}>
@@ -53,6 +58,9 @@ export default function PageContent({
         container
         spacing={isSmallScreen ? 1 : 3}
         justifyContent={isSmallScreen ? "center" : "flex-start"}
+        style={{
+          maxWidth: "100%",
+        }}
       >
         <Grid item xs={12} md={9} order={isSmallScreen ? 2 : 1}>
           <HeaderSearchBar
@@ -75,6 +83,9 @@ export default function PageContent({
         container
         spacing={2}
         justifyContent={isSmallScreen ? "center" : "flex-start"}
+        style={{
+          maxWidth: "100%",
+        }}
       >
         <Grid item xs={12} md={dashboardDown || dashboardUp ? 9 : 12}>
           <Box
@@ -98,42 +109,40 @@ export default function PageContent({
         </Grid>
 
         {(dashboardDown || dashboardUp) && (
-          <Grid item xs={12} md={3}>
-            <Grid container spacing={2} direction="column">
-              {dashboardUp && (
-                <Grid item xs={12}>
-                  <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    border="1px solid #ddd"
-                    padding={2}
-                    height={isSmallScreen ? 400 : 350}
-                    maxWidth="100%"
-                    overflow="hidden"
-                  >
-                    {dashboardUp}
-                  </Box>
-                </Grid>
-              )}
-              {dashboardDown && (
-                <Grid item xs={12}>
-                  <Box
-                    display="flex"
-                    border="1px solid #ddd"
-                    padding={2}
-                    height={isSmallScreen ? 400 : 350}
-                    maxWidth="100%"
-                    overflow="auto"
-                    flexDirection="column"
-                    justifyContent="center"
-                    alignItems={isSmallScreen ? "center" : "flex-start"} // Centralize verticalmente quando for tela pequena
-                  >
-                    {dashboardDown}
-                  </Box>
-                </Grid>
-              )}
-            </Grid>
+          <Grid container item xs={12} md={3} spacing={2}>
+            {dashboardUp && (
+              <Grid item xs={12}>
+                <Box
+                  display="flex"
+                  justifyContent="center"
+                  alignItems="center"
+                  border="1px solid #ddd"
+                  padding={2}
+                  height={isSmallScreen ? 400 : 350}
+                  maxWidth="100%"
+                  overflow="hidden"
+                >
+                  {dashboardUp}
+                </Box>
+              </Grid>
+            )}
+            {dashboardDown && (
+              <Grid item xs={12}>
+                <Box
+                  display="flex"
+                  border="1px solid #ddd"
+                  padding={2}
+                  height={isSmallScreen ? 400 : 350}
+                  maxWidth="100%"
+                  overflow="auto"
+                  flexDirection="column"
+                  justifyContent="center"
+                  alignItems={isSmallScreen ? "center" : "flex-start"}
+                >
+                  {dashboardDown}
+                </Box>
+              </Grid>
+            )}
           </Grid>
         )}
       </Grid>
