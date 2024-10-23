@@ -26,7 +26,12 @@ export default function DetailsPage({
   };
 }) {
   return (
-    <Grid container spacing={1} paddingLeft={isMobile ? 0 : 5}>
+    <Grid
+      container
+      spacing={1}
+      paddingTop={isMobile ? 12 : 0}
+      paddingLeft={isMobile ? 0 : 5}
+    >
       <Grid item xs={12} direction={"row"}>
         <DescriptionCard
           isMobile={isMobile}
