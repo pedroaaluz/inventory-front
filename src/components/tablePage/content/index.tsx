@@ -39,8 +39,7 @@ export default function PageContent({
     <Grid
       container
       spacing={3}
-      padding={isSmallScreen ? 3 : 2}
-      paddingLeft={isSmallScreen ? 10 : 5}
+      paddingLeft={5}
       alignItems="center"
       xs={12}
       justifyContent={isSmallScreen ? "center" : "flex-start"}

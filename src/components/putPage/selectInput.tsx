@@ -1,8 +1,10 @@
 import {
   Box,
+  Checkbox,
   Chip,
   FormControl,
   InputLabel,
+  ListItemText,
   MenuItem,
   Select,
 } from "@mui/material";
@@ -40,19 +42,19 @@ export default function SelectInput({
     <FormControl
       sx={{
         "& .MuiInputLabel-root": {
-          color: "#4E4D48",
+          color: "#00585e",
           "&.Mui-focused": {
-            color: "#4E4D48",
+            color: "#00585e",
           },
         },
         "& .MuiOutlinedInput-root": {
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#4E4D48",
+            borderColor: "#00585e",
             borderWidth: "2px",
           },
           "&.Mui-focused": {
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#4E4D48",
+              borderColor: "#00585e",
               borderWidth: "3px",
             },
           },
@@ -79,8 +81,29 @@ export default function SelectInput({
         )}
       >
         {options.map((option) => (
-          <MenuItem key={option.id} value={option.id}>
-            {option.name}
+          <MenuItem
+            key={option.id}
+            value={option.id}
+            sx={{
+              backgroundColor: selectedIds.includes(option.id)
+                ? "#00585e"
+                : "inherit",
+              color: selectedIds.includes(option.id) ? "#A8A8A8" : "inherit",
+            }}
+          >
+            <Checkbox
+              checked={selectedIds.includes(option.id)}
+              sx={{
+                color: "#A8A8A8",
+                "&.Mui-checked": {
+                  color: "#A8A8A8",
+                },
+                "&:hover": {
+                  color: "#A8A8A8",
+                },
+              }}
+            />
+            <ListItemText primary={option.name} />
           </MenuItem>
         ))}
       </Select>
