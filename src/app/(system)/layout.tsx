@@ -1,6 +1,5 @@
 "use client";
 
-import "./../globals.css";
 import { ClerkProvider } from "@clerk/nextjs";
 import { Toaster } from "sonner";
 import Sidebar from "@/components/sidebar/sidebar";

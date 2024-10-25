@@ -15,7 +15,7 @@ export default function ResponsiveTable({
   handlePageChange,
   isMobile,
   tableTittle,
-  height = 600,
+  height = 640,
 }: IResponsiveTableProps) {
   return (
     <Box
@@ -51,6 +51,8 @@ export default function ResponsiveTable({
                   count={totalPages}
                   page={page}
                   onChange={handlePageChange}
+                  siblingCount={isMobile ? 0 : 1} // Menos páginas próximas em telas móveis
+                  boundaryCount={isMobile ? 1 : 2} // Definir como 1 no mobile e 2 no desktop
                 />
               </Box>
             </Grid>

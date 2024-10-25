@@ -55,12 +55,9 @@ export default function PageContent({
       container
       spacing={3}
       paddingLeft={2}
-      alignItems="center"
-      xs={12}
+      paddingTop={2}
+      justifyItems={isSmallScreen ? "center" : "flex-start"}
       justifyContent={isSmallScreen ? "center" : "flex-start"}
-      style={{
-        maxWidth: "100%",
-      }}
     >
       {isSmallScreen && (
         <Grid item xs={12}>

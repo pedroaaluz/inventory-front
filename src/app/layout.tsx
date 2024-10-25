@@ -3,7 +3,6 @@ export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
-  pages: React.ReactNode;
 }>) {
   return (
     <html lang="en">
