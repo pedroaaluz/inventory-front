@@ -27,25 +27,24 @@ export interface SidebarContentProps {
 export default function SidebarContent({
   data,
   toggleDrawer,
+  handleListItemClick,
+  selectedIndex,
 }: {
   data: SidebarContentProps[];
   toggleDrawer: () => void;
-}) {
-  const [selectedIndex, setSelectedIndex] = useState(0);
-  const { user } = useUser();
-  const { signOut } = useAuth();
-
-  const handleListItemClick = (
+  handleListItemClick: (
     event:
       | React.MouseEvent<HTMLAnchorElement, MouseEvent>
       | React.MouseEvent<HTMLDivElement, MouseEvent>,
     index: number
-  ) => {
-    setSelectedIndex(index);
-  };
-
+  ) => void;
+  selectedIndex: number;
+}) {
   const colorSelector = (index: number) =>
     selectedIndex === index ? "#fff" : "#4E4D48";
+
+  const { user } = useUser();
+  const { signOut } = useAuth();
 
   return (
     <Box flexDirection="column" height="100%" width="100%">

@@ -16,6 +16,17 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
     setIsOpen(!isOpen);
   };
 
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const handleListItemClick = (
+    event:
+      | React.MouseEvent<HTMLAnchorElement, MouseEvent>
+      | React.MouseEvent<HTMLDivElement, MouseEvent>,
+    index: number
+  ) => {
+    setSelectedIndex(index);
+  };
+
   return (
     <Box sx={{ display: "flex", backgroundColor: "#181A1B" }}>
       {isSmallScreen && (
@@ -53,7 +64,12 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
           },
         }}
       >
-        <SidebarContent toggleDrawer={toggleDrawer} data={data} />
+        <SidebarContent
+          selectedIndex={selectedIndex}
+          handleListItemClick={handleListItemClick}
+          toggleDrawer={toggleDrawer}
+          data={data}
+        />
       </Drawer>
 
       <Box

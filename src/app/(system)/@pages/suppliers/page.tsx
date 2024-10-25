@@ -115,7 +115,7 @@ export default function SuppliersPage() {
           ],
           handleSubmit,
         },
-        headerTittle: "Fornecedor",
+        headerTittle: "Fornecedores",
         headerActionButton: {
           onClick: () => {
             router.push("/suppliers/create");
