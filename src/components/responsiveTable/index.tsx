@@ -15,7 +15,7 @@ export default function ResponsiveTable({
   handlePageChange,
   isMobile,
   tableTittle,
-  height = 640,
+  height = 603,
 }: IResponsiveTableProps) {
   return (
     <Box

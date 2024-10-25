@@ -39,8 +39,8 @@ export default function RootLayout({
               sx={{
                 display: "flex",
                 flexDirection: isMobile ? "column" : "row",
-                height: "100vh",
                 overflow: "hidden",
+                minHeight: "100vh",
               }}
             >
               <Sidebar
@@ -69,15 +69,28 @@ export default function RootLayout({
               />
               <Box
                 sx={{
-                  flex: 1,
                   display: "flex",
                   flexDirection: "column",
                   overflowY: "auto",
-                  padding: theme.spacing(2),
+                  width: "100%",
+                  justifyContent: "center",
+                  alignItems: "center",
                   backgroundColor: theme.palette.background.paper,
+                  minHeight: "100vh",
+                  paddingLeft: isMobile ? 3 : 0,
                 }}
               >
-                {pages}
+                <Box
+                  sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    width: "100%",
+                    padding: theme.spacing(2),
+                  }}
+                >
+                  {pages}
+                </Box>
               </Box>
             </Box>
           </body>

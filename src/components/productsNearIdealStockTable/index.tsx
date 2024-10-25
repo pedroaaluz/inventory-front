@@ -7,10 +7,11 @@ import { handleQueryParams } from "@/utils/handleQueryParams";
 import { IProductNearIdealStockParams } from "@/types/metrics";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { Skeleton } from "@mui/material";
+import { useRouter } from "next/navigation";
 
 export default function ProductsNearIdealStockTable() {
   const { user, isLoaded } = useUser();
-
+  const router = useRouter();
   const userId = user?.id;
 
   const { data, isLoading } = useQuery({
@@ -36,9 +37,18 @@ export default function ProductsNearIdealStockTable() {
   ) : (
     <>
       <ResponsiveTable
-        height={isSmallScreen ? 200 : 300}
+        height={isSmallScreen ? 200 : 100}
         isLoading={isLoading}
-        data={data?.productsNearIdealStock || []}
+        data={
+          data?.productsNearIdealStock?.map((product) => {
+            return {
+              ...product,
+              rowAction: () => {
+                router.push(`/products/${product.id}`);
+              },
+            };
+          }) || []
+        }
         isFetching={isLoading}
         tableTittle="Produtos próximos ao estoque mínimo ideal:"
         columns={[
@@ -56,7 +66,7 @@ export default function ProductsNearIdealStockTable() {
             { name: "Estoque mínimo ideal", objectKey: "minimumIdealStock" },
           ],
         }}
-        isMobile={isSmallScreen}
+        isMobile={true}
       />
     </>
   );

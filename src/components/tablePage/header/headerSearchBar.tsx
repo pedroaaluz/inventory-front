@@ -28,12 +28,20 @@ export default function HeaderSearchBar({
   handleSubmit: () => void;
 }) {
   return (
-    <Box style={{ padding: 16, marginBottom: 16, borderColor: "none" }}>
+    <Box
+      style={{
+        padding: 16,
+        marginBottom: 16,
+        width: "100%",
+        borderColor: "none",
+      }}
+    >
       <Box
         display="flex"
         flexDirection={isMobile ? "column" : "row"}
         gap={2}
         alignItems="center"
+        width="100%"
       >
         {inputs.map((input, index) => {
           if (input.type === "select") {
