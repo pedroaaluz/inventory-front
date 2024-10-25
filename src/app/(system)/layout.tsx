@@ -26,7 +26,7 @@ export default function RootLayout({
   const isMobile = useMediaQuery(theme.breakpoints.down("md"));
 
   return (
-    <html lang="en">
+    <html lang="pt-br">
       <QueryClientProvider client={queryClient}>
         <ClerkProvider localization={ptBR}>
           <Toaster

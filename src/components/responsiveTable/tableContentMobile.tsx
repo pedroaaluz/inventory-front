@@ -55,15 +55,15 @@ export default function TableContentMobile({
                   )}
                   <Typography>{row[mainColumn.objectKey]}</Typography>
                 </Box>
-              </TableCell>
-              <TableCell>
-                {secondaryColumn.map((column, index) => (
-                  <>
-                    <Typography key={index}>{`${column.name}: ${
-                      row[column.objectKey]
-                    }`}</Typography>
-                  </>
-                ))}
+                <Box marginTop={2}>
+                  {secondaryColumn.map((column, index) => (
+                    <>
+                      <Typography key={index}>{`${column.name}: ${
+                        row[column.objectKey]
+                      }`}</Typography>
+                    </>
+                  ))}
+                </Box>
               </TableCell>
             </TableRow>
           ))}

@@ -1,9 +1,14 @@
 "use client";
 
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function Page() {
   const router = useRouter();
 
-  return <button type="button">Dashboard</button>;
+  useEffect(() => {
+    router.push("/products");
+  }, [router]);
+
+  return <div></div>;
 }

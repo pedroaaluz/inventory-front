@@ -52,8 +52,8 @@ export default function ProductsNearIdealStockTable() {
             hasImage: true,
           },
           secondaryColumn: [
-            { name: "Nome", objectKey: "name" },
-            { name: "Estoque ideal", objectKey: "minimumIdealStock" },
+            { name: "Quantidade atual", objectKey: "stockQuantity" },
+            { name: "Estoque mínimo ideal", objectKey: "minimumIdealStock" },
           ],
         }}
         isMobile={isSmallScreen}

@@ -1,21 +1,24 @@
 import { clerkMiddleware, createRouteMatcher } from "@clerk/nextjs/server";
 
+// clerkMiddleware is a function that accepts a function that returns a middleware function.
 const isPublicRoute = createRouteMatcher([
   "/login(.*)",
-  "/signup(.*)",
+  "/singup(.*)",
   "/reset-password(.*)",
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  const origin = req.nextUrl.origin;
-  const pathname = req.nextUrl.pathname;
-
+  console.log("Middleware running1", {
+    isPublicRoute: isPublicRoute(req),
+    url: req.nextUrl.href,
+  });
   if (!isPublicRoute(req)) {
-    const user = auth().userId;
+    const origin = req.nextUrl.origin;
 
-    if (user && pathname === "/") {
-      return Response.redirect(`${origin}/products`);
-    }
+    auth().protect({
+      unauthenticatedUrl: `${origin}/login`,
+      unauthorizedUrl: `${origin}`,
+    });
   }
 });
 
