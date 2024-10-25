@@ -59,7 +59,7 @@ export default function TableContentMobile({
                   {secondaryColumn.map((column, index) => (
                     <>
                       <Typography key={index}>{`${column.name}: ${
-                        row[column.objectKey]
+                        row[column.objectKey] ? row[column.objectKey] : ""
                       }`}</Typography>
                     </>
                   ))}
