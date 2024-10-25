@@ -48,12 +48,12 @@ export default function SidebarContent({
     selectedIndex === index ? "#fff" : "#4E4D48";
 
   return (
-    <div className="flex flex-col h-full">
+    <Box flexDirection="column" height="100%" width="100%">
       <Box
         display="flex"
-        justifyContent={"center"}
+        justifyContent="center"
         alignItems="center"
-        p={2}
+        paddingY={2}
         mb={2}
         sx={{
           cursor: "pointer",
@@ -91,7 +91,7 @@ export default function SidebarContent({
       </Box>
       <List sx={{ width: "100%" }}>
         {data.map((item, index) => (
-          <ListItem className="px-8" key={index} sx={{ width: "100%" }}>
+          <ListItem key={index} sx={{ paddingX: 2 }}>
             <ListItemButton
               component={Link}
               href={item.path}
@@ -106,7 +106,6 @@ export default function SidebarContent({
                   },
                 },
                 borderRadius: "14px",
-                width: "100%",
               }}
             >
               <ListItemIcon
@@ -126,7 +125,7 @@ export default function SidebarContent({
             </ListItemButton>
           </ListItem>
         ))}
-        <ListItem className="px-8" sx={{ width: "100%" }}>
+        <ListItem sx={{ width: "100%", paddingX: 2 }}>
           <ListItemButton
             selected={selectedIndex === 4}
             onClick={(event) => {
@@ -161,6 +160,6 @@ export default function SidebarContent({
           </ListItemButton>
         </ListItem>
       </List>
-    </div>
+    </Box>
   );
 }
