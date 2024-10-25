@@ -21,7 +21,7 @@ export default function HeaderInput({
       value={value}
       type={type}
       style={{
-        width: isMobile ? "100%" : "300px",
+        width: "100%",
       }}
       sx={{
         "& .MuiInputLabel-root": {

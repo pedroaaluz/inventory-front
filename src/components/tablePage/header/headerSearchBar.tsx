@@ -40,8 +40,9 @@ export default function HeaderSearchBar({
         display="flex"
         flexDirection={isMobile ? "column" : "row"}
         gap={2}
-        alignItems="center"
-        width="100%"
+        maxWidth={"100%"}
+        justifyContent={isMobile ? "center" : "flex-start"}
+        alignItems={isMobile ? "center" : "flex-start"}
       >
         {inputs.map((input, index) => {
           if (input.type === "select") {
