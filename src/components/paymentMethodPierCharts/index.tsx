@@ -11,6 +11,7 @@ import { handleQueryParams } from "@/utils/handleQueryParams";
 import { IPaymentMethodUsedOutput } from "@/types/metrics";
 import { Box, Skeleton, Stack, Typography } from "@mui/material";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import { translatePaymentMethod } from "@/utils/translators";
 
 export default function PaymentMethodPieCharts({
   startDate,
@@ -22,7 +23,7 @@ export default function PaymentMethodPieCharts({
   endDate: string;
   userId: string;
 }) {
-  const { data, isLoading, isError } = useQuery({
+  const { data, isLoading } = useQuery({
     queryKey: ["pieChartData", userId, startDate, endDate],
     queryFn: async (): Promise<IPaymentMethodUsedOutput> => {
       const params = handleQueryParams({
@@ -36,25 +37,10 @@ export default function PaymentMethodPieCharts({
     },
   });
 
-  const translatePaymentMethod = (paymentMethod: string) => {
-    switch (paymentMethod) {
-      case "creditCard":
-        return "Cartão de Crédito";
-      case "debitCard":
-        return "Cartão de Débito";
-      case "cash":
-        return "Dinheiro";
-      case "pix":
-        return "Pix";
-      default:
-        return paymentMethod;
-    }
-  };
-
   const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"];
   const pieData = Object.entries(data?.paymentMethodUsed || {}).map(
     ([key, value]) => ({
-      name: translatePaymentMethod(key),
+      name: translatePaymentMethod(key, "pt-br"),
       value,
     })
   );

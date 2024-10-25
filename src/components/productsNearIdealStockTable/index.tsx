@@ -14,7 +14,7 @@ export default function ProductsNearIdealStockTable() {
   const userId = user?.id;
 
   const { data, isLoading } = useQuery({
-    queryKey: ["totalStockCost", isLoaded],
+    queryKey: ["totalStockCost", isLoaded, userId],
     queryFn: async (): Promise<IProductNearIdealStockParams> => {
       const params = handleQueryParams({ userId });
       const response = await fetch(

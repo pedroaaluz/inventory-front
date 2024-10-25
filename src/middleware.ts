@@ -16,11 +16,6 @@ export default clerkMiddleware((auth, req) => {
     if (user && pathname === "/") {
       return Response.redirect(`${origin}/products`);
     }
-
-    auth().protect({
-      unauthenticatedUrl: `${origin}/login`,
-      unauthorizedUrl: `${origin}`,
-    });
   }
 });
 
