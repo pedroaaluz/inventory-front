@@ -14,6 +14,7 @@ export default function ResponsiveTable({
   totalPages,
   handlePageChange,
   isMobile,
+  tableTittle,
   height = 600,
 }: IResponsiveTableProps) {
   return (
@@ -33,23 +34,27 @@ export default function ResponsiveTable({
             <TableContentMobile
               data={data}
               columnsShowInResponsive={columnsShowInResponsive}
+              tableTittle={tableTittle}
             />
           ) : (
             <TableContentDesktop
               data={data}
               columns={columns}
+              tableTittle={tableTittle}
               height={height}
             />
           )}
-          <Grid item xs={12}>
-            <Box display="flex" justifyContent="center" padding={2}>
-              <Pagination
-                count={totalPages}
-                page={page}
-                onChange={handlePageChange}
-              />
-            </Box>
-          </Grid>
+          {page && (
+            <Grid item xs={12}>
+              <Box display="flex" justifyContent="center" padding={2}>
+                <Pagination
+                  count={totalPages}
+                  page={page}
+                  onChange={handlePageChange}
+                />
+              </Box>
+            </Grid>
+          )}
         </>
       )}
     </Box>

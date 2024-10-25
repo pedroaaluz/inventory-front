@@ -25,6 +25,10 @@ import { useState, useEffect } from "react";
 import { useUser } from "@clerk/nextjs";
 import { handleQueryParams } from "@/utils/handleQueryParams";
 import DetailsPage from "@/components/detailsPage";
+import {
+  translateMovementType,
+  translatePaymentMethod,
+} from "@/utils/translators";
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -51,68 +55,6 @@ export default function ProductPage() {
     movementTypeFilter: "",
     paymentMethodFilter: "",
   });
-
-  const translatePaymentMethod = (
-    paymentMethod: string | null,
-    language: "en" | "pt-br"
-  ) => {
-    if (language === "pt-br") {
-      switch (paymentMethod) {
-        case "PIX":
-          return "PIX";
-        case "DEBIT":
-          return "Débito";
-        case "CREDIT":
-          return "Crédito";
-        case "CASH":
-          return "Dinheiro";
-        default:
-          return "Sem método de pagamento";
-      }
-    } else {
-      switch (paymentMethod) {
-        case "PIX":
-          return "PIX";
-        case "Débito":
-          return "Debit";
-        case "Crédito":
-          return "Credit";
-        case "Dinheiro":
-          return "Cash";
-        default:
-          return undefined;
-      }
-    }
-  };
-
-  const translateMovementType = (
-    movementType: string,
-    language: "en" | "pt-br"
-  ) => {
-    if (language === "pt-br") {
-      switch (movementType) {
-        case "SALE":
-          return "Venda";
-        case "ADD_TO_STOCK":
-          return "Adição ao Estoque";
-        case "REMOVE_FROM_STOCK":
-          return "Remoção do Estoque";
-        default:
-          return undefined;
-      }
-    } else {
-      switch (movementType) {
-        case "Venda":
-          return "SALE";
-        case "Adição ao Estoque":
-          return "ADD_TO_STOCK";
-        case "Remoção do Estoque":
-          return "REMOVE_FROM_STOCK";
-        default:
-          return undefined;
-      }
-    }
-  };
 
   const { isLoading: getProductIsLoading, data: getProductData } = useQuery({
     queryKey: ["product", id],
@@ -162,7 +104,7 @@ export default function ProductPage() {
         productsIds: [id],
         movementType: translateMovementType(
           appliedFilters.movementTypeFilter,
-          "pt-br"
+          "en"
         ),
         paymentMethod: translatePaymentMethod(
           appliedFilters.paymentMethodFilter,
@@ -336,7 +278,10 @@ export default function ProductPage() {
                   })
                   .replace(",", ""),
                 movementValue: movement.movementValue
-                  ? `R$ ${movement.movementValue}`
+                  ? `R$ ${movement.movementValue.toLocaleString("pt-BR", {
+                      style: "currency",
+                      currency: "BRL",
+                    })}`
                   : "R$ 0",
                 paymentMethod: translatePaymentMethod(
                   movement.paymentMethod,

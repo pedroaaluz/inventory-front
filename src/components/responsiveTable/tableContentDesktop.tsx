@@ -14,15 +14,22 @@ interface ITableContentProps {
   data: { [key: string]: any; rowAction?: (params?: unknown) => void }[];
   columns: { name: string; objectKey: string; hasImage?: boolean }[];
   height: number;
+  tableTittle?: string;
 }
 
 export default function TableContentDesktop({
   data,
   columns,
   height,
+  tableTittle,
 }: ITableContentProps) {
   return (
     <TableContainer style={{ height }}>
+      {tableTittle && (
+        <Typography variant="h6" align="center">
+          {tableTittle}
+        </Typography>
+      )}
       <Table stickyHeader>
         <TableHead>
           <TableRow>

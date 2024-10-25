@@ -1,4 +1,10 @@
-import { Box, Grid, useTheme, useMediaQuery } from "@mui/material";
+import {
+  Box,
+  Grid,
+  useTheme,
+  useMediaQuery,
+  SelectChangeEvent,
+} from "@mui/material";
 import HeaderSearchBar from "../header/headerSearchBar";
 import HeaderActionButton from "../header/headerActionButton";
 import ResponsiveTable from "@/components/responsiveTable";
@@ -15,12 +21,21 @@ export default function PageContent({
 }: {
   headerContent: {
     headerSearchBar: {
-      inputs: {
-        value: string;
-        setValue: Dispatch<SetStateAction<string>>;
-        label: string;
-        type: "text" | "date";
-      }[];
+      inputs: (
+        | {
+            value: string;
+            setValue: Dispatch<SetStateAction<string>>;
+            label: string;
+            type: "text" | "date";
+          }
+        | {
+            value: string;
+            setValue: (event: SelectChangeEvent) => void;
+            label: string;
+            type: "select";
+            options: string[];
+          }
+      )[];
       handleSubmit: () => void;
     };
     headerTittle: string;
@@ -94,6 +109,7 @@ export default function PageContent({
             }}
           >
             <ResponsiveTable
+              tableTittle={tableConfig.tableTittle}
               isLoading={tableConfig.isLoading}
               isFetching={tableConfig.isFetching}
               data={tableConfig.data}
@@ -111,35 +127,12 @@ export default function PageContent({
           <Grid container item xs={12} md={3} spacing={2}>
             {dashboardUp && (
               <Grid item xs={12}>
-                <Box
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                  border="1px solid #ddd"
-                  padding={2}
-                  height={isSmallScreen ? 400 : 350}
-                  maxWidth="100%"
-                  overflow="hidden"
-                >
-                  {dashboardUp}
-                </Box>
+                {dashboardUp}
               </Grid>
             )}
             {dashboardDown && (
               <Grid item xs={12}>
-                <Box
-                  display="flex"
-                  border="1px solid #ddd"
-                  padding={2}
-                  height={isSmallScreen ? 400 : 350}
-                  maxWidth="100%"
-                  overflow="auto"
-                  flexDirection="column"
-                  justifyContent="center"
-                  alignItems={isSmallScreen ? "center" : "flex-start"}
-                >
-                  {dashboardDown}
-                </Box>
+                {dashboardDown}
               </Grid>
             )}
           </Grid>

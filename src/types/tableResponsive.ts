@@ -15,9 +15,10 @@ export interface IResponsiveTableProps {
       hasImage?: boolean;
     }[];
   };
-  totalPages: number;
-  page: number;
-  handlePageChange: (event: React.ChangeEvent<unknown>, value: number) => void;
+  tableTittle?: string;
+  totalPages?: number;
+  page?: number;
+  handlePageChange?: (event: React.ChangeEvent<unknown>, value: number) => void;
   isMobile: boolean;
   height?: number;
 }

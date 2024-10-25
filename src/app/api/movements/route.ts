@@ -27,13 +27,13 @@ async function fetchListProductData(params: TListMovementParams) {
       paramsParsed.append("productsIds", productId)
     );
   }
-  console.log({ paramsParsed });
+
   const url = new URL(
     `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/movement/${params.userId}`
   );
 
   url.search = paramsParsed.toString();
-
+  console.log(url);
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",
@@ -72,10 +72,9 @@ export async function GET(request: Request) {
       page: params.page,
       pageSize: params.pageSize,
       orderBy: params.orderBy as "asc" | "desc",
-      productsIds: [params.productsIds],
+      productsIds: params.productsIds ? [params.productsIds] : undefined,
       movementType: params.movementType as EnumMovementsType,
       paymentMethod: params.paymentMethod as EnumPaymentMethodType,
-
       productName: params.productName,
     });
 

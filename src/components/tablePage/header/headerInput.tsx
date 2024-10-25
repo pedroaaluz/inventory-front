@@ -25,20 +25,18 @@ export default function HeaderInput({
       }}
       sx={{
         "& .MuiInputLabel-root": {
-          color: "#4E4D48",
+          color: "#00585e",
           "&.Mui-focused": {
-            color: "#4E4D48",
+            color: "#00585e",
           },
         },
         "& .MuiOutlinedInput-root": {
           "& .MuiOutlinedInput-notchedOutline": {
-            borderColor: "#4E4D48",
-            borderWidth: "2px",
+            borderColor: "#00585e",
           },
           "&.Mui-focused": {
             "& .MuiOutlinedInput-notchedOutline": {
-              borderColor: "#4E4D48",
-              borderWidth: "3px",
+              borderColor: "#00585e",
             },
           },
         },

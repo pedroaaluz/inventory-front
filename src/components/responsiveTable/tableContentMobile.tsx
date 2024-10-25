@@ -23,16 +23,23 @@ interface ITableContentMobileProps {
       hasImage?: boolean;
     }[];
   };
+  tableTittle?: string;
 }
 
 export default function TableContentMobile({
   data,
   columnsShowInResponsive,
+  tableTittle,
 }: ITableContentMobileProps) {
   const { mainColumn, secondaryColumn } = columnsShowInResponsive;
 
   return (
     <TableContainer style={{ height: 500 }}>
+      {tableTittle && (
+        <Typography variant="h6" align="center">
+          {tableTittle}
+        </Typography>
+      )}
       <Table stickyHeader>
         <TableBody>
           {data.map((row, rowIndex) => (

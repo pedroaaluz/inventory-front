@@ -1,17 +1,22 @@
 "use client";
 
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { handleQueryParams } from "@/utils/handleQueryParams";
 import { Box, Skeleton, Typography } from "@mui/material";
 import { useQuery } from "@tanstack/react-query";
-import { useState } from "react";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
+import { useUser } from "@clerk/nextjs";
 
-export default function TotalStockCostDisplay({ userId }: { userId: string }) {
+export default function TotalStockCostDisplay() {
+  const { user, isLoaded } = useUser();
+
+  const userId = user?.id;
+
   const { data, isLoading } = useQuery<{
     message: string;
     totalStockCost: number;
   }>({
-    queryKey: ["totalStockCost", userId],
+    queryKey: ["totalStockCost", isLoaded],
     queryFn: async (): Promise<{
       message: string;
       totalStockCost: number;
@@ -23,12 +28,28 @@ export default function TotalStockCostDisplay({ userId }: { userId: string }) {
     },
   });
 
+  const isSmallScreen = useIsSmallScreen();
+
   return (
     <>
       {isLoading ? (
-        <Skeleton variant="rounded" width="100%" height="100%" />
+        <Skeleton
+          variant="rounded"
+          width="100%"
+          height={isSmallScreen ? 200 : 300}
+        />
       ) : (
-        <>
+        <Box
+          display="flex"
+          border="1px solid #ddd"
+          padding={2}
+          height={isSmallScreen ? 400 : 350}
+          maxWidth="100%"
+          overflow="auto"
+          flexDirection="column"
+          justifyContent="center"
+          alignItems={isSmallScreen ? "center" : "flex-start"}
+        >
           <Typography variant="h6" align="center">
             Valor total em estoque:
           </Typography>
@@ -105,7 +126,7 @@ export default function TotalStockCostDisplay({ userId }: { userId: string }) {
               />
             </LineChart>
           </ResponsiveContainer>
-        </>
+        </Box>
       )}
     </>
   );

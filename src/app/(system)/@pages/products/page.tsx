@@ -8,11 +8,11 @@ import { useUser } from "@clerk/nextjs";
 import { handleQueryParams } from "@/utils/handleQueryParams";
 import PageContent from "@/components/tablePage/content";
 import { Add } from "@mui/icons-material";
-import PaymentMethodPierCharts from "@/components/paymentMethodPierCharts";
 import TotalStockCostDisplay from "@/components/totalStockCostDisplay";
 import { useRouter } from "next/navigation";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { formatDateToLocal } from "@/utils/formatDateToLoca";
+import ProductsNearIdealStockTable from "@/components/productsNearIdealStockTable";
 
 export default function ProductsPage() {
   const today = new Date();
@@ -175,15 +175,8 @@ export default function ProductsPage() {
         handlePageChange,
         isMobile: useIsSmallScreen(),
       }}
-      dashboardUp={
-        <PaymentMethodPierCharts
-          endDate={appliedFilters.endDate || formattedToday}
-          startDate={appliedFilters.startDate || formattedSevenDaysAgo}
-          userId={user?.id!}
-          isMobile={useIsSmallScreen()}
-        />
-      }
-      dashboardDown={<TotalStockCostDisplay userId={user?.id!} />}
+      dashboardUp={<TotalStockCostDisplay />}
+      dashboardDown={<ProductsNearIdealStockTable />}
     />
   );
 }

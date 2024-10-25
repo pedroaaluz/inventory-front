@@ -3,6 +3,7 @@ export interface IPaymentMethodUsedParams {
   endDate: string;
   userId: string;
 }
+
 export interface IPaymentMethodUsedOutput {
   message: string;
   paymentMethodUsed: {
@@ -11,4 +12,17 @@ export interface IPaymentMethodUsedOutput {
     cash: number;
     pix: number;
   };
+}
+
+export interface IProductNearIdealStockParams {
+  message: string;
+  productsNearIdealStock: {
+    id: string;
+    name: string;
+    image: string | null;
+    stockQuantity: number;
+    minimumIdealStock: number;
+    supplierEmail: string | null;
+    supplierPhone: string | null;
+  }[];
 }
