@@ -1,8 +1,8 @@
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { Box, Button } from "@mui/material";
 import { ReactElement } from "react";
 
 export default function HeaderActionButton({
-  isMobile,
   onClick,
   text,
   icon,
@@ -12,6 +12,8 @@ export default function HeaderActionButton({
   text: string;
   icon: ReactElement;
 }) {
+  const isMobile = useIsSmallScreen();
+
   return (
     <Box
       display="flex"
@@ -21,6 +23,8 @@ export default function HeaderActionButton({
         marginBottom: 16,
         borderColor: "none",
         width: "100%",
+        alignItems: "center",
+        justifyContent: "center",
       }}
     >
       <Button
@@ -31,7 +35,9 @@ export default function HeaderActionButton({
         style={{
           backgroundColor: "#00585e",
           height: 56,
-          width: "100%",
+          maxWidth: 300,
+          minWidth: isMobile ? 400 : 150,
+          ...(isMobile && { width: 400 }),
         }}
       >
         {text}

@@ -44,11 +44,8 @@ export default function TotalStockCostDisplay() {
           border="1px solid #ddd"
           padding={2}
           height={isSmallScreen ? 400 : 350}
-          maxWidth="100%"
-          overflow="auto"
           flexDirection="column"
           justifyContent="center"
-          alignItems={isSmallScreen ? "center" : "flex-start"}
         >
           <Typography variant="h6" align="center">
             Valor total em estoque:
@@ -59,9 +56,10 @@ export default function TotalStockCostDisplay() {
               justifyContent: "center",
               alignItems: "center",
               height: "100%",
+              width: "100%",
             }}
           >
-            <Typography variant={isSmallScreen ? "h6" : "h5"} align="center">
+            <Typography variant={isSmallScreen ? "h5" : "h4"} align="center">
               {data?.totalStockCost
                 ? data?.totalStockCost.toLocaleString("pt-BR", {
                     style: "currency",

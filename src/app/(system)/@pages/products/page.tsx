@@ -90,7 +90,6 @@ export default function ProductsPage() {
 
   return (
     <PageContent
-      isSmallScreen={useIsSmallScreen()}
       headerContent={{
         headerSearchBar: {
           inputs: [

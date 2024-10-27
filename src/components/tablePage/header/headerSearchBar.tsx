@@ -3,11 +3,11 @@ import HeaderInput from "./headerInput";
 import { Search } from "@mui/icons-material";
 import { Dispatch, SetStateAction } from "react";
 import HeaderSelectInput from "./headerSelectInput";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function HeaderSearchBar({
   inputs,
   handleSubmit,
-  isMobile,
 }: {
   inputs: (
     | {
@@ -27,6 +27,8 @@ export default function HeaderSearchBar({
   isMobile: boolean;
   handleSubmit: () => void;
 }) {
+  const isMobile = useIsSmallScreen();
+
   return (
     <Box
       style={{
@@ -49,7 +51,6 @@ export default function HeaderSearchBar({
             return (
               <HeaderSelectInput
                 key={index}
-                isMobile={isMobile}
                 value={input.value}
                 setValue={input.setValue}
                 label={input.label}
@@ -80,6 +81,8 @@ export default function HeaderSearchBar({
             backgroundColor: "#00585e",
             height: 56,
             width: isMobile ? "100%" : "300px",
+            maxWidth: 300,
+            minWidth: 150,
           }}
         >
           Pesquisar

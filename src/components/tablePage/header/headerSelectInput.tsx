@@ -1,25 +1,28 @@
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { FormControl, InputLabel, MenuItem, Select } from "@mui/material";
 
 export default function HeaderSelectInput({
-  isMobile,
   value,
   setValue,
   label,
   options,
   index,
 }: {
-  isMobile: boolean;
   value: string;
   setValue: (event: any) => void;
   label: string;
   options: string[];
   index: number;
 }) {
+  const isMobile = useIsSmallScreen();
+
   return (
     <FormControl
       key={index}
       style={{
-        width: isMobile ? "100%" : "300px",
+        maxWidth: 300,
+        minWidth: isMobile ? 400 : 150,
+        ...(isMobile && { width: 400 }),
       }}
       sx={{
         "& .MuiInputLabel-root": {

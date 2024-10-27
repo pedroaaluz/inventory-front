@@ -13,6 +13,7 @@ import { ptBR } from "@clerk/localizations";
 import { Box, useMediaQuery, useTheme } from "@mui/material";
 import { QueryClientProvider } from "@tanstack/react-query";
 import { queryClient } from "@/services/queryClient";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function RootLayout({
   children,
@@ -21,8 +22,7 @@ export default function RootLayout({
   children: React.ReactNode;
   pages: React.ReactNode;
 }>) {
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("md"));
+  const isMobile = useIsSmallScreen();
 
   return (
     <html lang="pt-br">
@@ -38,9 +38,7 @@ export default function RootLayout({
             <Box
               sx={{
                 display: "flex",
-                flexDirection: isMobile ? "column" : "row",
                 overflow: "hidden",
-                minHeight: "100vh",
               }}
             >
               <Sidebar
@@ -69,28 +67,16 @@ export default function RootLayout({
               />
               <Box
                 sx={{
+                  marginTop: 5,
                   display: "flex",
-                  flexDirection: "column",
-                  overflowY: "auto",
                   width: "100%",
                   justifyContent: "center",
                   alignItems: "center",
-                  backgroundColor: theme.palette.background.paper,
-                  minHeight: "100vh",
                   paddingLeft: isMobile ? 3 : 0,
+                  marginBottom: 10,
                 }}
               >
-                <Box
-                  sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    alignItems: "center",
-                    width: "100%",
-                    padding: theme.spacing(2),
-                  }}
-                >
-                  {pages}
-                </Box>
+                {pages}
               </Box>
             </Box>
           </body>

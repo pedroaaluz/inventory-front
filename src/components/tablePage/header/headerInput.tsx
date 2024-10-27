@@ -1,8 +1,8 @@
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { TextField } from "@mui/material";
 import { Dispatch, SetStateAction } from "react";
 
 export default function HeaderInput({
-  isMobile,
   value,
   setValue,
   type,
@@ -15,13 +15,17 @@ export default function HeaderInput({
   type: "text" | "date";
   label: string;
 }) {
+  const isMobile = useIsSmallScreen();
+
   return (
     <TextField
       label={label}
       value={value}
       type={type}
       style={{
-        width: "100%",
+        maxWidth: 300,
+        minWidth: isMobile ? 400 : 150,
+        ...(isMobile && { width: 400 }),
       }}
       sx={{
         "& .MuiInputLabel-root": {

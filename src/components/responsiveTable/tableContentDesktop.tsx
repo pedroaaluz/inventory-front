@@ -23,6 +23,7 @@ export default function TableContentDesktop({
   height,
   tableTittle,
 }: ITableContentProps) {
+  console.log("asasasas", height);
   return (
     <TableContainer style={{ height }}>
       {tableTittle && (

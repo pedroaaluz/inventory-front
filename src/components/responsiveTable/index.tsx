@@ -20,9 +20,7 @@ export default function ResponsiveTable({
   return (
     <Box
       padding={5}
-      border={"1px solid #ddd"}
       style={{
-        padding: 26,
         border: "1px solid #ddd",
       }}
     >
@@ -45,17 +43,15 @@ export default function ResponsiveTable({
             />
           )}
           {page && (
-            <Grid item xs={12}>
-              <Box display="flex" justifyContent="center" padding={2}>
-                <Pagination
-                  count={totalPages}
-                  page={page}
-                  onChange={handlePageChange}
-                  siblingCount={isMobile ? 0 : 1} // Menos páginas próximas em telas móveis
-                  boundaryCount={isMobile ? 1 : 2} // Definir como 1 no mobile e 2 no desktop
-                />
-              </Box>
-            </Grid>
+            <Box display="flex" justifyContent="center" padding={2}>
+              <Pagination
+                count={totalPages}
+                page={page}
+                onChange={handlePageChange}
+                siblingCount={isMobile ? 0 : 1}
+                boundaryCount={isMobile ? 1 : 2}
+              />
+            </Box>
           )}
         </>
       )}

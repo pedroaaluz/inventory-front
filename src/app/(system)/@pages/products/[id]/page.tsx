@@ -29,6 +29,7 @@ import {
   translateMovementType,
   translatePaymentMethod,
 } from "@/utils/translators";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -126,8 +127,7 @@ export default function ProductPage() {
     },
   });
 
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useIsSmallScreen();
 
   const listItems = [
     {

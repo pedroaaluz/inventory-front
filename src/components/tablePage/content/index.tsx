@@ -11,13 +11,13 @@ import ResponsiveTable from "@/components/responsiveTable";
 import HeaderText from "../header/headerText";
 import { IResponsiveTableProps } from "../../../types/tableResponsive";
 import { Dispatch, ReactElement, SetStateAction } from "react";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function PageContent({
   headerContent: { headerSearchBar, headerTittle, headerActionButton },
   tableConfig,
   dashboardDown,
   dashboardUp,
-  isSmallScreen,
 }: {
   headerContent: {
     headerSearchBar: {
@@ -48,8 +48,9 @@ export default function PageContent({
   tableConfig: IResponsiveTableProps;
   dashboardUp?: ReactElement;
   dashboardDown?: ReactElement;
-  isSmallScreen: boolean;
 }) {
+  const isSmallScreen = useIsSmallScreen();
+
   return (
     <Grid
       container
@@ -63,14 +64,7 @@ export default function PageContent({
         </Grid>
       )}
 
-      <Grid
-        container
-        spacing={isSmallScreen ? 1 : 3}
-        justifyContent={isSmallScreen ? "center" : "flex-start"}
-        style={{
-          maxWidth: "100%",
-        }}
-      >
+      <Grid container>
         <Grid item xs={12} md={9} order={isSmallScreen ? 2 : 1}>
           <HeaderSearchBar
             inputs={headerSearchBar.inputs}
@@ -91,7 +85,6 @@ export default function PageContent({
       <Grid
         container
         spacing={2}
-        justifyContent={isSmallScreen ? "center" : "flex-start"}
         style={{
           maxWidth: "100%",
         }}

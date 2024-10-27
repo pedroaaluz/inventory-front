@@ -1,6 +1,5 @@
 "use client";
 import PutPage from "@/components/putPage";
-import { useMediaQuery, useTheme } from "@mui/material";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import {
@@ -19,11 +18,11 @@ import { useUser } from "@clerk/nextjs";
 import DefaultButton from "@/components/defaultButton";
 import { toast } from "sonner";
 import removeNulls from "@/utils/removeNulls";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function SuppliersPage() {
   const { id } = useParams<{ id: string }>();
-  const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
+  const isMobile = useIsSmallScreen();
   const { user } = useUser();
   const router = useRouter();
 
