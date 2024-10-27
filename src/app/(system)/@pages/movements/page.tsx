@@ -9,7 +9,6 @@ import { handleQueryParams } from "@/utils/handleQueryParams";
 import PageContent from "@/components/tablePage/content";
 import { Add } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
-import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { formatDateToLocal } from "@/utils/formatDateToLoca";
 import {
   translateMovementType,
@@ -111,7 +110,6 @@ export default function MovementsPage() {
 
   return (
     <PageContent
-      isSmallScreen={useIsSmallScreen()}
       headerContent={{
         headerSearchBar: {
           inputs: [

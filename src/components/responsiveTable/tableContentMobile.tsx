@@ -34,7 +34,7 @@ export default function TableContentMobile({
   const { mainColumn, secondaryColumn } = columnsShowInResponsive;
 
   return (
-    <TableContainer style={{ height: 300 }}>
+    <TableContainer>
       {tableTittle && (
         <Typography variant="h6" align="center">
           {tableTittle}

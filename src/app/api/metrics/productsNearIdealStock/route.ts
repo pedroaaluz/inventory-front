@@ -1,9 +1,24 @@
 import { getQueryParams } from "@/utils/getQueryParams";
+import removeNulls from "@/utils/removeNulls";
 import { NextResponse } from "next/server";
 
-async function fetchTProductNearIdealStock(params: { userId: string }) {
+async function fetchTProductNearIdealStock(params: {
+  userId: string;
+  name?: string;
+  page?: string;
+  pageSize?: string;
+}) {
+  const paramsParsed = new URLSearchParams(
+    removeNulls({
+      userId: params.userId,
+      productName: params.name,
+      page: params.page,
+      pageSize: params.pageSize,
+    })
+  );
+
   const url = new URL(
-    `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/metrics/${params.userId}/products-near-ideal-stock`
+    `https://3q16zqqmj8.execute-api.sa-east-1.amazonaws.com/production/metrics/${params.userId}/products-near-ideal-stock?${paramsParsed}`
   );
 
   const response = await fetch(url, {
@@ -17,7 +32,10 @@ async function fetchTProductNearIdealStock(params: { userId: string }) {
 
 export async function GET(request: Request) {
   try {
-    const params = getQueryParams(["userId"], request.url);
+    const params = getQueryParams(
+      ["userId", "page", "pageSize", "name"],
+      request.url
+    );
 
     if (!params.userId) {
       return NextResponse.json({ message: "userId is required", status: 400 });
@@ -25,6 +43,9 @@ export async function GET(request: Request) {
 
     const res = await fetchTProductNearIdealStock({
       userId: params.userId,
+      name: params.name,
+      page: params.page,
+      pageSize: params.pageSize,
     });
 
     return NextResponse.json({ ...res, status: 200 });

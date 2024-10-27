@@ -8,20 +8,30 @@ import { IProductNearIdealStockParams } from "@/types/metrics";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { Skeleton } from "@mui/material";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
 
 export default function ProductsNearIdealStockTable() {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const userId = user?.id;
+  const [page, setPage] = useState(1);
+
+  const handlePageChange = (
+    _event: React.ChangeEvent<unknown>,
+    value: number
+  ) => {
+    setPage(value);
+  };
 
   const { data, isLoading } = useQuery({
-    queryKey: ["totalStockCost", isLoaded, userId],
+    queryKey: ["totalStockCost", isLoaded, userId, page],
     queryFn: async (): Promise<IProductNearIdealStockParams> => {
-      const params = handleQueryParams({ userId });
+      const params = handleQueryParams({ userId, page, pageSize: 10 });
       const response = await fetch(
         `/api/metrics/productsNearIdealStock?${params}`
       );
 
+      console.log("response", response);
       return response.json();
     },
   });
@@ -32,12 +42,12 @@ export default function ProductsNearIdealStockTable() {
     <Skeleton
       variant="rounded"
       width="100%"
-      height={isSmallScreen ? 200 : 300}
+      height={isSmallScreen ? 500 : 300}
     />
   ) : (
     <>
       <ResponsiveTable
-        height={isSmallScreen ? 200 : 100}
+        height={isSmallScreen ? 500 : 300}
         isLoading={isLoading}
         data={
           data?.productsNearIdealStock?.map((product) => {
@@ -66,7 +76,10 @@ export default function ProductsNearIdealStockTable() {
             { name: "Estoque mínimo ideal", objectKey: "minimumIdealStock" },
           ],
         }}
+        totalPages={data?.totalPages || 0}
         isMobile={true}
+        handlePageChange={handlePageChange}
+        page={page}
       />
     </>
   );

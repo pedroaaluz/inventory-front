@@ -16,6 +16,10 @@ export interface IPaymentMethodUsedOutput {
 
 export interface IProductNearIdealStockParams {
   message: string;
+  page: number;
+  pageSize: number;
+  totalProducts: number;
+  totalPages: number;
   productsNearIdealStock: {
     id: string;
     name: string;

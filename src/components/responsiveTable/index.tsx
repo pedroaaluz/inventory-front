@@ -15,13 +15,16 @@ export default function ResponsiveTable({
   handlePageChange,
   isMobile,
   tableTittle,
-  height = 603,
+  height = 600,
 }: IResponsiveTableProps) {
   return (
     <Box
       padding={5}
       style={{
         border: "1px solid #ddd",
+        height,
+        display: "flex",
+        flexDirection: "column",
       }}
     >
       {isLoading || isFetching ? (

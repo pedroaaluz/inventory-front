@@ -66,14 +66,11 @@ export default function ProductsPage() {
 
       const paramsParsed = handleQueryParams(params);
 
-      const response = await fetch(
-        `/api/products?${paramsParsed}&pageSize=10`,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        }
-      );
+      const response = await fetch(`/api/products?${paramsParsed}`, {
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
 
       const responseParsed = (await response.json()) as IListProductsOutput;
 
@@ -173,6 +170,7 @@ export default function ProductsPage() {
         totalPages: data?.totalPages || 0,
         handlePageChange,
         isMobile: useIsSmallScreen(),
+        height: 650,
       }}
       dashboardUp={<TotalStockCostDisplay />}
       dashboardDown={<ProductsNearIdealStockTable />}

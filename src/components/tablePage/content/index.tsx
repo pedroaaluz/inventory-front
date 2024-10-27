@@ -56,6 +56,7 @@ export default function PageContent({
       container
       spacing={3}
       paddingLeft={isSmallScreen ? 2 : 6}
+      paddingRight={!isSmallScreen && !dashboardDown && !dashboardUp ? 4 : 0}
       paddingTop={2}
     >
       {isSmallScreen && (
@@ -82,20 +83,9 @@ export default function PageContent({
         </Grid>
       </Grid>
 
-      <Grid
-        container
-        spacing={2}
-        style={{
-          maxWidth: "100%",
-        }}
-      >
+      <Grid container spacing={2}>
         <Grid item xs={12} md={dashboardDown || dashboardUp ? 9 : 12}>
-          <Box
-            style={{
-              maxWidth: "100%",
-              overflowX: "auto",
-            }}
-          >
+          <Box width={"100%"}>
             <ResponsiveTable
               tableTittle={tableConfig.tableTittle}
               isLoading={tableConfig.isLoading}
@@ -107,6 +97,7 @@ export default function PageContent({
               columns={tableConfig.columns}
               columnsShowInResponsive={tableConfig.columnsShowInResponsive}
               totalPages={tableConfig.totalPages || 1}
+              height={tableConfig.height}
             />
           </Box>
         </Grid>

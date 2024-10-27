@@ -43,7 +43,7 @@ export default function TotalStockCostDisplay() {
           display="flex"
           border="1px solid #ddd"
           padding={2}
-          height={isSmallScreen ? 400 : 350}
+          height={isSmallScreen ? 400 : 300}
           flexDirection="column"
           justifyContent="center"
         >
