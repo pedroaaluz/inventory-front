@@ -15,6 +15,8 @@ import {
   translatePaymentMethod,
 } from "@/utils/translators";
 import { SelectChangeEvent } from "@mui/material";
+import PaymentMethodPieCharts from "@/components/paymentMethodPierCharts";
+import TopSellingProducts from "@/components/topSellingProducts";
 
 export default function MovementsPage() {
   const today = new Date();
@@ -221,7 +223,18 @@ export default function MovementsPage() {
         totalPages: data?.totalPages || 0,
         handlePageChange,
         isMobile: false,
+        height: 650,
       }}
+      dashboardUp={
+        <PaymentMethodPieCharts
+          startDate={startDate}
+          endDate={endDate}
+          userId={user?.id as string}
+        />
+      }
+      dashboardDown={
+        <TopSellingProducts startDate={startDate} endDate={endDate} />
+      }
     />
   );
 }

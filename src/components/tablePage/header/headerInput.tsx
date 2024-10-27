@@ -23,9 +23,9 @@ export default function HeaderInput({
       value={value}
       type={type}
       style={{
-        maxWidth: 300,
         minWidth: isMobile ? 400 : 150,
-        ...(isMobile && { width: 400 }),
+        width: "100%",
+        maxWidth: isMobile ? "100%" : 200,
       }}
       sx={{
         "& .MuiInputLabel-root": {

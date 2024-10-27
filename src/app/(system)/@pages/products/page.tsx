@@ -127,6 +127,7 @@ export default function ProductsPage() {
           data?.products?.map((product) => {
             return {
               ...product,
+              image: product.image,
               categories: product.categories
                 .map((category) => category.name)
                 .join(", "),

@@ -18,7 +18,6 @@ export default function PaymentMethodPieCharts({
   endDate,
   userId,
 }: {
-  isMobile: boolean;
   startDate: string;
   endDate: string;
   userId: string;
@@ -57,7 +56,7 @@ export default function PaymentMethodPieCharts({
         display="flex"
         border="1px solid #ddd"
         padding={2}
-        height={isSmallScreen ? 400 : 350}
+        height={isSmallScreen ? 400 : 300}
         maxWidth="100%"
         overflow="auto"
         flexDirection="column"

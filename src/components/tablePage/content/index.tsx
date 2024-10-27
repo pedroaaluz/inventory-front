@@ -66,7 +66,15 @@ export default function PageContent({
       )}
 
       <Grid container>
-        <Grid item xs={12} md={9} order={isSmallScreen ? 2 : 1}>
+        <Grid
+          item
+          xs={12}
+          md={9}
+          justifyContent={isSmallScreen ? "center" : undefined}
+          alignItems={isSmallScreen ? "center" : undefined}
+          justifyItems={isSmallScreen ? "center" : undefined}
+          order={isSmallScreen ? 2 : 1}
+        >
           <HeaderSearchBar
             inputs={headerSearchBar.inputs}
             handleSubmit={headerSearchBar.handleSubmit}

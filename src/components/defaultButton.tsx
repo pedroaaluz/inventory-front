@@ -18,22 +18,21 @@ export default function DefaultButton({
 }) {
   return (
     <Box
-      display="flex"
-      gap={2}
       style={{
-        padding: 16,
         marginBottom: 16,
         borderColor: "none",
         width: "100%",
+        justifyContent: "center",
+        display: "flex",
       }}
     >
       <Button
         variant="contained"
         startIcon={icon}
         sx={{
+          width: "100%",
           backgroundColor: "#00585e",
           height: isMobile ? 56 : 40,
-          width: isMobile ? "100%" : "80%",
           color: disable ? "#fff" : undefined,
           "&.Mui-disabled": {
             color: "#fff",

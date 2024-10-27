@@ -30,3 +30,19 @@ export interface IProductNearIdealStockParams {
     supplierPhone: string | null;
   }[];
 }
+
+export interface ITopSellingResponse {
+  products: {
+    salesCount: number;
+    salesValue: number;
+    productName: string;
+    productId: string;
+    productImage: string | null;
+    stockQuantity: number;
+  }[];
+  message: string;
+  totalPages: number;
+  page: number;
+  pageSize: number;
+  totalProducts: number;
+}

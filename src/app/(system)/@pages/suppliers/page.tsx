@@ -90,7 +90,6 @@ export default function SuppliersPage() {
 
   return (
     <PageContent
-      isSmallScreen={useIsSmallScreen()}
       headerContent={{
         headerSearchBar: {
           inputs: [

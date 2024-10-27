@@ -24,7 +24,7 @@ export default function TableContentDesktop({
   tableTittle,
 }: ITableContentProps) {
   return (
-    <TableContainer>
+    <TableContainer style={{ height }}>
       {tableTittle && (
         <Typography variant="h6" align="center">
           {tableTittle}

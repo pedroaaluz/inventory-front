@@ -30,7 +30,9 @@ export default function DetailsPage({
       container
       spacing={1}
       paddingTop={isMobile ? 12 : 0}
-      paddingLeft={isMobile ? 0 : 5}
+      justifyContent={isMobile ? "center" : undefined}
+      alignItems={isMobile ? "center" : undefined}
+      paddingX={isMobile ? 0 : 6}
     >
       <Grid item xs={12} direction={"row"}>
         <DescriptionCard
@@ -44,7 +46,7 @@ export default function DetailsPage({
       <Grid container xs={12}>
         <Grid item xs={12} md={3}>
           <EntityDetailsList isLoading={isLoading} listItems={details} />
-          {!isLoading && (
+          {!isMobile && (
             <DefaultButton
               text={text}
               isMobile={isMobile}
@@ -53,6 +55,16 @@ export default function DetailsPage({
             />
           )}
         </Grid>
+        {isMobile && (
+          <Grid item xs={12} md={0}>
+            <DefaultButton
+              text={text}
+              isMobile={isMobile}
+              icon={icon}
+              onClick={onClick}
+            />
+          </Grid>
+        )}
         <Grid item xs={12} md={9}>
           {dashBoardUp}
         </Grid>

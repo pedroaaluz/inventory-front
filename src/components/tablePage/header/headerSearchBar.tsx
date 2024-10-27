@@ -34,7 +34,6 @@ export default function HeaderSearchBar({
       style={{
         padding: 16,
         marginBottom: 16,
-        width: "100%",
         borderColor: "none",
       }}
     >
@@ -45,6 +44,7 @@ export default function HeaderSearchBar({
         maxWidth={"100%"}
         justifyContent={isMobile ? "center" : "flex-start"}
         alignItems={isMobile ? "center" : "flex-start"}
+        justifyItems={isMobile ? "center" : "flex-start"}
       >
         {inputs.map((input, index) => {
           if (input.type === "select") {
@@ -81,7 +81,7 @@ export default function HeaderSearchBar({
             backgroundColor: "#00585e",
             height: 56,
             width: isMobile ? "100%" : "300px",
-            maxWidth: 300,
+            maxWidth: isMobile ? "100%" : 300,
             minWidth: 150,
           }}
         >

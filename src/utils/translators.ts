@@ -31,15 +31,20 @@ export const translatePaymentMethod = (
   paymentMethod: string | null,
   language: "en" | "pt-br"
 ) => {
+  console.log(paymentMethod);
   if (language === "pt-br") {
     switch (paymentMethod) {
       case "PIX":
+      case "pix":
         return "PIX";
       case "DEBIT":
+      case "debitCard":
         return "Débito";
       case "CREDIT":
+      case "creditCard":
         return "Crédito";
       case "CASH":
+      case "cash":
         return "Dinheiro";
       default:
         return "Sem método de pagamento";

@@ -20,9 +20,9 @@ export default function HeaderSelectInput({
     <FormControl
       key={index}
       style={{
-        maxWidth: 300,
         minWidth: isMobile ? 400 : 150,
-        ...(isMobile && { width: 400 }),
+        width: isMobile ? "100%" : "300px",
+        maxWidth: isMobile ? "100%" : 200,
       }}
       sx={{
         "& .MuiInputLabel-root": {
