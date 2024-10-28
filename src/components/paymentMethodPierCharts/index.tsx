@@ -17,10 +17,15 @@ export default function PaymentMethodPieCharts({
   startDate,
   endDate,
   userId,
+  height,
 }: {
   startDate: string;
   endDate: string;
   userId: string;
+  height?: {
+    smallScreen?: number;
+    largeScreen?: number;
+  };
 }) {
   const { data, isLoading } = useQuery({
     queryKey: ["pieChartData", userId, startDate, endDate],
@@ -50,13 +55,16 @@ export default function PaymentMethodPieCharts({
   );
   const isSmallScreen = useIsSmallScreen();
 
+  const smallScreen = height?.smallScreen || 400;
+  const largeScreen = height?.largeScreen || 300;
+
   return (
     <>
       <Box
         display="flex"
         border="1px solid #ddd"
         padding={2}
-        height={isSmallScreen ? 400 : 300}
+        height={isSmallScreen ? smallScreen : largeScreen}
         maxWidth="100%"
         overflow="auto"
         flexDirection="column"

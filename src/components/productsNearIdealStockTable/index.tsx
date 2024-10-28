@@ -10,7 +10,11 @@ import { Skeleton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 
-export default function ProductsNearIdealStockTable() {
+export default function ProductsNearIdealStockTable({
+  useResponsiveTable = true,
+}: {
+  useResponsiveTable?: boolean;
+}) {
   const { user, isLoaded } = useUser();
   const router = useRouter();
   const userId = user?.id;
@@ -62,8 +66,9 @@ export default function ProductsNearIdealStockTable() {
         isFetching={isLoading}
         tableTittle="Produtos próximos ao estoque mínimo ideal:"
         columns={[
-          { name: "Produto", objectKey: "name" },
+          { name: "Produto", objectKey: "name", hasImage: true },
           { name: "Estoque minimo", objectKey: "minimumIdealStock" },
+          { name: "Quantidade em estoque", objectKey: "stockQuantity" },
         ]}
         columnsShowInResponsive={{
           mainColumn: {
@@ -77,7 +82,7 @@ export default function ProductsNearIdealStockTable() {
           ],
         }}
         totalPages={data?.totalPages || 0}
-        isMobile={true}
+        isMobile={useResponsiveTable}
         handlePageChange={handlePageChange}
         page={page}
       />

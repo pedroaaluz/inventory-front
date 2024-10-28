@@ -5,7 +5,6 @@ import ResponsiveTable from "../responsiveTable";
 import { useUser } from "@clerk/nextjs";
 import { handleQueryParams } from "@/utils/handleQueryParams";
 import { ITopSellingResponse } from "@/types/metrics";
-import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { Skeleton } from "@mui/material";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
@@ -13,9 +12,13 @@ import { useState } from "react";
 export default function TopSellingProducts({
   startDate,
   endDate,
+  isSmallScreen = true,
+  useResponsiveTable,
 }: {
   startDate: string;
   endDate: string;
+  isSmallScreen?: boolean;
+  useResponsiveTable?: boolean;
 }) {
   const { user, isLoaded } = useUser();
   const router = useRouter();
@@ -46,8 +49,6 @@ export default function TopSellingProducts({
     },
   });
 
-  const isSmallScreen = useIsSmallScreen();
-
   return isLoading ? (
     <Skeleton
       variant="rounded"
@@ -77,7 +78,7 @@ export default function TopSellingProducts({
         isFetching={isLoading}
         tableTittle={`Produtos mais vendidos: ${startDate} a ${endDate}`}
         columns={[
-          { name: "Produto", objectKey: "productName" },
+          { name: "Produto", objectKey: "productName", hasImage: true },
           {
             name: "Quantidade de vendas",
             objectKey: "salesCount",
@@ -105,7 +106,7 @@ export default function TopSellingProducts({
           ],
         }}
         totalPages={data?.totalPages || 0}
-        isMobile={true}
+        isMobile={useResponsiveTable || isSmallScreen}
         handlePageChange={handlePageChange}
         page={page}
       />

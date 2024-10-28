@@ -46,3 +46,22 @@ export interface ITopSellingResponse {
   pageSize: number;
   totalProducts: number;
 }
+
+export interface IStockMetricsResponse {
+  products: {
+    id: string;
+    name: string;
+    image: string | null;
+    totalSales: number;
+    stockQuantity: number;
+    averageConsumption: number;
+    stockCoverage: number;
+    turnoverRate: number;
+    minimumIdealStock: number;
+  }[];
+  message: string;
+  totalCount: number;
+  page: number;
+  pageSize: number;
+  totalPages: number;
+}

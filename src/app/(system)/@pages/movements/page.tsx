@@ -17,6 +17,7 @@ import {
 import { SelectChangeEvent } from "@mui/material";
 import PaymentMethodPieCharts from "@/components/paymentMethodPierCharts";
 import TopSellingProducts from "@/components/topSellingProducts";
+import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 
 export default function MovementsPage() {
   const today = new Date();
@@ -56,6 +57,8 @@ export default function MovementsPage() {
       movementTypeFilter,
     });
   };
+
+  const isSmallScreen = useIsSmallScreen();
 
   const { isLoading, data, isFetching } = useQuery({
     queryKey: [
@@ -233,7 +236,12 @@ export default function MovementsPage() {
         />
       }
       dashboardDown={
-        <TopSellingProducts startDate={startDate} endDate={endDate} />
+        <TopSellingProducts
+          startDate={startDate}
+          endDate={endDate}
+          isSmallScreen={isSmallScreen}
+          useResponsiveTable={true}
+        />
       }
     />
   );

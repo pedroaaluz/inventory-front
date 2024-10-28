@@ -7,7 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { Line, LineChart, ResponsiveContainer } from "recharts";
 import { useUser } from "@clerk/nextjs";
 
-export default function TotalStockCostDisplay() {
+export default function TotalStockCostDisplay({
+  height,
+}: {
+  height?: {
+    smallScreen?: number;
+    largeScreen?: number;
+  };
+}) {
   const { user, isLoaded } = useUser();
 
   const userId = user?.id;
@@ -30,6 +37,9 @@ export default function TotalStockCostDisplay() {
 
   const isSmallScreen = useIsSmallScreen();
 
+  const smallScreenWidth = height?.smallScreen || 400;
+  const largeScreenWidth = height?.largeScreen || 300;
+
   return (
     <>
       {isLoading ? (
@@ -43,7 +53,7 @@ export default function TotalStockCostDisplay() {
           display="flex"
           border="1px solid #ddd"
           padding={2}
-          height={isSmallScreen ? 400 : 300}
+          height={isSmallScreen ? smallScreenWidth : largeScreenWidth}
           flexDirection="column"
           justifyContent="center"
         >
