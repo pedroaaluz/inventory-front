@@ -6,7 +6,6 @@ import {
   Typography,
   useTheme,
 } from "@mui/material";
-import { ReactElement } from "react";
 import {
   Close as CloseIcon,
   ContentCopy as ContentCopyIcon,
@@ -22,6 +21,7 @@ export default function ListCreatePage({
     title: string;
     objectKey: string;
     field: JSX.Element;
+    transform?: (value: any) => string | number;
   }[];
   data: any[];
   actionsRows: {
@@ -109,9 +109,12 @@ export default function ListCreatePage({
                 </Box>
               </Box>
               <Box marginTop={1}>
-                {list.map(({ objectKey, title }) => (
+                {list.map(({ objectKey, title, transform }) => (
                   <Typography key={title} variant="body2">
-                    {title}: {item[objectKey] as string}
+                    {title}:{" "}
+                    {transform
+                      ? transform(item[objectKey])
+                      : (item[objectKey] as string)}
                   </Typography>
                 ))}
               </Box>

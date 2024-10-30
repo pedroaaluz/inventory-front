@@ -59,10 +59,7 @@ export default function CreateMovementsPage() {
   });
 
   const handleAddMovement = () => {
-    if (
-      !newMovement.paymentMethod &&
-      translateMovementType(newMovement.type, "en") === "SALE"
-    ) {
+    if (!newMovement.paymentMethod && newMovement.type === "SALE") {
       toast.error("Selecione uma forma de pagamento");
       return;
     }
@@ -73,12 +70,12 @@ export default function CreateMovementsPage() {
     }
 
     setMovementsToCreate((prev) => [
-      ...prev,
       {
         ...newMovement,
-        type: translateMovementType(newMovement.type, "en")!,
-        paymentMethod: translatePaymentMethod(newMovement.paymentMethod, "en")!,
+        type: newMovement.type,
+        paymentMethod: newMovement.paymentMethod,
       },
+      ...prev,
     ]);
 
     setNewMovement(newMovement);
@@ -230,15 +227,16 @@ export default function CreateMovementsPage() {
               value: "REMOVE_FROM_STOCK",
             },
           ]}
-          value={translateMovementType(newMovement.type, "en")!}
+          value={newMovement.type}
           onChange={(e) =>
             setNewMovement({
               ...newMovement,
-              type: translateMovementType(e.target.value, "pt-br")!,
+              type: e.target.value,
             })
           }
         />
       ),
+      transform: (value: string) => translateMovementType(value, "pt-br")!,
     },
     {
       title: "Custo de movimentação",
@@ -304,6 +302,7 @@ export default function CreateMovementsPage() {
           }
         />
       ),
+      transform: (value: string) => translatePaymentMethod(value, "pt-br")!,
     },
   ];
 
