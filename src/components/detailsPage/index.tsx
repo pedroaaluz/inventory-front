@@ -1,4 +1,4 @@
-import { Box, Grid } from "@mui/material";
+import { Box, Button, Grid } from "@mui/material";
 import DefaultButton from "../defaultButton";
 import DescriptionCard from "./descriptionCard";
 import EntityDetailsList from "./entityDetailsList";
@@ -32,9 +32,9 @@ export default function DetailsPage({
       paddingTop={isMobile ? 12 : 0}
       justifyContent={isMobile ? "center" : undefined}
       alignItems={isMobile ? "center" : undefined}
-      paddingX={isMobile ? 0 : 6}
+      paddingX={isMobile ? 2 : 6}
     >
-      <Grid item xs={12} direction={"row"}>
+      <Grid item xs={12}>
         <DescriptionCard
           isMobile={isMobile}
           avatarImage={image ?? undefined}
@@ -43,17 +43,15 @@ export default function DetailsPage({
           description={description ?? undefined}
         />
       </Grid>
-      <Grid container xs={12}>
+      <Grid container item xs={12}>
         <Grid item xs={12} md={3}>
           <EntityDetailsList isLoading={isLoading} listItems={details} />
           {!isMobile && (
             <Box
               sx={{
                 display: "flex",
-
                 alignItems: "center",
                 justifyContent: "center",
-                width: "100%",
                 flexDirection: "column",
               }}
             >
@@ -68,22 +66,24 @@ export default function DetailsPage({
         </Grid>
         {isMobile && (
           <Grid item xs={12} md={0}>
-            <Box
+            <Button
+              variant="contained"
               sx={{
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
                 width: "100%",
-                flexDirection: "column",
+                backgroundColor: "#00585e",
+                height: 56,
+                "&.Mui-disabled": {
+                  color: "#fff",
+                },
+                "&:hover": {
+                  backgroundColor: "#007b80",
+                },
               }}
+              onClick={onClick}
+              startIcon={icon}
             >
-              <DefaultButton
-                text={text}
-                isMobile={isMobile}
-                icon={icon}
-                onClick={onClick}
-              />
-            </Box>
+              {text}
+            </Button>
           </Grid>
         )}
         <Grid item xs={12} md={9}>

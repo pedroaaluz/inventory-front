@@ -52,7 +52,7 @@ export default function PageContent({
   const isSmallScreen = useIsSmallScreen();
 
   return (
-    <Grid container paddingX={5} spacing={3}>
+    <Grid container paddingX={2} spacing={3}>
       {isSmallScreen && (
         <Grid item xs={12}>
           <HeaderText text={headerTittle} />

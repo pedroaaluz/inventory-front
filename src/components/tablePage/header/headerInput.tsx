@@ -23,8 +23,7 @@ export default function HeaderInput({
       value={value}
       type={type}
       style={{
-        minWidth: isMobile ? 400 : 150,
-        width: "100%",
+        width: isMobile ? "100%" : "300px",
         maxWidth: isMobile ? "100%" : 200,
       }}
       sx={{

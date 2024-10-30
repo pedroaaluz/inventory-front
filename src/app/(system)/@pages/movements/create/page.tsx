@@ -132,7 +132,6 @@ export default function CreateMovementsPage() {
       field: (
         <Autocomplete
           style={{
-            minWidth: isSmallScreen ? 400 : 220,
             width: "100%",
             maxWidth: isSmallScreen ? "100%" : 200,
           }}
@@ -191,7 +190,6 @@ export default function CreateMovementsPage() {
           value={newMovement.quantity}
           sx={{
             ...commonStyles,
-            minWidth: isSmallScreen ? 400 : 120,
             width: "100%",
             maxWidth: isSmallScreen ? "100%" : 120,
           }}
@@ -246,7 +244,6 @@ export default function CreateMovementsPage() {
           type="number"
           value={newMovement.cost}
           style={{
-            minWidth: isSmallScreen ? 400 : 120,
             width: "100%",
             maxWidth: isSmallScreen ? "100%" : 120,
           }}

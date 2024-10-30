@@ -196,7 +196,7 @@ export default function ProductPage() {
         onClick: () => router.push(`/products/${id}/edit`),
       }}
       dashBoardUp={
-        <>
+        <Box>
           <HeaderSearchBar
             inputs={[
               {
@@ -314,7 +314,7 @@ export default function ProductPage() {
             isMobile={isMobile}
             height={400}
           />
-        </>
+        </Box>
       }
       entity={{
         name: product?.name,

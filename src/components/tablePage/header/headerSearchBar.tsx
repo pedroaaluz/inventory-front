@@ -82,7 +82,6 @@ export default function HeaderSearchBar({
             height: 56,
             width: isMobile ? "100%" : "300px",
             maxWidth: isMobile ? "100%" : 300,
-            minWidth: 150,
           }}
         >
           Pesquisar

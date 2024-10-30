@@ -34,8 +34,7 @@ export default function HeaderActionButton({
         style={{
           backgroundColor: "#00585e",
           height: 56,
-          width: "100%",
-          minWidth: isMobile ? 400 : 150,
+          width: isMobile ? "100%" : "300px",
         }}
       >
         {text}

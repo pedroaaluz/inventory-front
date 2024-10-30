@@ -20,7 +20,6 @@ export default function HeaderSelectInput({
     <FormControl
       key={index}
       style={{
-        minWidth: isMobile ? 400 : 150,
         width: isMobile ? "100%" : "300px",
         maxWidth: isMobile ? "100%" : 200,
       }}

@@ -93,7 +93,7 @@ export default function MetricsPage() {
   });
 
   return (
-    <Grid container padding={5}>
+    <Grid container padding={3}>
       <Grid item xs={12} md={12}>
         <Typography color={"#00585e"} variant="h4" marginBottom={5}>
           Métricas de venda

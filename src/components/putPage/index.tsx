@@ -41,7 +41,7 @@ export default function PutPage({
           </Typography>
         </Box>
       ) : (
-        <Grid container spacing={2} paddingLeft={isMobile ? 0 : 5}>
+        <Grid paddingX={2} container spacing={2}>
           <Grid item xs={12}>
             <DescriptionCardEdit
               isMobile={isMobile}
@@ -57,14 +57,18 @@ export default function PutPage({
             <Box
               sx={{
                 display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
+                ...(isMobile && {
+                  alignItems: "center",
+                  justifyContent: "center",
+                }),
+
                 width: "100%",
                 flexDirection: "column",
               }}
             >
               <InputList isMobile={isMobile} listItems={listInputs} />
             </Box>
+
             {putButton}
           </Grid>
         </Grid>
