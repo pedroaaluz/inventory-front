@@ -22,9 +22,6 @@ export async function GET(request: Request) {
     if (!params.userId) {
       return NextResponse.json({ message: "userId is required", status: 400 });
     }
-
-    console.log("fetchTotalStockCost", { params });
-
     const res = await fetchTotalStockCost({
       userId: params.userId,
     });

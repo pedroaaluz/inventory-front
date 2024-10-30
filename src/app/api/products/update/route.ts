@@ -36,7 +36,6 @@ async function updateProduct(params: Omit<Product, "createdAt" | "updatedAt">) {
 export async function PUT(request: Request) {
   try {
     const body = await request.json();
-    console.log({ body });
 
     if (!body.userId) {
       return NextResponse.json({ message: "userId is required", status: 400 });
@@ -63,7 +62,6 @@ export async function PUT(request: Request) {
 
     return NextResponse.json({ ...res, status: 200 });
   } catch (error) {
-    console.log({ error });
     return NextResponse.json({ message: "internal server error", status: 500 });
   }
 }

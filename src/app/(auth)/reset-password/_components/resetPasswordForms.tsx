@@ -29,7 +29,6 @@ export default function ResetPasswordForms({
         password,
       });
 
-      console.log("complete singup", { completeSingUp });
       await setActive({ session: completeSingUp.createdSessionId });
       router.push("/");
     } catch (error) {

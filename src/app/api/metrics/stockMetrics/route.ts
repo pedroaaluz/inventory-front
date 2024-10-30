@@ -7,12 +7,16 @@ async function fetchStockMetrics(params: {
   name?: string;
   page?: string;
   pageSize?: string;
+  startDate: string;
+  endDate: string;
 }) {
   const paramsParsed = new URLSearchParams(
     removeNulls({
       productName: params.name,
       page: params.page,
       pageSize: params.pageSize,
+      startDate: params.startDate,
+      endDate: params.endDate,
     })
   );
 
@@ -32,7 +36,7 @@ async function fetchStockMetrics(params: {
 export async function GET(request: Request) {
   try {
     const params = getQueryParams(
-      ["userId", "page", "pageSize", "name"],
+      ["userId", "page", "pageSize", "name", "startDate", "endDate"],
       request.url
     );
 
@@ -42,6 +46,8 @@ export async function GET(request: Request) {
 
     const res = await fetchStockMetrics({
       userId: params.userId,
+      startDate: params.startDate,
+      endDate: params.endDate,
       name: params.name,
       page: params.page,
       pageSize: params.pageSize,

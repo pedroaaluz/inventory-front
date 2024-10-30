@@ -26,7 +26,7 @@ export default function TableContentDesktop({
   return (
     <TableContainer style={{ height }}>
       {tableTittle && (
-        <Typography variant="h6" align="center">
+        <Typography color={"#00585e"} variant="h6" align="center">
           {tableTittle}
         </Typography>
       )}

@@ -42,7 +42,6 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "userId is required", status: 400 });
     }
 
-    console.log({ params });
     const res = await fetchListSuppliersData({
       userId: params.userId,
       name: params.name,

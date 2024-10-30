@@ -4,8 +4,6 @@ import { getQueryParams } from "@/utils/getQueryParams";
 import { NextResponse } from "next/server";
 
 async function fetchListProductData(params: TListProductsParams) {
-  console.log({ params });
-
   const paramsParsed = new URLSearchParams(
     removeNulls({
       userId: params.userId,

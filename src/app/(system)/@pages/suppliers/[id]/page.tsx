@@ -65,8 +65,6 @@ export default function SupplierPage() {
 
   useEffect(() => {
     if (getSupplierData) {
-      console.log("supplier data received:", getSupplierData.supplier);
-
       setSupplier(getSupplierData.supplier);
     }
   }, [getSupplierData]);

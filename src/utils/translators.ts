@@ -31,7 +31,6 @@ export const translatePaymentMethod = (
   paymentMethod: string | null,
   language: "en" | "pt-br"
 ) => {
-  console.log(paymentMethod);
   if (language === "pt-br") {
     switch (paymentMethod) {
       case "PIX":

@@ -51,7 +51,6 @@ export default function ProductPage() {
         const params = {
           userId: user?.id,
         };
-        console.log({ params });
         const paramsParsed = handleQueryParams(params);
 
         const response = await fetch(

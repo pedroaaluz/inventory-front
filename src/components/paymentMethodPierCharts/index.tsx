@@ -72,7 +72,7 @@ export default function PaymentMethodPieCharts({
         alignItems={isSmallScreen ? "center" : "flex-start"}
       >
         <Stack width="100%" height="100%" spacing={1} alignItems={"center"}>
-          <Typography fontSize={18} align="center">
+          <Typography color={"#00585e"} fontSize={18} align="center">
             Métodos de pagamento utilizados no período de: {startDate} a{" "}
             {endDate}
           </Typography>

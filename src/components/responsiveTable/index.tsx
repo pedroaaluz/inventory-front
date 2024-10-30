@@ -22,9 +22,10 @@ export default function ResponsiveTable({
       padding={5}
       style={{
         border: "1px solid #ddd",
-        height,
         display: "flex",
+        height,
         flexDirection: "column",
+        justifyContent: "center",
       }}
     >
       {isLoading || isFetching ? (

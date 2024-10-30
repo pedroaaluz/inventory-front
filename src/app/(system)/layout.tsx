@@ -72,8 +72,6 @@ export default function RootLayout({
                   width: "100%",
                   justifyContent: "center",
                   alignItems: "center",
-                  padding: isMobile ? 3 : 0,
-                  paddingLeft: isMobile ? 4 : 0,
                   marginBottom: 10,
                 }}
               >

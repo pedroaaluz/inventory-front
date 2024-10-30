@@ -35,7 +35,6 @@ export default function ProductsNearIdealStockTable({
         `/api/metrics/productsNearIdealStock?${params}`
       );
 
-      console.log("response", response);
       return response.json();
     },
   });

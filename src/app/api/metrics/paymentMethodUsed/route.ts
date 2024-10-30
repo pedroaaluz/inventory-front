@@ -37,7 +37,6 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "userId is required", status: 400 });
     }
 
-    console.log("paymentMethod", { params });
     const res = await fetchPaymentMethodUsed({
       userId: params.userId,
       startDate: params.startDate,

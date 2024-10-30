@@ -33,7 +33,6 @@ async function fetchListProductData(params: TListMovementParams) {
   );
 
   url.search = paramsParsed.toString();
-  console.log(url);
   const response = await fetch(url, {
     headers: {
       "Content-Type": "application/json",

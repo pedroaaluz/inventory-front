@@ -16,15 +16,14 @@ export default function HeaderActionButton({
 
   return (
     <Box
-      display="flex"
       gap={2}
       style={{
         padding: 16,
         marginBottom: 16,
-        borderColor: "none",
-        width: "100%",
+        ...(!isMobile && { width: "100%" }),
         alignItems: "center",
         justifyContent: "center",
+        display: "flex",
       }}
     >
       <Button
@@ -35,9 +34,8 @@ export default function HeaderActionButton({
         style={{
           backgroundColor: "#00585e",
           height: 56,
-          maxWidth: 300,
+          width: "100%",
           minWidth: isMobile ? 400 : 150,
-          ...(isMobile && { width: 400 }),
         }}
       >
         {text}

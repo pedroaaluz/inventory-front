@@ -8,10 +8,6 @@ const isPublicRoute = createRouteMatcher([
 ]);
 
 export default clerkMiddleware((auth, req) => {
-  console.log("Middleware running1", {
-    isPublicRoute: isPublicRoute(req),
-    url: req.nextUrl.href,
-  });
   if (!isPublicRoute(req)) {
     const origin = req.nextUrl.origin;
 

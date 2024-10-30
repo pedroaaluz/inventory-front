@@ -57,7 +57,7 @@ export default function TotalStockCostDisplay({
           flexDirection="column"
           justifyContent="center"
         >
-          <Typography variant="h6" align="center">
+          <Typography color={"#00585e"} variant="h6" align="center">
             Valor total em estoque:
           </Typography>
           <Box

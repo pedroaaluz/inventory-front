@@ -23,7 +23,6 @@ export default function VerifyEmailForms() {
         code,
       });
 
-      console.log("complete singup", { completeSingUp });
       await setActive({ session: completeSingUp.createdSessionId });
       router.push("/");
     } catch (error) {

@@ -71,6 +71,8 @@ export default function MetricsPage() {
         page: page.toString(),
         pageSize: "10",
         name: appliedStockMetricsFilters.filterName,
+        startDate: appliedStockMetricsFilters.startDate,
+        endDate: appliedStockMetricsFilters.endDate,
       };
 
       const paramsParsed = handleQueryParams(params);
@@ -91,9 +93,9 @@ export default function MetricsPage() {
   });
 
   return (
-    <Grid container paddingX={3}>
+    <Grid container padding={5}>
       <Grid item xs={12} md={12}>
-        <Typography variant="h4" marginBottom={5}>
+        <Typography color={"#00585e"} variant="h4" marginBottom={5}>
           Métricas de venda
         </Typography>
       </Grid>
@@ -124,7 +126,7 @@ export default function MetricsPage() {
         />
       </Grid>
 
-      <Grid container spacing={2} xs={12} md={12}>
+      <Grid container item spacing={2} xs={12} md={12}>
         <Grid item xs={12} md={3}>
           <PaymentMethodPieCharts
             startDate={appliedSalesMetricsFilters.startDate}
@@ -146,7 +148,12 @@ export default function MetricsPage() {
       </Grid>
 
       <Grid item xs={12} md={12}>
-        <Typography variant="h4" marginTop={5} marginBottom={5}>
+        <Typography
+          color={"#00585e"}
+          variant="h4"
+          marginTop={5}
+          marginBottom={5}
+        >
           Métricas de estoque
         </Typography>
       </Grid>
@@ -184,7 +191,7 @@ export default function MetricsPage() {
         />
       </Grid>
 
-      <Grid container spacing={2} xs={12} md={12}>
+      <Grid container item spacing={2} xs={12} md={12}>
         <Grid item xs={12} md={3}>
           <TotalStockCostDisplay
             height={{

@@ -52,36 +52,21 @@ export default function PageContent({
   const isSmallScreen = useIsSmallScreen();
 
   return (
-    <Grid
-      container
-      spacing={3}
-      paddingLeft={isSmallScreen ? 2 : 6}
-      paddingRight={!isSmallScreen && !dashboardDown && !dashboardUp ? 4 : 0}
-      paddingTop={2}
-    >
+    <Grid container paddingX={5} spacing={3}>
       {isSmallScreen && (
         <Grid item xs={12}>
           <HeaderText text={headerTittle} />
         </Grid>
       )}
-
-      <Grid container>
-        <Grid
-          item
-          xs={12}
-          md={9}
-          justifyContent={isSmallScreen ? "center" : undefined}
-          alignItems={isSmallScreen ? "center" : undefined}
-          justifyItems={isSmallScreen ? "center" : undefined}
-          order={isSmallScreen ? 2 : 1}
-        >
+      <Grid item xs={12} md={12} container justifyContent={"center"}>
+        <Grid item xs={12} md={9}>
           <HeaderSearchBar
             inputs={headerSearchBar.inputs}
             handleSubmit={headerSearchBar.handleSubmit}
             isMobile={isSmallScreen}
           />
         </Grid>
-        <Grid item xs={12} md={3} order={isSmallScreen ? 1 : 2}>
+        <Grid item xs={12} md={3} justifyContent={"center"}>
           <HeaderActionButton
             isMobile={isSmallScreen}
             onClick={headerActionButton.onClick}
@@ -90,41 +75,35 @@ export default function PageContent({
           />
         </Grid>
       </Grid>
-
-      <Grid container spacing={2}>
-        <Grid item xs={12} md={dashboardDown || dashboardUp ? 9 : 12}>
-          <Box width={"100%"}>
-            <ResponsiveTable
-              tableTittle={tableConfig.tableTittle}
-              isLoading={tableConfig.isLoading}
-              isFetching={tableConfig.isFetching}
-              data={tableConfig.data}
-              isMobile={isSmallScreen}
-              page={tableConfig.page}
-              handlePageChange={tableConfig.handlePageChange}
-              columns={tableConfig.columns}
-              columnsShowInResponsive={tableConfig.columnsShowInResponsive}
-              totalPages={tableConfig.totalPages || 1}
-              height={tableConfig.height}
-            />
-          </Box>
-        </Grid>
-
-        {(dashboardDown || dashboardUp) && (
-          <Grid container item xs={12} md={3} spacing={2}>
-            {dashboardUp && (
-              <Grid item xs={12}>
-                {dashboardUp}
-              </Grid>
-            )}
-            {dashboardDown && (
-              <Grid item xs={12}>
-                {dashboardDown}
-              </Grid>
-            )}
-          </Grid>
-        )}
+      <Grid item xs={12} md={dashboardDown || dashboardUp ? 9 : 12}>
+        <ResponsiveTable
+          tableTittle={tableConfig.tableTittle}
+          isLoading={tableConfig.isLoading}
+          isFetching={tableConfig.isFetching}
+          data={tableConfig.data}
+          isMobile={isSmallScreen}
+          page={tableConfig.page}
+          handlePageChange={tableConfig.handlePageChange}
+          columns={tableConfig.columns}
+          columnsShowInResponsive={tableConfig.columnsShowInResponsive}
+          totalPages={tableConfig.totalPages || 1}
+          height={tableConfig.height}
+        />
       </Grid>
+      {(dashboardDown || dashboardUp) && (
+        <Grid container item xs={12} md={3} spacing={2}>
+          {dashboardUp && (
+            <Grid item xs={12}>
+              {dashboardUp}
+            </Grid>
+          )}
+          {dashboardDown && (
+            <Grid item xs={12}>
+              {dashboardDown}
+            </Grid>
+          )}
+        </Grid>
+      )}
     </Grid>
   );
 }

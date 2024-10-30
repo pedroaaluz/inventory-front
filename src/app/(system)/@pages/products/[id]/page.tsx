@@ -75,8 +75,6 @@ export default function ProductPage() {
 
   useEffect(() => {
     if (getProductData) {
-      console.log("Product data received:", getProductData.product);
-
       setProduct(getProductData.product);
     }
   }, [getProductData]);
