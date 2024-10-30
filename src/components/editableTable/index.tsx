@@ -27,6 +27,7 @@ export default function EditableTable({
     title: string;
     objectKey: string;
     field: ReactElement;
+    transform?: (value: any) => string | number;
   }[];
   data: any[];
   actionsRows: {
@@ -74,7 +75,11 @@ export default function EditableTable({
             {data.map((row, rowIndex) => (
               <TableRow key={rowIndex}>
                 {columns.map((column, colIndex) => (
-                  <TableCell key={colIndex}>{row[column.objectKey]}</TableCell>
+                  <TableCell key={colIndex}>
+                    {column.transform
+                      ? column.transform(row[column.objectKey])
+                      : row[column.objectKey]}
+                  </TableCell>
                 ))}
                 <TableCell>
                   <IconButton onClick={() => copy(rowIndex)}>
