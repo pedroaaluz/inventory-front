@@ -54,7 +54,17 @@ export default function PutPage({
             />
           </Grid>
           <Grid item xs={12} md={6}>
-            <InputList isMobile={isMobile} listItems={listInputs} />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                flexDirection: "column",
+              }}
+            >
+              <InputList isMobile={isMobile} listItems={listInputs} />
+            </Box>
             {putButton}
           </Grid>
         </Grid>

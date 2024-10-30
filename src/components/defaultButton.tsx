@@ -31,6 +31,7 @@ export default function DefaultButton({
         startIcon={icon}
         sx={{
           width: "100%",
+          maxWidth: isMobile ? "100%" : 300,
           backgroundColor: "#00585e",
           height: isMobile ? 56 : 40,
           color: disable ? "#fff" : undefined,

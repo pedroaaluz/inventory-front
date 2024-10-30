@@ -1,4 +1,4 @@
-import { Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import DefaultButton from "../defaultButton";
 import DescriptionCard from "./descriptionCard";
 import EntityDetailsList from "./entityDetailsList";
@@ -47,22 +47,43 @@ export default function DetailsPage({
         <Grid item xs={12} md={3}>
           <EntityDetailsList isLoading={isLoading} listItems={details} />
           {!isMobile && (
-            <DefaultButton
-              text={text}
-              isMobile={isMobile}
-              icon={icon}
-              onClick={onClick}
-            />
+            <Box
+              sx={{
+                display: "flex",
+
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                flexDirection: "column",
+              }}
+            >
+              <DefaultButton
+                text={text}
+                isMobile={isMobile}
+                icon={icon}
+                onClick={onClick}
+              />
+            </Box>
           )}
         </Grid>
         {isMobile && (
           <Grid item xs={12} md={0}>
-            <DefaultButton
-              text={text}
-              isMobile={isMobile}
-              icon={icon}
-              onClick={onClick}
-            />
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                flexDirection: "column",
+              }}
+            >
+              <DefaultButton
+                text={text}
+                isMobile={isMobile}
+                icon={icon}
+                onClick={onClick}
+              />
+            </Box>
           </Grid>
         )}
         <Grid item xs={12} md={9}>
