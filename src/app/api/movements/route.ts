@@ -7,7 +7,7 @@ import type {
 import { getQueryParams } from "@/utils/getQueryParams";
 import { NextResponse } from "next/server";
 
-async function fetchListProductData(params: TListMovementParams) {
+async function fetchListMovementData(params: TListMovementParams) {
   const paramsParsed = new URLSearchParams(
     removeNulls({
       userId: params.userId,
@@ -64,7 +64,7 @@ export async function GET(request: Request) {
       return NextResponse.json({ message: "userId is required", status: 400 });
     }
 
-    const res = await fetchListProductData({
+    const res = await fetchListMovementData({
       userId: params.userId,
       startDate: params.startDate,
       endDate: params.endDate,

@@ -36,3 +36,14 @@ export interface IListMovementOutput {
     productImage: string | null;
   }[];
 }
+
+export interface ICreateMovementInput {
+  userId: string;
+  movements: {
+    type: EnumMovementsType;
+    quantity: number;
+    productId: string;
+    cost?: number | null;
+    paymentMethod?: EnumPaymentMethodType | null;
+  }[];
+}

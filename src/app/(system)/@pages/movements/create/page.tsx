@@ -1,10 +1,10 @@
 "use client";
 import SelectInput from "@/components/selectInput";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { IListProductsOutput } from "@/types/products";
 import { useQuery } from "@tanstack/react-query";
 import { useUser } from "@clerk/nextjs";
-import DefaultButton from "@/components/defaultButton";
 import {
   Grid,
   TextField,
@@ -12,6 +12,7 @@ import {
   Typography,
   Box,
   Button,
+  CircularProgress,
 } from "@mui/material";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { handleQueryParams } from "@/utils/handleQueryParams";
@@ -22,6 +23,7 @@ import {
 } from "@/utils/translators";
 import { toast } from "sonner";
 import ListCreatePage from "@/components/listCreatePage";
+import { queryClient } from "@/services/queryClient";
 
 export default function CreateMovementsPage() {
   const isSmallScreen = useIsSmallScreen();
@@ -45,6 +47,7 @@ export default function CreateMovementsPage() {
     cost: 0,
     paymentMethod: "",
   });
+  const router = useRouter();
 
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["products", searchQuery],
@@ -55,7 +58,30 @@ export default function CreateMovementsPage() {
       const response = await fetch(`/api/products?${paramsParsed}`);
       return response.json() as Promise<IListProductsOutput>;
     },
-    enabled: !!searchQuery,
+  });
+
+  const {
+    isRefetching: createMovementsIsRefetching,
+    isLoading: createMovementsIsLoading,
+    refetch: createMovementsRefetch,
+    isError,
+  } = useQuery({
+    queryKey: ["createMovements", searchQuery],
+    queryFn: async () => {
+      const response = await fetch(`/api/movements/create`, {
+        method: "post",
+        body: JSON.stringify({
+          userId: user?.id,
+          movements: movementsToCreate,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+
+      return response.json();
+    },
+    enabled: false,
   });
 
   const handleAddMovement = () => {
@@ -78,7 +104,14 @@ export default function CreateMovementsPage() {
       ...prev,
     ]);
 
-    setNewMovement(newMovement);
+    setNewMovement({
+      productId: "",
+      productName: "",
+      quantity: 0,
+      type: "",
+      cost: 0,
+      paymentMethod: "",
+    });
   };
 
   const handleCopy = (index: number) => {
@@ -290,11 +323,11 @@ export default function CreateMovementsPage() {
               value: "",
             },
           ]}
-          value={translatePaymentMethod(newMovement.paymentMethod, "en")!}
+          value={newMovement.paymentMethod}
           onChange={(e) =>
             setNewMovement({
               ...newMovement,
-              paymentMethod: translatePaymentMethod(e.target.value, "pt-br")!,
+              paymentMethod: e.target.value,
             })
           }
         />
@@ -360,9 +393,26 @@ export default function CreateMovementsPage() {
                 backgroundColor: "#007b80",
               },
             }}
-            onClick={() => {}}
+            onClick={() => {
+              createMovementsRefetch();
+              if (isError) {
+                toast.error("Erro ao criar movimentações");
+                return;
+              }
+
+              toast.success("Movimentações criadas com sucesso");
+              queryClient.invalidateQueries({ queryKey: ["movements"] });
+              router.push("/movements");
+            }}
+            disabled={movementsToCreate.length === 0}
           >
-            Criar movimentações
+            {createMovementsIsLoading || createMovementsIsRefetching ? (
+              <>
+                <CircularProgress color="inherit" />
+              </>
+            ) : (
+              "Criar movimentações"
+            )}
           </Button>
         </Box>
       </Grid>

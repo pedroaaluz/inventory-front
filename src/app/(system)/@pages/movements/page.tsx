@@ -62,7 +62,7 @@ export default function MovementsPage() {
 
   const { isLoading, data, isFetching } = useQuery({
     queryKey: [
-      "suppliers",
+      "movements",
       page,
       isLoaded,
       appliedFilters.filterName,
@@ -214,10 +214,11 @@ export default function MovementsPage() {
         ],
         columnsShowInResponsive: {
           mainColumn: {
-            name: "Tipo de Movimentação",
-            objectKey: "movementType",
+            name: "Produto",
+            objectKey: "productName",
           },
           secondaryColumn: [
+            { name: "Tipo de Movimentação", objectKey: "movementType" },
             { name: "Quantidade", objectKey: "quantity" },
             { name: "Data", objectKey: "createdAt" },
           ],

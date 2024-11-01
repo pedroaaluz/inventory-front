@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import { Drawer, IconButton, Box, AppBar, Toolbar } from "@mui/material";
+import { usePathname } from "next/navigation";
 import { Menu as MenuIcon } from "@mui/icons-material";
 import SidebarContent, { SidebarContentProps } from "./sidebarContent";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
@@ -16,7 +17,18 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
     setIsOpen(!isOpen);
   };
 
-  const [selectedIndex, setSelectedIndex] = useState(0);
+  const pageByIndex = {
+    "/products": 0,
+    "/suppliers": 1,
+    "/movements": 2,
+    "/metrics": 3,
+  };
+
+  const pageActive = usePathname().toString();
+
+  const [selectedIndex, setSelectedIndex] = useState(
+    pageByIndex[pageActive as keyof typeof pageByIndex]
+  );
 
   const handleListItemClick = (
     event:
