@@ -98,7 +98,7 @@ export default function ProductPage() {
       const params = {
         userId: user?.id,
         page: page.toString(),
-        pageSize: "10",
+        pageSize: "5",
         startDate: appliedFilters.startDate || undefined,
         endDate: appliedFilters.endDate || undefined,
         productsIds: [id],

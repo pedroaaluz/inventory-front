@@ -22,7 +22,7 @@ export const translateMovementType = (
       case "Remoção do Estoque":
         return "REMOVE_FROM_STOCK";
       default:
-        return movementType;
+        return undefined;
     }
   }
 };
