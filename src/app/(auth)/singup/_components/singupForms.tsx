@@ -6,6 +6,10 @@ import { FormEvent, useState } from "react";
 import { toast } from "sonner";
 import VerifyEmailForms from "./verifyEmailForms";
 import Forms from "@/components/forms/forms";
+import {
+  ClerkErrorCodesEnum,
+  translateClerkError,
+} from "@/utils/clerk/translateClerkError";
 
 export default function SingUpForms() {
   const [email, setEmail] = useState("");
@@ -32,9 +36,12 @@ export default function SingUpForms() {
       setEmailVerifyCode(true);
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
-        // adicionar tradução de mensagens de erros, olhando o code do erro
+        const errorTranslated = translateClerkError(
+          error.errors[0].code as ClerkErrorCodesEnum
+        );
+
         console.error("Sign in failed", error.errors);
-        toast.error(error.errors[0].message);
+        toast.error(errorTranslated.longMessage);
         return;
       }
 

@@ -27,6 +27,7 @@ export default function PageContent({
             setValue: Dispatch<SetStateAction<string>>;
             label: string;
             type: "text" | "date";
+            minValue?: string;
           }
         | {
             value: string;

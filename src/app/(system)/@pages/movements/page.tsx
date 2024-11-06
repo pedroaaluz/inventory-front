@@ -135,6 +135,7 @@ export default function MovementsPage() {
               setValue: setEndDate,
               label: "Data de fim",
               type: "date",
+              minValue: startDate,
             },
             {
               value: movementTypeFilter,

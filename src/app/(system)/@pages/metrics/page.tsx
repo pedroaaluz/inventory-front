@@ -114,6 +114,7 @@ export default function MetricsPage() {
               value: endDateSalesMetrics,
               setValue: setEndDate,
               type: "date",
+              minValue: startDateSalesMetrics,
             },
           ]}
           handleSubmit={() => {
@@ -178,6 +179,7 @@ export default function MetricsPage() {
               value: endDateStockMetrics,
               setValue: setEndDateStockMetrics,
               type: "date",
+              minValue: startDateStockMetrics,
             },
           ]}
           handleSubmit={() => {

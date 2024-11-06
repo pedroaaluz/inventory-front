@@ -210,6 +210,7 @@ export default function ProductPage() {
                 setValue: setEndDate,
                 label: "Data Final",
                 type: "date",
+                minValue: startDate,
               },
               {
                 value: movementTypeFilter,

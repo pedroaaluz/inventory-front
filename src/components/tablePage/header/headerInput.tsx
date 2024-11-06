@@ -7,6 +7,7 @@ export default function HeaderInput({
   setValue,
   type,
   label,
+  minValue,
 }: {
   text: string;
   isMobile: boolean;
@@ -14,6 +15,7 @@ export default function HeaderInput({
   setValue: Dispatch<SetStateAction<string>>;
   type: "text" | "date";
   label: string;
+  minValue?: string;
 }) {
   const isMobile = useIsSmallScreen();
 
@@ -44,6 +46,7 @@ export default function HeaderInput({
           },
         },
       }}
+      inputProps={type === "date" ? { min: minValue } : {}}
       onChange={(e) => setValue(e.target.value)}
       focused
     />

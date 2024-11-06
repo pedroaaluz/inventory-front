@@ -19,12 +19,24 @@ import DefaultButton from "@/components/defaultButton";
 import { toast } from "sonner";
 import removeNulls from "@/utils/removeNulls";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import { formatCNPJ, formatPhone } from "@/utils/formatInput";
 
 export default function SuppliersPage() {
   const { id } = useParams<{ id: string }>();
   const isMobile = useIsSmallScreen();
   const { user } = useUser();
   const router = useRouter();
+
+  const [supplierData, setSupplierData] = useState<
+    Record<string, string | null>
+  >({
+    name: null,
+    avatarImage: null,
+    cnpj: null,
+    address: null,
+    phone: null,
+    email: null,
+  });
 
   const { isLoading: getSupplierIsLoading, data: getSupplierData } = useQuery({
     queryKey: ["Suppliers", id],
@@ -37,20 +49,20 @@ export default function SuppliersPage() {
 
       const responseParsed = (await response.json()) as IGetSupplierResponse;
 
+      setSupplierData({
+        name: responseParsed.supplier.name,
+        avatarImage: responseParsed.supplier.image,
+        cnpj: responseParsed.supplier.cnpj,
+        address: responseParsed.supplier.address,
+        phone: responseParsed.supplier.phone,
+        email: responseParsed.supplier.email,
+      });
+
       return responseParsed;
     },
   });
 
   const [activeUpdate, setActiveUpdate] = useState(false);
-
-  const [supplierData, setSupplierData] = useState({
-    name: "",
-    avatarImage: "",
-    cnpj: "",
-    address: "",
-    phone: "",
-    email: "",
-  });
 
   const {
     isLoading: updateSuppliersLoading,
@@ -110,8 +122,7 @@ export default function SuppliersPage() {
   const listInputs: InputField[] = [
     {
       label: "CNPJ",
-
-      value: supplierData.cnpj || getSupplierData?.supplier.cnpj || "",
+      value: formatCNPJ(supplierData.cnpj || ""),
       onChangeValue: (value: string) => {
         setActiveUpdate(true);
         handleSuppliersChange("cnpj", value);
@@ -122,7 +133,7 @@ export default function SuppliersPage() {
     },
     {
       label: "Endereço",
-      value: supplierData.address || getSupplierData?.supplier.address || "",
+      value: supplierData.address || "",
       onChangeValue: (value: string) => {
         setActiveUpdate(true);
         handleSuppliersChange("address", value);
@@ -133,9 +144,10 @@ export default function SuppliersPage() {
 
     {
       label: "Telefone",
-      value: supplierData.phone || getSupplierData?.supplier.phone || "",
+      value: formatPhone(supplierData.phone || ""),
       onChangeValue: (value: string) => {
         setActiveUpdate(true);
+
         handleSuppliersChange("phone", value);
       },
       icon: <PhoneIcon />,
@@ -144,7 +156,7 @@ export default function SuppliersPage() {
 
     {
       label: "Email",
-      value: supplierData.email || getSupplierData?.supplier.email || "",
+      value: supplierData.email || "",
       onChangeValue: (value: string) => {
         setActiveUpdate(true);
         handleSuppliersChange("email", value);
@@ -158,9 +170,8 @@ export default function SuppliersPage() {
     <>
       <PutPage
         descriptionCardProps={{
-          name: supplierData.name || getSupplierData?.supplier.name || "",
-          avatarImage:
-            supplierData.avatarImage || getSupplierData?.supplier.image || "",
+          name: supplierData.name || "",
+          avatarImage: supplierData.avatarImage || "",
           onNameChange: (newName) => {
             setActiveUpdate(true);
             handleSuppliersChange("name", newName);
@@ -172,7 +183,7 @@ export default function SuppliersPage() {
         }}
         isMobile={isMobile}
         listInputs={listInputs}
-        isLoading={getSupplierIsLoading || updateSuppliersLoading}
+        isLoading={getSupplierIsLoading}
         putButton={
           <DefaultButton
             disable={updateSuppliersLoading || isRefetching || !activeUpdate}

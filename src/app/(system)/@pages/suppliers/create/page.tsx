@@ -18,6 +18,7 @@ import DefaultButton from "@/components/defaultButton";
 import { toast } from "sonner";
 import removeNulls from "@/utils/removeNulls";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import { formatCNPJ, formatPhone } from "@/utils/formatInput";
 
 export default function ProductPage() {
   const isMobile = useIsSmallScreen();
@@ -100,7 +101,7 @@ export default function ProductPage() {
   const listInputs: InputField[] = [
     {
       label: "CNPJ",
-      value: supplierData.cnpj || "",
+      value: formatCNPJ(supplierData.cnpj || ""),
       onChangeValue: (value: string) => {
         handleSupplierChange("cnpj", value);
       },
@@ -118,7 +119,7 @@ export default function ProductPage() {
     },
     {
       label: "Telefone",
-      value: supplierData.phone || "",
+      value: formatPhone(supplierData.phone || ""),
       onChangeValue: (value: string) => {
         handleSupplierChange("phone", value);
       },
@@ -140,7 +141,7 @@ export default function ProductPage() {
     <>
       <PutPage
         descriptionCardProps={{
-          name: supplierData.name || "Coloque o nome de seu Fornecedor",
+          name: supplierData.name,
           avatarImage: supplierData.avatarImage,
           onNameChange: (newName) => {
             handleSupplierChange("name", newName);

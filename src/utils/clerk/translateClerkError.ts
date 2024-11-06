@@ -54,6 +54,11 @@ const clerkDictionaryErrorTranslated: Record<
     longMessage: string | null;
   }
 > = {
+  // @ts-ignore
+  verification_failed: {
+    shortMessage: "Verificação falhou",
+    longMessage: "A verificação falhou. Por favor, tente novamente.",
+  },
   external_account_not_found: {
     shortMessage: "Conta externa não encontrada",
     longMessage: "A conta externa associada não foi encontrada.",
@@ -117,7 +122,8 @@ const clerkDictionaryErrorTranslated: Record<
   },
   form_username_invalid_character: {
     shortMessage: "Caracteres inválidos no nome de usuário",
-    longMessage: "O nome de usuário contém caracteres inválidos.",
+    longMessage:
+      "O nome de usuário contém caracteres inválidos, ele deve possui apenas: letras, números e '_' ou '-'.",
   },
   form_param_format_invalid: {
     shortMessage: "Formato do parâmetro inválido",

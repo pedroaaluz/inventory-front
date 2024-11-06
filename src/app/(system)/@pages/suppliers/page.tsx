@@ -11,6 +11,7 @@ import { Add } from "@mui/icons-material";
 import { useRouter } from "next/navigation";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { formatDateToLocal } from "@/utils/formatDateToLoca";
+import { formatCNPJ, formatPhone } from "@/utils/formatInput";
 
 export default function SuppliersPage() {
   const today = new Date();
@@ -110,6 +111,7 @@ export default function SuppliersPage() {
               setValue: setEndDate,
               label: "Data de fim",
               type: "date",
+              minValue: startDate,
             },
           ],
           handleSubmit,
@@ -130,6 +132,8 @@ export default function SuppliersPage() {
           data?.suppliers?.map((suppliers) => {
             return {
               ...suppliers,
+              cnpj: formatCNPJ(suppliers.cnpj || ""),
+              phone: formatPhone(suppliers.phone || ""),
               createdAt: new Date(suppliers.createdAt)
                 .toLocaleDateString("pt-BR", {
                   day: "2-digit",

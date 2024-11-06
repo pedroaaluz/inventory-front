@@ -55,13 +55,14 @@ export default function InputList({
 
                 if (isNumber) {
                   if (inputValue === "") {
-                    item.onChangeValue(0);
+                    item.onChangeValue(undefined);
                     return;
                   }
 
                   const value = parseFloat(inputValue.replace(",", "."));
 
                   if (value < 0) {
+                    item.onChangeValue(0);
                     return;
                   }
 

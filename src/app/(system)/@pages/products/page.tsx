@@ -107,6 +107,7 @@ export default function ProductsPage() {
               setValue: setEndDate,
               label: "Data de fim",
               type: "date",
+              minValue: startDate,
             },
           ],
           handleSubmit,

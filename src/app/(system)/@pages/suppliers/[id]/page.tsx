@@ -19,6 +19,7 @@ import DetailsPage from "@/components/detailsPage";
 import { IGetSupplierResponse } from "@/types/suppliers";
 import { IListProductsOutput } from "@/types/products";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import { formatCNPJ, formatPhone } from "@/utils/formatInput";
 
 export default function SupplierPage() {
   const { id } = useParams<{ id: string }>();
@@ -112,7 +113,7 @@ export default function SupplierPage() {
   const listItems = [
     {
       name: "CNPJ:",
-      value: supplier?.cnpj || undefined,
+      value: supplier?.cnpj ? formatCNPJ(supplier?.cnpj) : undefined,
       icon: <PersonIcon />,
     },
     {
@@ -127,7 +128,7 @@ export default function SupplierPage() {
     },
     {
       name: "Telefone:",
-      value: supplier?.phone || undefined,
+      value: formatPhone(supplier?.phone || ""),
       icon: <PhoneIcon />,
     },
     {
@@ -176,6 +177,7 @@ export default function SupplierPage() {
                 setValue: setEndDate,
                 label: "Data Final",
                 type: "date",
+                minValue: startDate,
               },
             ]}
             handleSubmit={() => {

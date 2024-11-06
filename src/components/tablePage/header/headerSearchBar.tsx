@@ -15,6 +15,7 @@ export default function HeaderSearchBar({
         setValue: Dispatch<SetStateAction<string>>;
         label: string;
         type: "text" | "date";
+        minValue?: string;
       }
     | {
         value: string;
@@ -68,6 +69,7 @@ export default function HeaderSearchBar({
               value={input.value}
               setValue={input.setValue}
               type={input.type}
+              minValue={input.minValue}
               label={input.label}
             />
           );

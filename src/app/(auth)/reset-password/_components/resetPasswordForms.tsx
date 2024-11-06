@@ -1,6 +1,10 @@
 "use client";
 
 import Forms from "@/components/forms/forms";
+import {
+  ClerkErrorCodesEnum,
+  translateClerkError,
+} from "@/utils/clerk/translateClerkError";
 import { useSignIn } from "@clerk/nextjs";
 import { isClerkAPIResponseError } from "@clerk/nextjs/errors";
 import { useRouter } from "next/navigation";
@@ -33,9 +37,13 @@ export default function ResetPasswordForms({
       router.push("/");
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
-        // adicionar tradução de mensagens de erros, olhando o code do erro
+        const errorTranslated = translateClerkError(
+          error.errors[0].code as ClerkErrorCodesEnum
+        );
+
         console.error("Sign in failed", error.errors);
-        toast.error(error.errors[0].message);
+
+        toast.error(errorTranslated.longMessage);
         return;
       }
 
@@ -47,14 +55,13 @@ export default function ResetPasswordForms({
 
   const resendCode = async () => {
     try {
-      // reenviar codigo de email
       await signIn.create({
         identifier: email,
         strategy: "reset_password_email_code",
       });
+      toast.info("Código reenviado");
     } catch (error) {
       if (isClerkAPIResponseError(error)) {
-        // adicionar tradução de mensagens de erros, olhando o code do erro
         console.error("Sign in failed", error.errors);
         toast.error(error.errors[0].message);
         return;
@@ -93,8 +100,8 @@ export default function ResetPasswordForms({
         ]}
         submitButtonText="Confirmar senha"
         formsFooterLink={{
-          link: "O código não chegou?",
-          text: "Clique aqui para reenviar.",
+          link: "Clique aqui para reenviar.",
+          text: "O código não chegou?",
           onClick: resendCode,
         }}
       />
