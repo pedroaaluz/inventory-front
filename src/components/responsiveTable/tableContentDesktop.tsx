@@ -8,11 +8,17 @@ import {
   Box,
   Avatar,
   Typography,
+  Tooltip,
 } from "@mui/material";
-
+import { Info as InfoIcon } from "@mui/icons-material";
 interface ITableContentProps {
   data: { [key: string]: any; rowAction?: (params?: unknown) => void }[];
-  columns: { name: string; objectKey: string; hasImage?: boolean }[];
+  columns: {
+    name: string;
+    objectKey: string;
+    hasImage?: boolean;
+    description?: string;
+  }[];
   height: number;
   tableTittle?: string;
 }
@@ -35,9 +41,16 @@ export default function TableContentDesktop({
           <TableRow>
             {columns.map((column) => (
               <TableCell key={column.name}>
-                <Typography fontWeight={800} fontSize={14}>
-                  {column.name}
-                </Typography>
+                <Box display="flex" alignItems="center">
+                  <Typography fontWeight={800} fontSize={14}>
+                    {column.name}
+                  </Typography>
+                  {column.description && (
+                    <Tooltip title={column.description}>
+                      <InfoIcon sx={{ height: 20, color: "#00585e" }} />
+                    </Tooltip>
+                  )}
+                </Box>
               </TableCell>
             ))}
           </TableRow>

@@ -8,6 +8,7 @@ import TopSellingProducts from "@/components/topSellingProducts";
 import TotalStockCostDisplay from "@/components/totalStockCostDisplay";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { IStockMetricsResponse } from "@/types/metrics";
+import { IListProductsOutput } from "@/types/products";
 import { formatDateToLocal } from "@/utils/formatDateToLoca";
 import { handleQueryParams } from "@/utils/handleQueryParams";
 import { useUser } from "@clerk/nextjs";
@@ -92,6 +93,23 @@ export default function MetricsPage() {
     },
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const {
+    data: autocompleteValue,
+    isLoading: isLoadingAutoComplete,
+    refetch,
+  } = useQuery({
+    queryKey: ["products", searchQuery],
+    queryFn: async (): Promise<IListProductsOutput> => {
+      const params = { userId: user?.id, search: searchQuery, pageSize: "10" };
+      const paramsParsed = handleQueryParams(params);
+
+      const response = await fetch(`/api/products?${paramsParsed}`);
+      return response.json() as Promise<IListProductsOutput>;
+    },
+  });
+
   return (
     <Grid container padding={3}>
       <Grid item xs={12} md={12}>
@@ -166,7 +184,17 @@ export default function MetricsPage() {
               label: "Nome do produto",
               value: nameStockMetrics,
               setValue: setNameStockMetrics,
-              type: "text",
+              type: "autocomplete",
+              options: autocompleteValue?.products || [],
+              getOptionLabel: (option) => option.name || "",
+              onInputChange: (event, newInputValue) => {
+                setSearchQuery(newInputValue);
+                refetch();
+              },
+              onChange: (event, newValue) => {
+                setNameStockMetrics(newValue ? newValue.name : "");
+              },
+              loading: isLoadingAutoComplete,
             },
             {
               label: "Data inicial",
@@ -214,10 +242,25 @@ export default function MetricsPage() {
               { name: "Nome", objectKey: "name" },
               { name: "Vendas", objectKey: "totalSales" },
               { name: "Estoque", objectKey: "stockQuantity" },
-              { name: "Consumo médio", objectKey: "averageConsumption" },
-              { name: "Cobertura de estoque", objectKey: "stockCoverage" },
-              { name: "Taxa de giro", objectKey: "turnoverRate" },
-              { name: "Estoque ideal mínimo", objectKey: "minimumIdealStock" },
+              { name: "Consumo médio (R$)", objectKey: "averageConsumption" },
+              {
+                name: "Cobertura de estoque",
+                objectKey: "stockCoverage",
+                description:
+                  "Indica o número de dias ou meses que o estoque atual é capaz de sustentar a demanda prevista, considerando o consumo médio.",
+              },
+              {
+                name: "Taxa de giro",
+                objectKey: "turnoverRate",
+                description:
+                  "Reflete a quantidade de vezes que o estoque foi renovado ou vendido em um período, demonstrando a eficiência na movimentação de estoque.",
+              },
+              {
+                name: "Estoque ideal mínimo",
+                objectKey: "minimumIdealStock",
+                description:
+                  "Representa a quantidade mínima de estoque necessária para evitar falta de produtos e garantir a continuidade das operações.",
+              },
             ]}
             columnsShowInResponsive={{
               mainColumn: {
@@ -227,9 +270,15 @@ export default function MetricsPage() {
               secondaryColumn: [
                 { name: "Vendas", objectKey: "totalSales" },
                 { name: "Estoque", objectKey: "stockQuantity" },
-                { name: "Consumo médio", objectKey: "averageConsumption" },
-                { name: "Cobertura de estoque", objectKey: "stockCoverage" },
-                { name: "Taxa de giro", objectKey: "turnoverRate" },
+                { name: "Consumo médio (R$)", objectKey: "averageConsumption" },
+                {
+                  name: "Cobertura de estoque",
+                  objectKey: "stockCoverage",
+                },
+                {
+                  name: "Taxa de giro",
+                  objectKey: "turnoverRate",
+                },
                 {
                   name: "Estoque ideal mínimo",
                   objectKey: "minimumIdealStock",

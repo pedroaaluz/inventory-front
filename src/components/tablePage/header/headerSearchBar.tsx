@@ -1,4 +1,10 @@
-import { Box, Button, SelectChangeEvent } from "@mui/material";
+import {
+  Autocomplete,
+  Box,
+  Button,
+  SelectChangeEvent,
+  TextField,
+} from "@mui/material";
 import HeaderInput from "./headerInput";
 import { Search } from "@mui/icons-material";
 import { Dispatch, SetStateAction } from "react";
@@ -23,6 +29,17 @@ export default function HeaderSearchBar({
         label: string;
         type: "select";
         options: string[];
+      }
+    | {
+        value: string;
+        setValue: Dispatch<SetStateAction<string>>;
+        label: string;
+        type: "autocomplete";
+        options: any[];
+        getOptionLabel: (option: any) => string;
+        onInputChange?: (event: any, newInputValue: string) => void;
+        onChange?: (event: any, newValue: any) => void;
+        loading?: boolean;
       }
   )[];
   isMobile: boolean;
@@ -57,6 +74,47 @@ export default function HeaderSearchBar({
                 label={input.label}
                 options={input.options}
                 index={index}
+              />
+            );
+          }
+
+          if (input.type === "autocomplete") {
+            return (
+              <Autocomplete
+                key={index}
+                loadingText="Procurando..."
+                noOptionsText="Nada encontrado"
+                options={input.options}
+                getOptionLabel={input.getOptionLabel}
+                onInputChange={input.onInputChange}
+                onChange={input.onChange}
+                loading={input.loading}
+                renderInput={(params) => (
+                  <TextField
+                    {...params}
+                    label={input.label}
+                    variant="outlined"
+                    sx={{
+                      width: isMobile ? "100%" : "300px",
+                      maxWidth: isMobile ? "100%" : 200,
+                      "& .MuiInputLabel-root": {
+                        color: "#00585e",
+                        "&.Mui-focused": { color: "#00585e" },
+                      },
+                      "& .MuiOutlinedInput-root": {
+                        "& .MuiOutlinedInput-notchedOutline": {
+                          borderColor: "#00585e",
+                        },
+                        "&.Mui-focused": {
+                          "& .MuiOutlinedInput-notchedOutline": {
+                            borderColor: "#00585e",
+                            borderWidth: "2px",
+                          },
+                        },
+                      },
+                    }}
+                  />
+                )}
               />
             );
           }

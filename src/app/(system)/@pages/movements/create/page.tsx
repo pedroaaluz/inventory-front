@@ -33,20 +33,29 @@ export default function CreateMovementsPage() {
     {
       productId: string;
       productName: string;
-      quantity: number;
+      quantity?: number;
       type: string;
-      cost: number;
+      cost?: number;
       paymentMethod: string;
     }[]
   >([]);
-  const [newMovement, setNewMovement] = useState({
+
+  const [newMovement, setNewMovement] = useState<{
+    productId: string;
+    productName: string;
+    quantity?: number;
+    type: string;
+    cost?: number;
+    paymentMethod: string;
+  }>({
     productId: "",
     productName: "",
-    quantity: 0,
+    quantity: undefined,
     type: "",
-    cost: 0,
+    cost: undefined,
     paymentMethod: "",
   });
+
   const router = useRouter();
 
   const { data, isLoading, refetch } = useQuery({
@@ -107,9 +116,9 @@ export default function CreateMovementsPage() {
     setNewMovement({
       productId: "",
       productName: "",
-      quantity: 0,
+      quantity: undefined,
       type: "",
-      cost: 0,
+      cost: undefined,
       paymentMethod: "",
     });
   };
@@ -233,7 +242,7 @@ export default function CreateMovementsPage() {
 
             setNewMovement({
               ...newMovement,
-              quantity: Number(e.target.value),
+              quantity: e.target.value ? Number(e.target.value) : undefined,
             });
           }}
         />
@@ -290,7 +299,7 @@ export default function CreateMovementsPage() {
 
             setNewMovement({
               ...newMovement,
-              cost: Number(e.target.value),
+              cost: e.target.value ? Number(e.target.value) : undefined,
             });
           }}
         />

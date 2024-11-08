@@ -10,5 +10,9 @@ export default function Page() {
     router.push("/products");
   }, [router]);
 
-  return <div></div>;
+  return (
+    <body>
+      <div></div>
+    </body>
+  );
 }

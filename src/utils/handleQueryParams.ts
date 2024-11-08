@@ -1,6 +1,8 @@
 import removeNulls from "./removeNulls";
 
-export const handleQueryParams = (queryParams: Record<string, unknown>) => {
+export const handleQueryParams = (
+  queryParams: Record<string, unknown>
+): string => {
   const params = removeNulls(queryParams);
 
   return Object.keys(params)
