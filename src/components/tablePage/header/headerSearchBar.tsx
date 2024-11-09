@@ -89,14 +89,16 @@ export default function HeaderSearchBar({
                 onInputChange={input.onInputChange}
                 onChange={input.onChange}
                 loading={input.loading}
+                style={{
+                  width: isMobile ? "100%" : "300px",
+                  maxWidth: isMobile ? "100%" : 200,
+                }}
                 renderInput={(params) => (
                   <TextField
                     {...params}
                     label={input.label}
                     variant="outlined"
                     sx={{
-                      width: isMobile ? "100%" : "300px",
-                      maxWidth: isMobile ? "100%" : 200,
                       "& .MuiInputLabel-root": {
                         color: "#00585e",
                         "&.Mui-focused": { color: "#00585e" },
@@ -108,7 +110,7 @@ export default function HeaderSearchBar({
                         "&.Mui-focused": {
                           "& .MuiOutlinedInput-notchedOutline": {
                             borderColor: "#00585e",
-                            borderWidth: "2px",
+                            borderWidth: 2,
                           },
                         },
                       },
