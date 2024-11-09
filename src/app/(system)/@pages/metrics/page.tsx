@@ -100,7 +100,7 @@ export default function MetricsPage() {
     isLoading: isLoadingAutoComplete,
     refetch,
   } = useQuery({
-    queryKey: ["products", searchQuery],
+    queryKey: ["productsSearches", searchQuery],
     queryFn: async (): Promise<IListProductsOutput> => {
       const params = { userId: user?.id, search: searchQuery, pageSize: "10" };
       const paramsParsed = handleQueryParams(params);

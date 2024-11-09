@@ -64,6 +64,23 @@ export default function SupplierPage() {
     refetchOnWindowFocus: true,
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const {
+    data: autocompleteValue,
+    isLoading: isLoadingAutoComplete,
+    refetch,
+  } = useQuery({
+    queryKey: ["productsSearches", searchQuery],
+    queryFn: async (): Promise<IListProductsOutput> => {
+      const params = { userId: user?.id, search: searchQuery, pageSize: "10" };
+      const paramsParsed = handleQueryParams(params);
+
+      const response = await fetch(`/api/products?${paramsParsed}`);
+      return response.json() as Promise<IListProductsOutput>;
+    },
+  });
+
   useEffect(() => {
     if (getSupplierData) {
       setSupplier(getSupplierData.supplier);
@@ -164,7 +181,17 @@ export default function SupplierPage() {
                 value: name,
                 setValue: setName,
                 label: "Nome do Produto",
-                type: "text",
+                type: "autocomplete",
+                options: autocompleteValue?.products || [],
+                getOptionLabel: (option) => option.name || "",
+                onInputChange: (event, newInputValue) => {
+                  setSearchQuery(newInputValue);
+                  refetch();
+                },
+                onChange: (event, newValue) => {
+                  setName(newValue ? newValue.name : "");
+                },
+                loading: isLoadingAutoComplete,
               },
               {
                 value: startDate,
