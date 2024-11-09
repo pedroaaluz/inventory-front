@@ -212,8 +212,8 @@ export default function MetricsPage() {
           ]}
           handleSubmit={() => {
             setStockMetricsFilters({
-              startDate: startDateSalesMetrics,
-              endDate: endDateSalesMetrics,
+              startDate: startDateStockMetrics,
+              endDate: endDateStockMetrics,
               filterName: nameStockMetrics,
             });
           }}

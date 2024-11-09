@@ -410,7 +410,9 @@ export default function CreateMovementsPage() {
               }
 
               toast.success("Movimentações criadas com sucesso");
-              queryClient.invalidateQueries({ queryKey: ["movements"] });
+              queryClient.invalidateQueries({
+                queryKey: ["movements", "paymentMethodUsed"],
+              });
               router.push("/movements");
             }}
             disabled={movementsToCreate.length === 0}

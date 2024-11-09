@@ -28,7 +28,7 @@ export default function PaymentMethodPieCharts({
   };
 }) {
   const { data, isLoading } = useQuery({
-    queryKey: ["pieChartData", userId, startDate, endDate],
+    queryKey: ["paymentMethodUsed", userId, startDate, endDate],
     queryFn: async (): Promise<IPaymentMethodUsedOutput> => {
       const params = handleQueryParams({
         startDate,
