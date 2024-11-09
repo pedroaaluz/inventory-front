@@ -33,6 +33,7 @@ export default function PutPage({
             alignItems: "center",
             justifyContent: "center",
             height: "100vh",
+            width: "100%",
           }}
         >
           <CircularProgress />
@@ -41,7 +42,7 @@ export default function PutPage({
           </Typography>
         </Box>
       ) : (
-        <Grid paddingX={2} container spacing={2}>
+        <Grid paddingX={2} container spacing={2} paddingTop={isMobile ? 12 : 0}>
           <Grid item xs={12}>
             <DescriptionCardEdit
               isMobile={isMobile}
