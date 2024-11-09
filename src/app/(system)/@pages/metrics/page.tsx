@@ -25,7 +25,6 @@ export default function MetricsPage() {
   const formattedSevenDaysAgo = formatDateToLocal(sevenDaysAgo);
   const formattedToday = formatDateToLocal(today);
 
-  const router = useRouter();
   const { user, isLoaded } = useUser();
   const userId = user?.id as string;
 

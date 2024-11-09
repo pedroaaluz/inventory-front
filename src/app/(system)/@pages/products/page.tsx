@@ -78,6 +78,23 @@ export default function ProductsPage() {
     },
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const {
+    data: autocompleteValue,
+    isLoading: isLoadingAutoComplete,
+    refetch,
+  } = useQuery({
+    queryKey: ["productsSearches", searchQuery],
+    queryFn: async (): Promise<IListProductsOutput> => {
+      const params = { userId: user?.id, search: searchQuery, pageSize: "10" };
+      const paramsParsed = handleQueryParams(params);
+
+      const response = await fetch(`/api/products?${paramsParsed}`);
+      return response.json() as Promise<IListProductsOutput>;
+    },
+  });
+
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -94,7 +111,17 @@ export default function ProductsPage() {
               value: filterName,
               setValue: setFilterName,
               label: "Nome do produto",
-              type: "text",
+              type: "autocomplete",
+              options: autocompleteValue?.products || [],
+              getOptionLabel: (option) => option.name || "",
+              onInputChange: (event, newInputValue) => {
+                setSearchQuery(newInputValue);
+                refetch();
+              },
+              onChange: (event, newValue) => {
+                setFilterName(newValue ? newValue.name : "");
+              },
+              loading: isLoadingAutoComplete,
             },
             {
               value: startDate,
