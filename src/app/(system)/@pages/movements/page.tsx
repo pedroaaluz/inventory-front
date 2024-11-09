@@ -18,6 +18,7 @@ import { SelectChangeEvent } from "@mui/material";
 import PaymentMethodPieCharts from "@/components/paymentMethodPierCharts";
 import TopSellingProducts from "@/components/topSellingProducts";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import { IListProductsOutput } from "@/types/products";
 
 export default function MovementsPage() {
   const today = new Date();
@@ -106,6 +107,23 @@ export default function MovementsPage() {
     },
   });
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const {
+    data: autocompleteValue,
+    isLoading: isLoadingAutoComplete,
+    refetch,
+  } = useQuery({
+    queryKey: ["productsSearches", searchQuery],
+    queryFn: async (): Promise<IListProductsOutput> => {
+      const params = { userId: user?.id, search: searchQuery, pageSize: "10" };
+      const paramsParsed = handleQueryParams(params);
+
+      const response = await fetch(`/api/products?${paramsParsed}`);
+      return response.json() as Promise<IListProductsOutput>;
+    },
+  });
+
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -122,7 +140,17 @@ export default function MovementsPage() {
               value: filterName,
               setValue: setFilterName,
               label: "Nome do produto",
-              type: "text",
+              type: "autocomplete",
+              options: autocompleteValue?.products || [],
+              getOptionLabel: (option: any) => option.name,
+              onInputChange: (event, newInputValue) => {
+                setSearchQuery(newInputValue);
+                refetch();
+              },
+              onChange: (_event: any, newValue: any) => {
+                setFilterName(newValue.name);
+              },
+              loading: isLoadingAutoComplete,
             },
             {
               value: startDate,
@@ -206,9 +234,9 @@ export default function MovementsPage() {
             };
           }) || [],
         columns: [
+          { name: "Produto", objectKey: "productName" },
           { name: "Tipo de movimentação", objectKey: "movementType" },
           { name: "Quantidade", objectKey: "quantity" },
-          { name: "Produto", objectKey: "productName" },
           { name: "Valor da movimentação (R$)", objectKey: "movementValue" },
           { name: "Método de pagamento", objectKey: "paymentMethod" },
           { name: "Data da movimentação", objectKey: "createdAt" },

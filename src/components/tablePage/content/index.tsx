@@ -36,6 +36,17 @@ export default function PageContent({
             type: "select";
             options: string[];
           }
+        | {
+            value: string;
+            setValue: Dispatch<SetStateAction<string>>;
+            label: string;
+            type: "autocomplete";
+            options: any[];
+            getOptionLabel: (option: any) => string;
+            onInputChange?: (event: any, newInputValue: string) => void;
+            onChange?: (event: any, newValue: any) => void;
+            loading?: boolean;
+          }
       )[];
       handleSubmit: () => void;
     };
