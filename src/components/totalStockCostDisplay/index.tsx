@@ -69,7 +69,7 @@ export default function TotalStockCostDisplay({
               width: "100%",
             }}
           >
-            <Typography variant={isSmallScreen ? "h5" : "h4"} align="center">
+            <Typography variant={"h5"} align="center">
               {data?.totalStockCost
                 ? data?.totalStockCost.toLocaleString("pt-BR", {
                     style: "currency",

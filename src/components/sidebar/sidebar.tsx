@@ -40,7 +40,7 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
   };
 
   return (
-    <Box sx={{ display: "flex", backgroundColor: "#181A1B" }}>
+    <Box>
       {isSmallScreen && (
         <AppBar
           position="fixed"
@@ -87,7 +87,6 @@ const Sidebar = ({ data }: { data: SidebarContentProps[] }) => {
       <Box
         component="main"
         sx={{
-          flexGrow: 1,
           marginLeft: isSmallScreen ? 0 : `${drawerWidth}px`,
           transition: "margin-left 0.3s ease",
         }}

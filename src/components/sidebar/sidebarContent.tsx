@@ -88,7 +88,7 @@ export default function SidebarContent({
           </IconButton>
         )}
       </Box>
-      <List sx={{ width: "100%" }}>
+      <List>
         {data.map((item, index) => (
           <ListItem key={index} sx={{ paddingX: 2 }}>
             <ListItemButton

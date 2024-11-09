@@ -34,11 +34,11 @@ export default function RootLayout({
             closeButton
             position={isMobile ? "top-center" : "bottom-right"}
           />
-          <body style={{ margin: 0, padding: 0 }}>
+          <body>
             <Box
               sx={{
                 display: "flex",
-                overflow: "hidden",
+                maxWidth: isMobile ? "100%" : "99%",
               }}
             >
               <Sidebar
@@ -65,18 +65,8 @@ export default function RootLayout({
                   },
                 ]}
               />
-              <Box
-                sx={{
-                  marginTop: 5,
-                  display: "flex",
-                  width: "100%",
-                  justifyContent: "center",
-                  alignItems: "center",
-                  marginBottom: 10,
-                }}
-              >
-                {pages}
-              </Box>
+
+              {pages}
             </Box>
           </body>
         </ClerkProvider>
