@@ -97,11 +97,12 @@ export default function MetricsPage() {
   const {
     data: autocompleteValue,
     isLoading: isLoadingAutoComplete,
+    isRefetching: isAutoCompleteRefetch,
     refetch,
   } = useQuery({
     queryKey: ["productsSearches", searchQuery],
     queryFn: async (): Promise<IListProductsOutput> => {
-      const params = { userId: user?.id, search: searchQuery, pageSize: "10" };
+      const params = { userId: user?.id, name: searchQuery, pageSize: "10" };
       const paramsParsed = handleQueryParams(params);
 
       const response = await fetch(`/api/products?${paramsParsed}`);
@@ -186,14 +187,15 @@ export default function MetricsPage() {
               type: "autocomplete",
               options: autocompleteValue?.products || [],
               getOptionLabel: (option) => option.name || "",
-              onInputChange: (event, newInputValue) => {
+              onInputChange: async (event, newInputValue) => {
+                console.log({ newInputValue });
                 setSearchQuery(newInputValue);
                 refetch();
               },
               onChange: (event, newValue) => {
                 setNameStockMetrics(newValue ? newValue.name : "");
               },
-              loading: isLoadingAutoComplete,
+              loading: isLoadingAutoComplete || isAutoCompleteRefetch,
             },
             {
               label: "Data inicial",

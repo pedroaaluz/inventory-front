@@ -61,7 +61,7 @@ export default function CreateMovementsPage() {
   const { data, isLoading, refetch } = useQuery({
     queryKey: ["products", searchQuery],
     queryFn: async (): Promise<IListProductsOutput> => {
-      const params = { userId: user?.id, search: searchQuery, pageSize: "10" };
+      const params = { userId: user?.id, name: searchQuery, pageSize: "10" };
       const paramsParsed = handleQueryParams(params);
 
       const response = await fetch(`/api/products?${paramsParsed}`);

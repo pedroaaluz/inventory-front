@@ -58,7 +58,7 @@ export default function SuppliersPage() {
       const params = {
         userId: user?.id,
         page: "1",
-        search: searchQuery,
+        name: searchQuery,
         pageSize: "10",
       };
       const paramsParsed = handleQueryParams(params);
