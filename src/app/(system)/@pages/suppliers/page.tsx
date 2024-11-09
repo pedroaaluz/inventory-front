@@ -46,6 +46,28 @@ export default function SuppliersPage() {
     });
   };
 
+  const [searchQuery, setSearchQuery] = useState("");
+
+  const {
+    data: autocompleteValue,
+    isLoading: isLoadingAutoComplete,
+    refetch,
+  } = useQuery({
+    queryKey: ["suppliersSearches", searchQuery],
+    queryFn: async (): Promise<TListSuppliersResponse> => {
+      const params = {
+        userId: user?.id,
+        page: "1",
+        search: searchQuery,
+        pageSize: "10",
+      };
+      const paramsParsed = handleQueryParams(params);
+
+      const response = await fetch(`/api/suppliers?${paramsParsed}`);
+      return response.json() as Promise<TListSuppliersResponse>;
+    },
+  });
+
   const { isLoading, data, isFetching } = useQuery({
     queryKey: [
       "suppliers",
@@ -98,7 +120,18 @@ export default function SuppliersPage() {
               value: filterName,
               setValue: setFilterName,
               label: "Nome do Fornecedor",
-              type: "text",
+              type: "autocomplete",
+              options: autocompleteValue?.suppliers || [],
+              getOptionLabel: (option) => option.name || "",
+              onInputChange: (event, newInputValue) => {
+                setSearchQuery(newInputValue);
+                refetch();
+              },
+              onChange: (event, newValue) => {
+                console.log({ newValue });
+                setFilterName(newValue ? newValue.name : "");
+              },
+              loading: isLoadingAutoComplete,
             },
             {
               value: startDate,
