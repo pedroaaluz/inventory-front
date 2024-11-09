@@ -132,12 +132,15 @@ export default function SidebarContent({
               signOut();
             }}
             sx={{
-              bgcolor: selectedIndex === 4 ? "#02494D" : "inherit",
+              bgcolor: "#910F2E",
               "&.Mui-selected": {
                 bgcolor: "#910F2E",
                 "&:hover": {
-                  bgcolor: "#8C3F52",
+                  bgcolor: "#910F2E",
                 },
+              },
+              "&:hover": {
+                bgcolor: "#910F2E",
               },
               borderRadius: "14px",
               width: "100%",
@@ -145,14 +148,14 @@ export default function SidebarContent({
           >
             <ListItemIcon
               sx={{
-                color: colorSelector(4),
+                color: "#fff",
               }}
             >
               <LogoutOutlinedIcon />
             </ListItemIcon>
             <ListItemText
               sx={{
-                color: colorSelector(4),
+                color: "#fff",
               }}
               primary="Deslogar"
             />
