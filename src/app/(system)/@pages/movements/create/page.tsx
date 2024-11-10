@@ -121,6 +121,7 @@ export default function CreateMovementsPage() {
       cost: undefined,
       paymentMethod: "",
     });
+    setSearchQuery("");
   };
 
   const handleCopy = (index: number) => {
@@ -173,6 +174,10 @@ export default function CreateMovementsPage() {
       objectKey: "productName",
       field: (
         <Autocomplete
+          // @ts-ignore
+          value={
+            newMovement.productName ? { name: newMovement.productName } : null
+          }
           style={{
             width: "100%",
             maxWidth: isSmallScreen ? "100%" : 200,
@@ -402,16 +407,20 @@ export default function CreateMovementsPage() {
                 backgroundColor: "#007b80",
               },
             }}
-            onClick={() => {
-              createMovementsRefetch();
+            onClick={async () => {
+              await createMovementsRefetch();
               if (isError) {
                 toast.error("Erro ao criar movimentações");
                 return;
               }
 
               toast.success("Movimentações criadas com sucesso");
-              queryClient.invalidateQueries({
-                queryKey: ["movements", "paymentMethodUsed"],
+              await queryClient.invalidateQueries({
+                queryKey: ["movements"],
+              });
+
+              await queryClient.invalidateQueries({
+                queryKey: ["paymentMethodUsed"],
               });
               router.push("/movements");
             }}
