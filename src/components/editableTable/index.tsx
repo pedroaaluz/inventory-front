@@ -26,7 +26,7 @@ export default function EditableTable({
   columns: {
     title: string;
     objectKey: string;
-    field: ReactElement;
+    field?: ReactElement;
     transform?: (value: any) => string | number;
   }[];
   data: any[];
@@ -73,7 +73,12 @@ export default function EditableTable({
           </TableHead>
           <TableBody>
             {data.map((row, rowIndex) => (
-              <TableRow key={rowIndex}>
+              <TableRow
+                key={rowIndex}
+                sx={{
+                  backgroundColor: row.color?.bg,
+                }}
+              >
                 {columns.map((column, colIndex) => (
                   <TableCell key={colIndex}>
                     {column.transform

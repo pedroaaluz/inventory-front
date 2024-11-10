@@ -38,6 +38,10 @@ export default function CreateMovementsPage() {
       type: string;
       cost?: number;
       paymentMethod: string;
+      messageError?: string;
+      color?: {
+        bg: string;
+      };
     }[]
   >([]);
 
@@ -66,6 +70,7 @@ export default function CreateMovementsPage() {
       const paramsParsed = handleQueryParams(params);
 
       const response = await fetch(`/api/products?${paramsParsed}`);
+
       return response.json() as Promise<IListProductsOutput>;
     },
   });
@@ -75,6 +80,7 @@ export default function CreateMovementsPage() {
     isLoading: createMovementsIsLoading,
     refetch: createMovementsRefetch,
     isError,
+    data: createMovementsData,
   } = useQuery({
     queryKey: ["createMovements", searchQuery],
     queryFn: async () => {
@@ -89,7 +95,37 @@ export default function CreateMovementsPage() {
         },
       });
 
-      return response.json();
+      if (response.status !== 200) {
+        throw new Error("Erro ao criar movimentações");
+      }
+
+      const result = await response.json();
+
+      if (result.movementsInvalid.length > 0) {
+        setMovementsToCreate(
+          result.movementsInvalid.map((movement: any) => ({
+            ...movementsToCreate[movement.index],
+            messageError: "Estoque insuficiente",
+            color: {
+              bg: "#f8d7da",
+            },
+          }))
+        );
+
+        toast.error("Há movimentações inválidas");
+
+        if (result.movementsCreated.length > 0) {
+          toast.success("Movimentações válidas foram criadas!");
+        }
+
+        return result;
+      }
+
+      toast.success("Movimentações criadas com sucesso");
+
+      router.push("/movements");
+
+      return result;
     },
     enabled: false,
   });
@@ -349,6 +385,10 @@ export default function CreateMovementsPage() {
       ),
       transform: (value: string) => translatePaymentMethod(value, "pt-br")!,
     },
+    {
+      title: "Feedback de criação",
+      objectKey: "messageError",
+    },
   ];
 
   return (
@@ -415,7 +455,6 @@ export default function CreateMovementsPage() {
                 return;
               }
 
-              toast.success("Movimentações criadas com sucesso");
               await queryClient.invalidateQueries({
                 queryKey: ["movements"],
               });
@@ -423,7 +462,6 @@ export default function CreateMovementsPage() {
               await queryClient.invalidateQueries({
                 queryKey: ["paymentMethodUsed"],
               });
-              router.push("/movements");
             }}
             disabled={movementsToCreate.length === 0}
           >

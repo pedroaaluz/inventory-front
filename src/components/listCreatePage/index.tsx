@@ -20,7 +20,7 @@ export default function ListCreatePage({
   list: {
     title: string;
     objectKey: string;
-    field: JSX.Element;
+    field?: JSX.Element;
     transform?: (value: any) => string | number;
   }[];
   data: any[];
@@ -41,19 +41,23 @@ export default function ListCreatePage({
           }}
         >
           <Box display="flex" flexDirection="column" gap={2}>
-            {list.map(({ field, title }, index) => (
-              <Box key={index}>
-                <Typography
-                  color="#00585e"
-                  margin={1}
-                  variant="body1"
-                  fontWeight={300}
-                >
-                  {title}
-                </Typography>
-                {field}
-              </Box>
-            ))}
+            {list.map(({ field, title }, index) => {
+              if (title === "Feedback de criação") return;
+
+              return (
+                <Box key={index}>
+                  <Typography
+                    color="#00585e"
+                    margin={1}
+                    variant="body1"
+                    fontWeight={300}
+                  >
+                    {title}
+                  </Typography>
+                  {field}
+                </Box>
+              );
+            })}
 
             <Button
               onClick={create}
@@ -90,6 +94,7 @@ export default function ListCreatePage({
               border={1}
               borderColor={"#ddd"}
               borderRadius={1}
+              bgcolor={item.color?.bg}
             >
               <Box
                 display="flex"

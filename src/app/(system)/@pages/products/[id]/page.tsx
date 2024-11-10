@@ -368,11 +368,13 @@ export default function ProductPage() {
               return;
             }
 
-            queryClient.invalidateQueries({
-              queryKey: ["products"],
-            });
+            if (!deleteProductIsLoading && !isDeleting) {
+              queryClient.invalidateQueries({
+                queryKey: ["products"],
+              });
 
-            router.push("/products");
+              router.push("/products");
+            }
           },
         }}
       />
