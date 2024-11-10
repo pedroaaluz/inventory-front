@@ -24,6 +24,7 @@ import {
 import { toast } from "sonner";
 import ListCreatePage from "@/components/listCreatePage";
 import { queryClient } from "@/services/queryClient";
+import removeNulls from "@/utils/removeNulls";
 
 export default function CreateMovementsPage() {
   const isSmallScreen = useIsSmallScreen();
@@ -81,7 +82,7 @@ export default function CreateMovementsPage() {
         method: "post",
         body: JSON.stringify({
           userId: user?.id,
-          movements: movementsToCreate,
+          movements: movementsToCreate.map((movement) => removeNulls(movement)),
         }),
         headers: {
           "Content-Type": "application/json",
