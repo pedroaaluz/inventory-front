@@ -38,6 +38,7 @@ export default function ResponsiveTable({
               data={data}
               columnsShowInResponsive={columnsShowInResponsive}
               tableTittle={tableTittle}
+              buttonDelete={buttonDelete}
             />
           ) : (
             <TableContentDesktop
