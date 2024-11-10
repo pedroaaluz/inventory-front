@@ -14,11 +14,18 @@ import {
   translateMovementType,
   translatePaymentMethod,
 } from "@/utils/translators";
-import { SelectChangeEvent } from "@mui/material";
+import {
+  Backdrop,
+  Button,
+  CircularProgress,
+  SelectChangeEvent,
+} from "@mui/material";
 import PaymentMethodPieCharts from "@/components/paymentMethodPierCharts";
 import TopSellingProducts from "@/components/topSellingProducts";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
 import { IListProductsOutput } from "@/types/products";
+import { toast } from "sonner";
+import { queryClient } from "@/services/queryClient";
 
 export default function MovementsPage() {
   const today = new Date();
@@ -124,6 +131,29 @@ export default function MovementsPage() {
     },
   });
 
+  const [movementId, setMovementId] = useState("");
+
+  const {
+    isLoading: deleteMovementLoading,
+    isError: deleteMovementError,
+    refetch: refetchDeleteMovement,
+    isRefetching: isDeleting,
+  } = useQuery({
+    queryKey: ["deleteMovement"],
+    queryFn: async () => {
+      const response = await fetch(`/api/movements/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id: movementId }),
+      });
+
+      return response.json();
+    },
+    enabled: false,
+  });
+
   const handlePageChange = (
     _event: React.ChangeEvent<unknown>,
     value: number
@@ -132,147 +162,168 @@ export default function MovementsPage() {
   };
 
   return (
-    <PageContent
-      headerContent={{
-        headerSearchBar: {
-          inputs: [
-            {
-              value: filterName,
-              setValue: setFilterName,
-              label: "Nome do produto",
-              type: "autocomplete",
-              options: autocompleteValue?.products || [],
-              getOptionLabel: (option: any) => option.name,
-              onInputChange: (event, newInputValue) => {
-                setSearchQuery(newInputValue);
-                refetch();
+    <>
+      <Backdrop
+        sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={isDeleting || deleteMovementLoading}
+        onClick={() => {}}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <PageContent
+        headerContent={{
+          headerSearchBar: {
+            inputs: [
+              {
+                value: filterName,
+                setValue: setFilterName,
+                label: "Nome do produto",
+                type: "autocomplete",
+                options: autocompleteValue?.products || [],
+                getOptionLabel: (option: any) => option.name,
+                onInputChange: (event, newInputValue) => {
+                  setSearchQuery(newInputValue);
+                  refetch();
+                },
+                onChange: (_event: any, newValue: any) => {
+                  setFilterName(newValue.name);
+                },
+                loading: isLoadingAutoComplete,
               },
-              onChange: (_event: any, newValue: any) => {
-                setFilterName(newValue.name);
+              {
+                value: startDate,
+                setValue: setStartDate,
+                label: "Data de início",
+                type: "date",
               },
-              loading: isLoadingAutoComplete,
-            },
-            {
-              value: startDate,
-              setValue: setStartDate,
-              label: "Data de início",
-              type: "date",
-            },
-            {
-              value: endDate,
-              setValue: setEndDate,
-              label: "Data de fim",
-              type: "date",
-              minValue: startDate,
-            },
-            {
-              value: movementTypeFilter,
-              options: [
-                "Venda",
-                "Adição ao Estoque",
-                "Remoção do Estoque",
-                "Todos",
-              ],
-              setValue: (event: SelectChangeEvent) => {
-                setMovementTypeFilter(event.target.value as string);
+              {
+                value: endDate,
+                setValue: setEndDate,
+                label: "Data de fim",
+                type: "date",
+                minValue: startDate,
               },
-              label: "Tipo de Movimentação",
-              type: "select",
-            },
-            {
-              value: paymentMethodFilter,
-              options: ["PIX", "Débito", "Crédito", "Dinheiro", "Todos"],
-              setValue: (event: SelectChangeEvent) => {
-                setPaymentMethodFilter(event.target.value as string);
+              {
+                value: movementTypeFilter,
+                options: [
+                  "Venda",
+                  "Adição ao Estoque",
+                  "Remoção do Estoque",
+                  "Todos",
+                ],
+                setValue: (event: SelectChangeEvent) => {
+                  setMovementTypeFilter(event.target.value as string);
+                },
+                label: "Tipo de Movimentação",
+                type: "select",
               },
-              label: "Método de Pagamento",
-              type: "select",
-            },
-          ],
-          handleSubmit,
-        },
-        headerTittle: "Movimentações",
-        headerActionButton: {
-          onClick: () => {
-            router.push("/movements/create");
+              {
+                value: paymentMethodFilter,
+                options: ["PIX", "Débito", "Crédito", "Dinheiro", "Todos"],
+                setValue: (event: SelectChangeEvent) => {
+                  setPaymentMethodFilter(event.target.value as string);
+                },
+                label: "Método de Pagamento",
+                type: "select",
+              },
+            ],
+            handleSubmit,
           },
-          text: "Criar movimentação",
-          icon: <Add />,
-        },
-      }}
-      tableConfig={{
-        isLoading,
-        isFetching,
-        data:
-          data?.movements?.map((movement) => {
-            return {
-              ...movement,
-              movementType: translateMovementType(
-                movement.movementType,
-                "pt-br"
-              ),
-              paymentMethod: translatePaymentMethod(
-                movement.paymentMethod,
-                "pt-br"
-              ),
-              movementValue:
-                movement.movementValue &&
-                `${Number(movement.movementValue).toLocaleString("pt-BR", {
-                  style: "currency",
-                  currency: "BRL",
-                })}`,
-              createdAt: new Date(movement.createdAt)
-                .toLocaleDateString("pt-BR", {
-                  day: "2-digit",
-                  month: "2-digit",
-                  year: "numeric",
-                  hour: "2-digit",
-                  minute: "2-digit",
-                  second: "2-digit",
-                })
-                .replace(",", ""),
-            };
-          }) || [],
-        columns: [
-          { name: "Produto", objectKey: "productName" },
-          { name: "Tipo de movimentação", objectKey: "movementType" },
-          { name: "Quantidade", objectKey: "quantity" },
-          { name: "Valor da movimentação (R$)", objectKey: "movementValue" },
-          { name: "Método de pagamento", objectKey: "paymentMethod" },
-          { name: "Data da movimentação", objectKey: "createdAt" },
-        ],
-        columnsShowInResponsive: {
-          mainColumn: {
-            name: "Produto",
-            objectKey: "productName",
+          headerTittle: "Movimentações",
+          headerActionButton: {
+            onClick: () => {
+              router.push("/movements/create");
+            },
+            text: "Criar movimentação",
+            icon: <Add />,
           },
-          secondaryColumn: [
-            { name: "Tipo de Movimentação", objectKey: "movementType" },
+        }}
+        tableConfig={{
+          isLoading,
+          isFetching,
+          data:
+            data?.movements?.map((movement) => {
+              return {
+                ...movement,
+                movementType: translateMovementType(
+                  movement.movementType,
+                  "pt-br"
+                ),
+                paymentMethod: translatePaymentMethod(
+                  movement.paymentMethod,
+                  "pt-br"
+                ),
+                movementValue:
+                  movement.movementValue &&
+                  `${Number(movement.movementValue).toLocaleString("pt-BR", {
+                    style: "currency",
+                    currency: "BRL",
+                  })}`,
+                createdAt: new Date(movement.createdAt)
+                  .toLocaleDateString("pt-BR", {
+                    day: "2-digit",
+                    month: "2-digit",
+                    year: "numeric",
+                    hour: "2-digit",
+                    minute: "2-digit",
+                    second: "2-digit",
+                  })
+                  .replace(",", ""),
+              };
+            }) || [],
+          buttonDelete: async (id: string) => {
+            setMovementId(id);
+            await refetchDeleteMovement();
+
+            if (deleteMovementError) {
+              toast.error("Erro ao deletar movimentação.");
+            }
+
+            queryClient.invalidateQueries({
+              queryKey: ["movements"],
+            });
+          },
+          columns: [
+            { name: "Produto", objectKey: "productName" },
+            { name: "Tipo de movimentação", objectKey: "movementType" },
             { name: "Quantidade", objectKey: "quantity" },
-            { name: "Data", objectKey: "createdAt" },
+            { name: "Valor da movimentação (R$)", objectKey: "movementValue" },
+            { name: "Método de pagamento", objectKey: "paymentMethod" },
+            { name: "Data da movimentação", objectKey: "createdAt" },
           ],
-        },
-        page,
-        totalPages: data?.totalPages || 0,
-        handlePageChange,
-        isMobile: false,
-        height: 650,
-      }}
-      dashboardUp={
-        <PaymentMethodPieCharts
-          startDate={startDate}
-          endDate={endDate}
-          userId={user?.id as string}
-        />
-      }
-      dashboardDown={
-        <TopSellingProducts
-          startDate={startDate}
-          endDate={endDate}
-          isSmallScreen={isSmallScreen}
-          useResponsiveTable={true}
-        />
-      }
-    />
+          columnsShowInResponsive: {
+            mainColumn: {
+              name: "Produto",
+              objectKey: "productName",
+            },
+            secondaryColumn: [
+              { name: "Tipo de Movimentação", objectKey: "movementType" },
+              { name: "Quantidade", objectKey: "quantity" },
+              { name: "Data", objectKey: "createdAt" },
+            ],
+          },
+          page,
+          totalPages: data?.totalPages || 0,
+          handlePageChange,
+          isMobile: false,
+          height: 650,
+        }}
+        dashboardUp={
+          <PaymentMethodPieCharts
+            startDate={startDate}
+            endDate={endDate}
+            userId={user?.id as string}
+          />
+        }
+        dashboardDown={
+          <TopSellingProducts
+            startDate={startDate}
+            endDate={endDate}
+            isSmallScreen={isSmallScreen}
+            useResponsiveTable={true}
+          />
+        }
+      />
+    </>
   );
 }

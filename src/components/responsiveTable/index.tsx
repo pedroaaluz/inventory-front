@@ -16,6 +16,7 @@ export default function ResponsiveTable({
   isMobile,
   tableTittle,
   height = 600,
+  buttonDelete,
 }: IResponsiveTableProps) {
   return (
     <Box
@@ -44,6 +45,7 @@ export default function ResponsiveTable({
               columns={columns}
               tableTittle={tableTittle}
               height={height}
+              buttonDelete={buttonDelete}
             />
           )}
           {page && (

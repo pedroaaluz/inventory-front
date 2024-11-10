@@ -100,6 +100,7 @@ export default function PageContent({
           columnsShowInResponsive={tableConfig.columnsShowInResponsive}
           totalPages={tableConfig.totalPages || 1}
           height={tableConfig.height}
+          buttonDelete={tableConfig.buttonDelete}
         />
       </Grid>
       {(dashboardDown || dashboardUp) && (

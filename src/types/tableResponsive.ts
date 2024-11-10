@@ -1,3 +1,5 @@
+import React from "react";
+
 export interface IResponsiveTableProps {
   isLoading: boolean;
   isFetching: boolean;
@@ -8,6 +10,7 @@ export interface IResponsiveTableProps {
     hasImage?: boolean;
     description?: string;
   }[];
+  buttonDelete?: (id: string) => void;
   columnsShowInResponsive: {
     mainColumn: {
       name: string;

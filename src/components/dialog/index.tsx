@@ -21,7 +21,7 @@ export default function ResponsiveDialog({
     visible: boolean;
     setVisible: React.Dispatch<React.SetStateAction<boolean>>;
   };
-  actionConfirm: () => void;
+  actionConfirm: (param?: any) => void;
 }) {
   const isSmallScreen = useIsSmallScreen();
   const fullScreen = isSmallScreen;
