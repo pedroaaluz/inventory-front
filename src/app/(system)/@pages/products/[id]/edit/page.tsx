@@ -88,19 +88,32 @@ export default function ProductPage() {
 
   const [activeUpdate, setActiveUpdate] = useState(false);
 
-  const [productData, setProductData] = useState({
+  const [productData, setProductData] = useState<{
+    name: string;
+    description: string | null;
+    avatarImage: string | null;
+    stockQuantity: number | undefined;
+    unitPrice: number | undefined;
+    positionInStock: string | null;
+    minimumIdealStock: number | undefined | null;
+    productionCost: number | undefined;
+    categories: { name: string; id: string }[];
+    categoriesOptions: { name: string; id: string }[];
+    suppliers: { name: string; id: string }[];
+    suppliersOptions: { name: string; id: string }[];
+  }>({
     name: "",
     description: "",
     avatarImage: "",
-    stockQuantity: undefined as number | undefined,
-    unitPrice: undefined as number | undefined,
+    stockQuantity: undefined,
+    unitPrice: undefined,
     positionInStock: "",
-    minimumIdealStock: undefined as number | undefined,
-    productionCost: undefined as number | undefined,
-    categories: [] as { name: string; id: string }[],
-    categoriesOptions: [] as { name: string; id: string }[],
-    suppliers: [] as { name: string; id: string }[],
-    suppliersOptions: [] as { name: string; id: string }[],
+    minimumIdealStock: undefined,
+    productionCost: undefined,
+    categories: [],
+    categoriesOptions: [],
+    suppliers: [],
+    suppliersOptions: [],
   });
 
   const {
@@ -182,6 +195,21 @@ export default function ProductPage() {
 
       handleProductChange("suppliers", mappedSuppliers);
       handleProductChange("categories", mappedCategories);
+
+      setProductData({
+        name: getProductData.product.name,
+        description: getProductData.product.description,
+        avatarImage: getProductData.product.image,
+        stockQuantity: getProductData.product.stockQuantity,
+        unitPrice: getProductData.product.unitPrice,
+        positionInStock: getProductData.product.positionInStock,
+        minimumIdealStock: getProductData.product.minimumIdealStock,
+        productionCost: getProductData.product.productionCost,
+        categories: mappedCategories,
+        categoriesOptions: [],
+        suppliers: mappedSuppliers,
+        suppliersOptions: [],
+      });
     }
 
     if (listCategoriesData) {
@@ -210,9 +238,7 @@ export default function ProductPage() {
   const listInputs: InputField[] = [
     {
       label: "Quantidade em Estoque",
-      value:
-        productData.stockQuantity ??
-        (getProductData?.product.stockQuantity || 0),
+      value: productData.stockQuantity,
       onChangeValue: (value: number | undefined) => {
         setActiveUpdate(true);
         handleProductChange("stockQuantity", value);
@@ -222,8 +248,7 @@ export default function ProductPage() {
     },
     {
       label: "Preço Unitário (R$)",
-      value:
-        productData.unitPrice ?? (getProductData?.product.unitPrice || 0.0),
+      value: productData.unitPrice,
       onChangeValue: (value: number | undefined) => {
         setActiveUpdate(true);
         handleProductChange("unitPrice", value);
@@ -233,10 +258,7 @@ export default function ProductPage() {
     },
     {
       label: "Posição no Estoque",
-      value:
-        productData.positionInStock ||
-        getProductData?.product.positionInStock ||
-        "",
+      value: productData.positionInStock || "",
       onChangeValue: (value: string) => {
         setActiveUpdate(true);
         handleProductChange("positionInStock", value);
@@ -246,10 +268,8 @@ export default function ProductPage() {
     },
     {
       label: "Estoque Ideal Mínimo",
-      value:
-        productData.minimumIdealStock ??
-        (getProductData?.product.minimumIdealStock || 0),
-      onChangeValue: (value: number | undefined) => {
+      value: productData.minimumIdealStock || undefined,
+      onChangeValue: (value?: number) => {
         setActiveUpdate(true);
         handleProductChange("minimumIdealStock", value);
       },
@@ -258,9 +278,7 @@ export default function ProductPage() {
     },
     {
       label: "Custo de Produção (R$)",
-      value:
-        productData.productionCost ??
-        (getProductData?.product.productionCost || 0.0),
+      value: productData.productionCost,
       onChangeValue: (value: number | undefined) => {
         setActiveUpdate(true);
         handleProductChange("productionCost", value);
@@ -296,13 +314,9 @@ export default function ProductPage() {
     <>
       <PutPage
         descriptionCardProps={{
-          name: productData.name || getProductData?.product.name || "",
-          description:
-            productData.description ||
-            getProductData?.product.description ||
-            "",
-          avatarImage:
-            productData.avatarImage || getProductData?.product.image || "",
+          name: productData.name,
+          description: productData.description || "",
+          avatarImage: productData.avatarImage || "",
           onNameChange: (newName) => {
             setActiveUpdate(true);
             handleProductChange("name", newName);
