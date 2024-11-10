@@ -8,6 +8,7 @@ export default function DefaultButton({
   icon,
   disable,
   disableText,
+  color,
 }: {
   isMobile: boolean;
   text: string;
@@ -15,6 +16,10 @@ export default function DefaultButton({
   icon?: JSX.Element;
   disable?: boolean;
   disableText?: string;
+  color?: {
+    bg: string;
+    hover: string;
+  };
 }) {
   return (
     <Box
@@ -32,14 +37,14 @@ export default function DefaultButton({
         sx={{
           width: "100%",
           maxWidth: isMobile ? "100%" : 300,
-          backgroundColor: "#00585e",
+          backgroundColor: color ? color.bg : "#00585e",
           height: isMobile ? 56 : 40,
           color: disable ? "#fff" : undefined,
           "&.Mui-disabled": {
             color: "#fff",
           },
           "&:hover": {
-            backgroundColor: "#007b80",
+            backgroundColor: color ? color.hover : "#007b80",
           },
         }}
         onClick={onClick}

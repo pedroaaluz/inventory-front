@@ -1,10 +1,10 @@
 "use client";
 import {
   Typography,
-  useMediaQuery,
-  useTheme,
   SelectChangeEvent,
   Box,
+  CircularProgress,
+  Backdrop,
 } from "@mui/material";
 import {
   LocalOffer as LocalOfferIcon,
@@ -15,6 +15,7 @@ import {
   Campaign as CampaignIcon,
   AccessTime as AccessTimeIcon,
   Edit as EditIcon,
+  Delete as TrashIcon,
 } from "@mui/icons-material";
 import { useParams, useRouter } from "next/navigation";
 import { useQuery } from "@tanstack/react-query";
@@ -31,6 +32,8 @@ import {
   translatePaymentMethod,
 } from "@/utils/translators";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import { toast } from "sonner";
+import { queryClient } from "@/services/queryClient";
 
 export default function ProductPage() {
   const { id } = useParams<{ id: string }>();
@@ -56,6 +59,27 @@ export default function ProductPage() {
     endDate,
     movementTypeFilter: "",
     paymentMethodFilter: "",
+  });
+
+  const {
+    isLoading: deleteProductIsLoading,
+    refetch: deleteProductRefetch,
+    isError: deleteError,
+    isRefetching: isDeleting,
+  } = useQuery({
+    queryKey: ["deleteProduct", id],
+    queryFn: async () => {
+      const response = await fetch(`/api/products/delete`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ id }),
+      });
+
+      return response.json();
+    },
+    enabled: false,
   });
 
   const { isLoading: getProductIsLoading, data: getProductData } = useQuery({
@@ -189,142 +213,169 @@ export default function ProductPage() {
   ];
 
   return (
-    <DetailsPage
-      button={{
-        text: "Editar",
-        icon: <EditIcon />,
-        onClick: () => router.push(`/products/${id}/edit`),
-      }}
-      dashBoardUp={
-        <Box>
-          <HeaderSearchBar
-            inputs={[
-              {
-                value: startDate,
-                setValue: setStartDate,
-                label: "Data Inicial",
-                type: "date",
-              },
-              {
-                value: endDate,
-                setValue: setEndDate,
-                label: "Data Final",
-                type: "date",
-                minValue: startDate,
-              },
-              {
-                value: movementTypeFilter,
-                options: [
-                  "Venda",
-                  "Adição ao Estoque",
-                  "Remoção do Estoque",
-                  "Todos",
-                ],
-                setValue: (event: SelectChangeEvent) => {
-                  setMovementTypeFilter(event.target.value as string);
+    <>
+      <Backdrop
+        sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
+        open={isDeleting || deleteProductIsLoading}
+        onClick={() => {}}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
+      <DetailsPage
+        button={{
+          text: "Editar",
+          icon: <EditIcon />,
+          onClick: () => router.push(`/products/${id}/edit`),
+        }}
+        dashBoardUp={
+          <Box>
+            <HeaderSearchBar
+              inputs={[
+                {
+                  value: startDate,
+                  setValue: setStartDate,
+                  label: "Data Inicial",
+                  type: "date",
                 },
-                label: "Tipo de Movimentação",
-                type: "select",
-              },
-              {
-                value: paymentMethodFilter,
-                options: ["PIX", "Débito", "Crédito", "Dinheiro", "Todos"],
-                setValue: (event: SelectChangeEvent) => {
-                  setPaymentMethodFilter(event.target.value as string);
+                {
+                  value: endDate,
+                  setValue: setEndDate,
+                  label: "Data Final",
+                  type: "date",
+                  minValue: startDate,
                 },
-                label: "Método de Pagamento",
-                type: "select",
-              },
-            ]}
-            handleSubmit={() => {
-              setAppliedFilters({
-                startDate,
-                endDate,
-                movementTypeFilter: movementTypeFilter,
-                paymentMethodFilter: paymentMethodFilter,
-              });
+                {
+                  value: movementTypeFilter,
+                  options: [
+                    "Venda",
+                    "Adição ao Estoque",
+                    "Remoção do Estoque",
+                    "Todos",
+                  ],
+                  setValue: (event: SelectChangeEvent) => {
+                    setMovementTypeFilter(event.target.value as string);
+                  },
+                  label: "Tipo de Movimentação",
+                  type: "select",
+                },
+                {
+                  value: paymentMethodFilter,
+                  options: ["PIX", "Débito", "Crédito", "Dinheiro", "Todos"],
+                  setValue: (event: SelectChangeEvent) => {
+                    setPaymentMethodFilter(event.target.value as string);
+                  },
+                  label: "Método de Pagamento",
+                  type: "select",
+                },
+              ]}
+              handleSubmit={() => {
+                setAppliedFilters({
+                  startDate,
+                  endDate,
+                  movementTypeFilter: movementTypeFilter,
+                  paymentMethodFilter: paymentMethodFilter,
+                });
 
-              listMovementsRefetch();
-            }}
-            isMobile={isMobile}
-          />
-          <Typography
-            marginBottom={2}
-            color={"#00585e"}
-            variant="h5"
-            sx={{ mt: 2 }}
-            textAlign={"center"}
-          >
-            Movimentações com o produto
-          </Typography>
-          <ResponsiveTable
-            isLoading={listMovementsIsLoading}
-            isFetching={listMovementsIsFetching}
-            data={(listMovementsData?.movements || []).map((movement) => {
-              return {
-                movementType: translateMovementType(
-                  movement.movementType,
-                  "pt-br"
-                ),
-                quantity: movement.quantity,
-                createdAt: new Date(movement.createdAt)
-                  .toLocaleDateString("pt-BR", {
-                    day: "2-digit",
-                    month: "2-digit",
-                    year: "numeric",
-                    hour: "2-digit",
-                    minute: "2-digit",
-                    second: "2-digit",
-                  })
-                  .replace(",", ""),
-                movementValue: movement.movementValue
-                  ? `R$ ${movement.movementValue.toLocaleString("pt-BR", {
-                      style: "currency",
-                      currency: "BRL",
-                    })}`
-                  : "R$ 0",
-                paymentMethod: translatePaymentMethod(
-                  movement.paymentMethod,
-                  "pt-br"
-                ),
-              };
-            })}
-            columns={[
-              { name: "Tipo de Movimentação", objectKey: "movementType" },
-              { name: "Quantidade", objectKey: "quantity" },
-              { name: "Data de criação", objectKey: "createdAt" },
-              { name: "Valor", objectKey: "movementValue" },
-              { name: "Método de Pagamento", objectKey: "paymentMethod" },
-            ]}
-            columnsShowInResponsive={{
-              mainColumn: {
-                name: "Tipo de Movimentação",
-                objectKey: "movementType",
-              },
-              secondaryColumn: [
+                listMovementsRefetch();
+              }}
+              isMobile={isMobile}
+            />
+            <Typography
+              marginBottom={2}
+              color={"#00585e"}
+              variant="h5"
+              sx={{ mt: 2 }}
+              textAlign={"center"}
+            >
+              Movimentações com o produto
+            </Typography>
+            <ResponsiveTable
+              isLoading={listMovementsIsLoading}
+              isFetching={listMovementsIsFetching}
+              data={(listMovementsData?.movements || []).map((movement) => {
+                return {
+                  movementType: translateMovementType(
+                    movement.movementType,
+                    "pt-br"
+                  ),
+                  quantity: movement.quantity,
+                  createdAt: new Date(movement.createdAt)
+                    .toLocaleDateString("pt-BR", {
+                      day: "2-digit",
+                      month: "2-digit",
+                      year: "numeric",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                      second: "2-digit",
+                    })
+                    .replace(",", ""),
+                  movementValue: movement.movementValue
+                    ? `R$ ${movement.movementValue.toLocaleString("pt-BR", {
+                        style: "currency",
+                        currency: "BRL",
+                      })}`
+                    : "R$ 0",
+                  paymentMethod: translatePaymentMethod(
+                    movement.paymentMethod,
+                    "pt-br"
+                  ),
+                };
+              })}
+              columns={[
+                { name: "Tipo de Movimentação", objectKey: "movementType" },
                 { name: "Quantidade", objectKey: "quantity" },
-                { name: "Data", objectKey: "createdAt" },
-              ],
-            }}
-            totalPages={listMovementsData?.totalPages || 0}
-            page={listMovementsData?.page || 0}
-            handlePageChange={(
-              _event: React.ChangeEvent<unknown>,
-              value: number
-            ) => setPage(value)}
-            isMobile={isMobile}
-            height={400}
-          />
-        </Box>
-      }
-      entity={{
-        name: product?.name,
-        description: product?.description,
-        image: product?.image,
-        details: listItems,
-      }}
-      isMobile={isMobile}
-      isLoading={getProductIsLoading}
-    />
+                { name: "Data de criação", objectKey: "createdAt" },
+                { name: "Valor", objectKey: "movementValue" },
+                { name: "Método de Pagamento", objectKey: "paymentMethod" },
+              ]}
+              columnsShowInResponsive={{
+                mainColumn: {
+                  name: "Tipo de Movimentação",
+                  objectKey: "movementType",
+                },
+                secondaryColumn: [
+                  { name: "Quantidade", objectKey: "quantity" },
+                  { name: "Data", objectKey: "createdAt" },
+                ],
+              }}
+              totalPages={listMovementsData?.totalPages || 0}
+              page={listMovementsData?.page || 0}
+              handlePageChange={(
+                _event: React.ChangeEvent<unknown>,
+                value: number
+              ) => setPage(value)}
+              isMobile={isMobile}
+              height={400}
+            />
+          </Box>
+        }
+        entity={{
+          name: product?.name,
+          description: product?.description,
+          image: product?.image,
+          details: listItems,
+        }}
+        isMobile={isMobile}
+        isLoading={getProductIsLoading}
+        deleteButton={{
+          text: "Deletar",
+          icon: <TrashIcon />,
+          onClick: async () => {
+            await deleteProductRefetch();
+
+            if (deleteError) {
+              toast.error("Erro ao deletar produto");
+              return;
+            }
+
+            queryClient.invalidateQueries({
+              queryKey: ["products"],
+            });
+
+            router.push("/products");
+          },
+        }}
+      />
+    </>
   );
 }
