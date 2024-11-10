@@ -68,7 +68,12 @@ export default function MovementsPage() {
 
   const isSmallScreen = useIsSmallScreen();
 
-  const { isLoading, data, isFetching } = useQuery({
+  const {
+    isLoading,
+    data,
+    isFetching,
+    refetch: refetchMovements,
+  } = useQuery({
     queryKey: [
       "movements",
       page,
@@ -138,6 +143,7 @@ export default function MovementsPage() {
     isError: deleteMovementError,
     refetch: refetchDeleteMovement,
     isRefetching: isDeleting,
+    isFetching: isDeletingFetching,
   } = useQuery({
     queryKey: ["deleteMovement"],
     queryFn: async () => {
@@ -148,6 +154,10 @@ export default function MovementsPage() {
         },
         body: JSON.stringify({ id: movementId }),
       });
+
+      if (response.status !== 200) {
+        throw new Error("Erro ao deletar movimentação.");
+      }
 
       return response.json();
     },
@@ -165,7 +175,7 @@ export default function MovementsPage() {
     <>
       <Backdrop
         sx={(theme) => ({ color: "#fff", zIndex: theme.zIndex.drawer + 1 })}
-        open={isDeleting || deleteMovementLoading}
+        open={isDeleting || deleteMovementLoading || isDeletingFetching}
         onClick={() => {}}
       >
         <CircularProgress color="inherit" />
@@ -273,15 +283,14 @@ export default function MovementsPage() {
             }) || [],
           buttonDelete: async (id: string) => {
             setMovementId(id);
+            console.log(id);
             await refetchDeleteMovement();
 
             if (deleteMovementError) {
               toast.error("Erro ao deletar movimentação.");
             }
 
-            queryClient.invalidateQueries({
-              queryKey: ["movements"],
-            });
+            await refetchMovements();
           },
           columns: [
             { name: "Produto", objectKey: "productName" },
