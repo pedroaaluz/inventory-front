@@ -84,7 +84,7 @@ export default function TopSellingProducts({
             objectKey: "salesCount",
           },
           {
-            name: "Valor em vendas:",
+            name: "Valor em vendas",
             objectKey: "salesValue",
           },
         ]}
@@ -100,7 +100,7 @@ export default function TopSellingProducts({
               objectKey: "salesCount",
             },
             {
-              name: "Valor em vendas:",
+              name: "Valor em vendas",
               objectKey: "salesValue",
             },
           ],

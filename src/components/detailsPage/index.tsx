@@ -126,30 +126,31 @@ export default function DetailsPage({
               >
                 {text}
               </Button>
-
-              {deleteButton && (
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                  }}
-                >
-                  <DefaultButton
-                    text={deleteButton.text}
-                    isMobile={isMobile}
-                    icon={deleteButton.icon}
-                    onClick={() => {
-                      setVisible(true);
-                    }}
-                  />
-                </Box>
-              )}
             </Grid>
           )}
           <Grid item xs={12} md={9}>
             {dashBoardUp}
+            {deleteButton && isMobile && (
+              <Box
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  marginTop: isMobile ? 5 : 0,
+                }}
+              >
+                <DefaultButton
+                  text={deleteButton.text}
+                  isMobile={isMobile}
+                  icon={deleteButton.icon}
+                  onClick={() => {
+                    setVisible(true);
+                  }}
+                  color={{ bg: "#910F2E", hover: "#8C3F52" }}
+                />
+              </Box>
+            )}
           </Grid>
         </Grid>
       </Grid>
