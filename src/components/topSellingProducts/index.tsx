@@ -91,7 +91,7 @@ export default function TopSellingProducts({
         columnsShowInResponsive={{
           mainColumn: {
             name: "Produto",
-            objectKey: "name",
+            objectKey: "productName",
             hasImage: true,
           },
           secondaryColumn: [
