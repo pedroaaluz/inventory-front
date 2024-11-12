@@ -12,7 +12,6 @@ import {
   IconButton,
 } from "@mui/material";
 import { LogoutOutlined as LogoutOutlinedIcon } from "@mui/icons-material";
-import { useState } from "react";
 import Link from "next/link";
 import { useUser, useAuth } from "@clerk/nextjs";
 import { Close } from "@mui/icons-material";
@@ -55,7 +54,6 @@ export default function SidebarContent({
         paddingY={2}
         mb={2}
         sx={{
-          cursor: "pointer",
           backgroundColor: "#212425",
           borderBottom: 1,
           borderBottomRightRadius: 14,
@@ -63,22 +61,32 @@ export default function SidebarContent({
           "&:hover": {
             bgcolor: "#313232",
           },
-          width: "100%",
+          paddingX: 10,
         }}
       >
         <Avatar
           sx={{
             width: 70,
             height: 70,
+            marginRight: 2,
           }}
-          src={user?.imageUrl}
+          src="/logo.png"
           alt={user?.username!}
         />
-        <Box ml={4}>
-          <Typography fontSize={20} variant="body1" color="#FFFFFF">
+        <Box>
+          <Typography fontSize={16} variant="body1" color="#FFFFFF">
             {user?.username}
           </Typography>
-          <Typography fontSize={16} variant="body2" color="#4E4D48">
+          <Typography
+            fontSize={14}
+            variant="body2"
+            color="#4E4D48"
+            sx={{
+              textOverflow: "ellipsis",
+              overflow: "hidden",
+              maxWidth: "100%",
+            }}
+          >
             {user?.emailAddresses[0]?.emailAddress}
           </Typography>
         </Box>

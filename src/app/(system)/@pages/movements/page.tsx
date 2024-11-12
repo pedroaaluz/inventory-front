@@ -306,6 +306,10 @@ export default function MovementsPage() {
               objectKey: "productName",
             },
             secondaryColumn: [
+              {
+                name: "Valor da movimentação (R$)",
+                objectKey: "movementValue",
+              },
               { name: "Tipo de Movimentação", objectKey: "movementType" },
               { name: "Quantidade", objectKey: "quantity" },
               { name: "Data", objectKey: "createdAt" },

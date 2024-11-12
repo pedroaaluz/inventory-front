@@ -1,4 +1,4 @@
-import { DOMAttributes, FormEvent } from "react";
+import { FormEvent } from "react";
 import InputFormsCustom, { CustomFormsInputProps } from "./formsInput";
 import FormsBody from "./formsBody";
 import FormsContainer from "./formsContainer";
