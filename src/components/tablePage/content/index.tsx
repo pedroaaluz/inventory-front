@@ -47,6 +47,17 @@ export default function PageContent({
             onChange?: (event: any, newValue: any) => void;
             loading?: boolean;
           }
+        | {
+            text: string;
+            isMobile: boolean;
+            startDate: string;
+            setStartDate: Dispatch<SetStateAction<string>>;
+            endDate: string;
+            setEndDate: Dispatch<SetStateAction<string>>;
+            label: string;
+            minValue?: string;
+            type: "dateRange";
+          }
       )[];
       handleSubmit: () => void;
     };

@@ -10,6 +10,7 @@ import { Search } from "@mui/icons-material";
 import { Dispatch, SetStateAction } from "react";
 import HeaderSelectInput from "./headerSelectInput";
 import { useIsSmallScreen } from "@/hooks/isSmallScreen";
+import HeaderDateRange from "./headerDateRange";
 
 export default function HeaderSearchBar({
   inputs,
@@ -22,6 +23,17 @@ export default function HeaderSearchBar({
         label: string;
         type: "text" | "date";
         minValue?: string;
+      }
+    | {
+        text: string;
+        isMobile: boolean;
+        startDate: string;
+        setStartDate: Dispatch<SetStateAction<string>>;
+        endDate: string;
+        setEndDate: Dispatch<SetStateAction<string>>;
+        label: string;
+        minValue?: string;
+        type: "dateRange";
       }
     | {
         value: string;
@@ -117,6 +129,22 @@ export default function HeaderSearchBar({
                     }}
                   />
                 )}
+              />
+            );
+          }
+
+          if (input.type === "dateRange") {
+            return (
+              <HeaderDateRange
+                endDate={input.endDate}
+                setEndDate={input.setEndDate}
+                startDate={input.startDate}
+                isMobile={isMobile}
+                setStartDate={input.setStartDate}
+                label={input.label}
+                minValue={input.minValue}
+                key={index}
+                text={input.label}
               />
             );
           }

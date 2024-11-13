@@ -200,19 +200,7 @@ export default function MovementsPage() {
                 },
                 loading: isLoadingAutoComplete,
               },
-              {
-                value: startDate,
-                setValue: setStartDate,
-                label: "Data de início",
-                type: "date",
-              },
-              {
-                value: endDate,
-                setValue: setEndDate,
-                label: "Data de fim",
-                type: "date",
-                minValue: startDate,
-              },
+
               {
                 value: movementTypeFilter,
                 options: [
@@ -228,13 +216,15 @@ export default function MovementsPage() {
                 type: "select",
               },
               {
-                value: paymentMethodFilter,
-                options: ["PIX", "Débito", "Crédito", "Dinheiro", "Todos"],
-                setValue: (event: SelectChangeEvent) => {
-                  setPaymentMethodFilter(event.target.value as string);
-                },
-                label: "Método de Pagamento",
-                type: "select",
+                text: "Data",
+                startDate,
+                setStartDate,
+                endDate,
+                setEndDate,
+                label: "Data",
+                minValue: formattedSevenDaysAgo,
+                type: "dateRange",
+                isMobile: isSmallScreen,
               },
             ],
             handleSubmit,
